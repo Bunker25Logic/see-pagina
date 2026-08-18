@@ -1,26 +1,232 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ================================================================
+   DESIGN SYSTEM — Portal SEE / Núcleo de Educação de Brasiléia
+   Tokens baseados em Material Design 3 com paleta institucional
+================================================================ */
+
+@theme {
+  /* ── Paleta Principal ────────────────────────────────────────── */
+  --color-primary:                   #002045;
+  --color-on-primary:                #ffffff;
+  --color-primary-container:         #1a365d;
+  --color-on-primary-container:      #86a0cd;
+  --color-primary-fixed:             #d6e3ff;
+  --color-primary-fixed-dim:         #adc7f7;
+  --color-on-primary-fixed:          #001b3c;
+  --color-on-primary-fixed-variant:  #2d476f;
+  --color-inverse-primary:           #adc7f7;
+
+  /* ── Paleta Secundária ───────────────────────────────────────── */
+  --color-secondary:                  #006e27;
+  --color-on-secondary:               #ffffff;
+  --color-secondary-container:        #7cf98b;
+  --color-on-secondary-container:     #007329;
+  --color-secondary-fixed:            #7ffc8d;
+  --color-secondary-fixed-dim:        #62df74;
+  --color-on-secondary-fixed:         #002107;
+  --color-on-secondary-fixed-variant: #00531b;
+
+  /* ── Paleta Terciária ────────────────────────────────────────── */
+  --color-tertiary:                  #6c5e00;
+  --color-on-tertiary:               #ffffff;
+  --color-tertiary-container:        #c3ab00;
+  --color-on-tertiary-container:     #493f00;
+  --color-tertiary-fixed:            #ffe33c;
+  --color-tertiary-fixed-dim:        #e2c600;
+  --color-on-tertiary-fixed:         #211b00;
+  --color-on-tertiary-fixed-variant: #524700;
+
+  /* ── Erro ────────────────────────────────────────────────────── */
+  --color-error:              #ba1a1a;
+  --color-on-error:           #ffffff;
+  --color-error-container:    #ffdad6;
+  --color-on-error-container: #93000a;
+
+  /* ── Superfícies e Fundos ────────────────────────────────────── */
+  --color-background:                #f8f9fa;
+  --color-on-background:             #191c1d;
+  --color-surface:                   #f8f9fa;
+  --color-on-surface:                #191c1d;
+  --color-surface-variant:           #e1e3e4;
+  --color-on-surface-variant:        #43474e;
+  --color-surface-bright:            #f8f9fa;
+  --color-surface-dim:               #d9dadb;
+  --color-surface-container-lowest:  #ffffff;
+  --color-surface-container-low:     #f3f4f5;
+  --color-surface-container:         #edeeef;
+  --color-surface-container-high:    #e7e8e9;
+  --color-surface-container-highest: #e1e3e4;
+  --color-inverse-surface:           #2e3132;
+  --color-inverse-on-surface:        #f0f1f2;
+
+  /* ── Contornos ───────────────────────────────────────────────── */
+  --color-outline:         #74777f;
+  --color-outline-variant: #c4c6cf;
+  --color-surface-tint:    #455f88;
+
+  /* ── Famílias de Fonte ───────────────────────────────────────── */
+  /* Associadas às variáveis CSS injetadas pelo next/font */
+  --font-display-lg:        var(--font-playfair-loaded, "Playfair Display", serif);
+  --font-headline-lg:       var(--font-playfair-loaded, "Playfair Display", serif);
+  --font-headline-md:       var(--font-playfair-loaded, "Playfair Display", serif);
+  --font-headline-lg-mobile:var(--font-playfair-loaded, "Playfair Display", serif);
+  --font-body-lg:           var(--font-inter-loaded, "Inter", sans-serif);
+  --font-body-md:           var(--font-inter-loaded, "Inter", sans-serif);
+  --font-label-caps:        var(--font-inter-loaded, "Inter", sans-serif);
+  --font-caption:           var(--font-inter-loaded, "Inter", sans-serif);
+
+  /* ── Tamanhos de Fonte ───────────────────────────────────────── */
+  --text-display-lg:                   48px;
+  --text-display-lg--line-height:      56px;
+  --text-display-lg--letter-spacing:   -0.02em;
+
+  --text-headline-lg:                  32px;
+  --text-headline-lg--line-height:     40px;
+
+  --text-headline-lg-mobile:           28px;
+  --text-headline-lg-mobile--line-height: 34px;
+
+  --text-headline-md:                  24px;
+  --text-headline-md--line-height:     32px;
+
+  --text-body-lg:                      18px;
+  --text-body-lg--line-height:         28px;
+
+  --text-body-md:                      16px;
+  --text-body-md--line-height:         24px;
+
+  --text-caption:                      14px;
+  --text-caption--line-height:         20px;
+
+  --text-label-caps:                   12px;
+  --text-label-caps--line-height:      16px;
+  --text-label-caps--letter-spacing:   0.05em;
+
+  /* ── Espaçamentos Semânticos ─────────────────────────────────── */
+  --spacing-gutter:          16px;
+  --spacing-margin-desktop:  32px;
+  --spacing-margin-mobile:   16px;
+  --spacing-stack-lg:        32px;
+  --spacing-stack-md:        16px;
+  --spacing-stack-sm:        8px;
+  --spacing-unit:            4px;
+
+  /* ── Bordas ──────────────────────────────────────────────────── */
+  --radius-sm:      0.125rem;
+  --radius-DEFAULT: 0.125rem;
+  --radius-lg:      0.25rem;
+  --radius-xl:      0.5rem;
+  --radius-2xl:     0.75rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base ──────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  font-family: var(--font-inter-loaded, "Inter", sans-serif);
 }
+
+/* ── Utilitários customizados ──────────────────────────────────── */
+@layer utilities {
+  /* Esconde scrollbar mantendo a funcionalidade */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Peso de fonte nos títulos Playfair */
+  .font-display-lg  { font-weight: 700; }
+  .font-headline-lg { font-weight: 700; }
+  .font-headline-md { font-weight: 600; }
+  .font-label-caps  { font-weight: 700; }
+  .font-body-lg     { font-weight: 400; }
+  .font-body-md     { font-weight: 400; }
+  .font-caption     { font-weight: 400; }
+}
+
+/* ── Tipografia do corpo do artigo ─────────────────────────────── */
+/*
+ * Estiliza o HTML vindo do editor rich-text (TipTap, Quill, etc.)
+ * sem depender de classes Tailwind no HTML gerado pelo editor.
+ */
+.article-body {
+  font-family: var(--font-inter-loaded, "Inter", sans-serif);
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--color-on-surface);
+  max-width: 100%;
+}
+
+.article-body p {
+  margin-bottom: 1.5em;
+}
+
+.article-body h2 {
+  font-family: var(--font-playfair-loaded, "Playfair Display", serif);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-primary);
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  padding-bottom: 0.4em;
+  border-bottom: 2px solid var(--color-outline-variant);
+}
+
+.article-body h3 {
+  font-family: var(--font-playfair-loaded, "Playfair Display", serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.article-body strong {
+  font-weight: 700;
+  color: var(--color-on-background);
+}
+
+.article-body em {
+  font-style: italic;
+  color: var(--color-on-surface-variant);
+}
+
+.article-body a {
+  color: var(--color-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.article-body a:hover {
+  color: var(--color-primary);
+}
+
+.article-body blockquote {
+  border-left: 4px solid var(--color-secondary);
+  margin: 1.5em 0;
+  padding: 0.75em 1.25em;
+  background-color: var(--color-surface-container-low);
+  color: var(--color-on-surface-variant);
+  font-style: italic;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.article-body ul,
+.article-body ol {
+  margin-bottom: 1.5em;
+  padding-left: 1.5em;
+}
+
+.article-body li {
+  margin-bottom: 0.4em;
+}
+
+.article-body ul > li { list-style-type: disc; }
+.article-body ol > li { list-style-type: decimal; }

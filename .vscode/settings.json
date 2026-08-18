@@ -1,0 +1,6 @@
+{
+  // Tailwind v4 usa @theme, @layer e outras at-rules customizadas
+  // que o validador CSS padrão do VS Code não reconhece.
+  // Desabilitar o lint de at-rules desconhecidas evita falsos positivos.
+  "css.lint.unknownAtRules": "ignore"
+}
