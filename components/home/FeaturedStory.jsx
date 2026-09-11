@@ -48,7 +48,7 @@ export default function FeaturedStory({ story }) {
         </div>
 
         {/* Título principal (h1 semântico — único na página) */}
-        <h1 className="font-display-lg text-display-lg text-primary">
+        <h1 className="font-display-lg text-display-lg text-primary leading-[1.2] tracking-tight font-bold">
           <Link
             href={`/noticias/${slug}`}
             className="hover:text-secondary transition-colors"
@@ -56,6 +56,7 @@ export default function FeaturedStory({ story }) {
             {title}
           </Link>
         </h1>
+
 
         {/* Resumo */}
         <p className="font-body-lg text-body-lg text-on-surface">

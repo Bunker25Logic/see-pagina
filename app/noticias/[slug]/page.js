@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation';
 import { getNewsBySlug, getRelatedNews, getRecentNewsForUpdates } from '@/lib/news';
+import { getActiveBanners } from '@/lib/banners';
 import ArticleHero from '@/components/article/ArticleHero';
 import ArticleBody from '@/components/article/ArticleBody';
 import ArticleRelated from '@/components/article/ArticleRelated';
 import UpdatesFeed from '@/components/sidebar/UpdatesFeed';
+import EventAdBanners from '@/components/sidebar/EventAdBanners';
 
 /** Sempre renderiza conteúdo fresco (conteúdo pode ser editado a qualquer hora). */
 export const dynamic = 'force-dynamic';
@@ -32,15 +34,16 @@ export async function generateMetadata({ params }) {
  *
  * Layout:
  *  - Col 8: ArticleHero + ArticleBody
- *  - Col 4: Sidebar (notícias relacionadas + atualizações)
+ *  - Col 4: Sidebar (banners + notícias relacionadas + atualizações)
  */
 export default async function NewsArticlePage({ params }) {
   const { slug } = await params;
 
-  const [story, relatedNews, updates] = await Promise.all([
+  const [story, relatedNews, updates, banners] = await Promise.all([
     getNewsBySlug(slug),
     getRelatedNews(slug, 3),
     getRecentNewsForUpdates(3),
+    getActiveBanners(),
   ]);
 
   if (!story) notFound();
@@ -60,6 +63,7 @@ export default async function NewsArticlePage({ params }) {
           className="md:col-span-4 lg:col-span-3 flex flex-col gap-stack-lg border-t md:border-t-0 md:border-l border-outline-variant pt-stack-lg md:pt-0 md:pl-gutter"
           aria-label="Barra lateral"
         >
+          {banners && banners.length > 0 && <EventAdBanners banners={banners} />}
           <ArticleRelated news={relatedNews} />
           <UpdatesFeed updates={updates} />
         </aside>
@@ -68,3 +72,4 @@ export default async function NewsArticlePage({ params }) {
     </div>
   );
 }
+

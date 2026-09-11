@@ -3,6 +3,7 @@ import NewsGrid from '@/components/home/NewsGrid';
 import Sidebar from '@/components/sidebar/Sidebar';
 import Divider from '@/components/ui/Divider';
 import { getFeaturedStory, getSecondaryNews, getRecentNewsForUpdates } from '@/lib/news';
+import { getActiveBanners } from '@/lib/banners';
 
 export const metadata = {
   title: 'Início',
@@ -18,10 +19,11 @@ export const revalidate = 300;
  * Server Component assíncrono — busca dados no Supabase em paralelo.
  */
 export default async function HomePage() {
-  const [featuredStory, secondaryNews, updates] = await Promise.all([
+  const [featuredStory, secondaryNews, updates, banners] = await Promise.all([
     getFeaturedStory(),
     getSecondaryNews(3),
     getRecentNewsForUpdates(3),
+    getActiveBanners(),
   ]);
 
   return (
@@ -35,8 +37,9 @@ export default async function HomePage() {
       </div>
 
       {/* ── Sidebar ── */}
-      <Sidebar updates={updates} />
+      <Sidebar updates={updates} banners={banners} />
 
     </div>
   );
 }
+

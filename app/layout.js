@@ -1,16 +1,23 @@
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Inter, Merriweather, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
 /* ── Fontes otimizadas via next/font ─────────────────────────────
    As variáveis CSS são injetadas no elemento <html> e referenciadas
-   no globals.css via --font-inter-loaded e --font-playfair-loaded.
+   no globals.css para títulos editoriais e corpo de texto.
 ─────────────────────────────────────────────────────────────────── */
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter-loaded',
   display: 'swap',
+});
+
+const merriweather = Merriweather({
+  subsets: ['latin'],
+  variable: '--font-editorial-loaded',
+  display: 'swap',
+  weight: ['300', '400', '700', '900'],
 });
 
 const playfairDisplay = Playfair_Display({
@@ -19,6 +26,7 @@ const playfairDisplay = Playfair_Display({
   display: 'swap',
   weight: ['400', '600', '700'],
 });
+
 
 export const metadata = {
   title: {
@@ -45,9 +53,10 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${playfairDisplay.variable} h-full antialiased`}
+      className={`${inter.variable} ${merriweather.variable} ${playfairDisplay.variable} h-full antialiased`}
     >
       <head>
+
         {/* Material Symbols — ícones de interface */}
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
