@@ -1,0 +1,39 @@
+{
+  "name": "Educa Brasiléia — Portal de Notícias e Educação",
+  "short_name": "Educa SEE",
+  "description": "Portal oficial Educa Brasiléia – Secretaria de Educação do Estado do Acre. Notícias, editais e eventos.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#002045",
+  "theme_color": "#002045",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-BR",
+  "categories": ["education", "news"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

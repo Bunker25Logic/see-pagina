@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import NavLinks from './NavLinks';
+import EducaLogo from '@/components/ui/EducaLogo';
 
 /**
  * Header — Barra de navegação superior do Portal SEE.
@@ -14,10 +15,10 @@ export default function Header() {
         <div className="flex items-center justify-between w-full mb-stack-sm">
           <Link
             href="/"
-            className="font-headline-lg text-headline-lg text-primary border-b-4 border-secondary pb-1 transition-opacity hover:opacity-80"
-            aria-label="Ir para a página inicial"
+            className="group flex items-center gap-3 transition-opacity hover:opacity-90"
+            aria-label="Ir para a página inicial Educa Brasiléia"
           >
-            Núcleo de Educação — Brasiléia
+            <EducaLogo size={42} showText={true} />
           </Link>
 
           <div className="flex items-center gap-gutter text-on-surface-variant">

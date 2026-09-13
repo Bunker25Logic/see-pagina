@@ -26,7 +26,7 @@ export default function Footer() {
     <footer className="w-full py-stack-lg px-margin-mobile md:px-margin-desktop flex flex-col items-center text-center bg-primary border-t-2 border-secondary">
       {/* Título */}
       <p className="font-headline-md text-headline-md text-on-primary mb-stack-md">
-        Núcleo de Educação — Brasiléia
+        Educa Brasiléia
       </p>
 
       {/* Links */}
@@ -50,7 +50,7 @@ export default function Footer() {
 
       {/* Copyright */}
       <p className="font-body-md text-body-md text-on-primary opacity-80">
-        © {currentYear} Núcleo de Educação de Brasiléia — Secretaria de Educação do Acre
+        © {currentYear} Educa Brasiléia — Secretaria de Educação do Acre
       </p>
     </footer>
   );
