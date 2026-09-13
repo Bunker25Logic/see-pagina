@@ -18,6 +18,10 @@ export default function PwaManager() {
   const [toastProgress, setToastProgress] = useState(100);
   
   const currentVersionRef = useRef(null);
+  const isIosDevice =
+    typeof navigator !== 'undefined' &&
+    (/iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
 
   // 1. Registro do Service Worker e Checagem de Versão do Código
   useEffect(() => {
