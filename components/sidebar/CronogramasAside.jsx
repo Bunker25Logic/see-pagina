@@ -1,0 +1,168 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+
+const TABS = [
+  { id: 'dire',            label: 'DIRE' },
+  { id: 'ensino',          label: 'Ensino' },
+  { id: 'transporte',      label: 'Transporte' },
+  { id: 'cultura_esporte', label: 'Cultura e Esporte' },
+  { id: 'administracao',   label: 'Administração' },
+];
+
+const STATUS_COLORS = {
+  'Em andamento': 'bg-emerald-100 text-emerald-800 border-emerald-200',
+  'Previsto':     'bg-blue-50 text-blue-700 border-blue-200',
+  'Urgente':      'bg-red-100 text-red-800 border-red-200',
+  'Concluído':    'bg-slate-100 text-slate-600 border-slate-200',
+};
+
+/**
+ * Formata data 'YYYY-MM-DD' para badge compacto: dia e mês abreviado
+ */
+function formatDateBadge(dateString) {
+  if (!dateString) return { day: '--', month: '---' };
+  const parts = dateString.split('-');
+  if (parts.length < 3) return { day: '--', month: '---' };
+
+  const day = parts[2];
+  const months = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+  const monthIndex = parseInt(parts[1], 10) - 1;
+  const month = months[monthIndex] || '---';
+
+  return { day, month };
+}
+
+export default function CronogramasAside({ initialItems = [] }) {
+  const [activeTab, setActiveTab] = useState('dire');
+
+  // Filtra itens pelo setor da aba ativa
+  const currentItems = initialItems.filter(item => item.setor === activeTab);
+
+  return (
+    <aside
+      className="bg-white border border-outline-variant rounded-sm shadow-xs overflow-hidden flex flex-col"
+      aria-label="Cronogramas Setoriais"
+    >
+      {/* ── Cabeçalho do Widget ── */}
+      <div className="p-3.5 bg-slate-50 border-b border-outline-variant flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="material-symbols-outlined text-[#0f2938] text-[20px]">
+            calendar_clock
+          </span>
+          <h2 className="font-editorial text-[17px] font-bold text-[#0f2938] leading-none">
+            Cronogramas
+          </h2>
+        </div>
+        <Link
+          href="/cronogramas"
+          className="text-[12px] font-semibold text-secondary hover:underline flex items-center gap-0.5"
+        >
+          Ver todos
+          <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+        </Link>
+      </div>
+
+      {/* ── Abas de Navegação pelos Setores ── */}
+      <div
+        className="flex items-center gap-1.5 p-2 bg-[#f8fafc] border-b border-outline-variant overflow-x-auto no-scrollbar"
+        role="tablist"
+      >
+        {TABS.map((tab) => {
+          const isActive = activeTab === tab.id;
+          const count = initialItems.filter(i => i.setor === tab.id).length;
+
+          return (
+            <button
+              key={tab.id}
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-2.5 py-1 rounded text-[12px] font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+                isActive
+                  ? 'bg-[#0f2938] text-white shadow-xs'
+                  : 'text-slate-600 hover:bg-slate-200 hover:text-slate-900'
+              }`}
+            >
+              <span>{tab.label}</span>
+              {count > 0 && (
+                <span
+                  className={`text-[10px] px-1 py-0.2 rounded-full font-bold ${
+                    isActive ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'
+                  }`}
+                >
+                  {count}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* ── Lista de Eventos / Prazos da Aba Ativa ── */}
+      <div className="p-3 flex flex-col divide-y divide-slate-100 max-h-85 overflow-y-auto">
+        {currentItems.length === 0 ? (
+          <div className="py-6 text-center text-slate-400 text-[13px]">
+            Nenhum compromisso agendado para este setor no momento.
+          </div>
+        ) : (
+          currentItems.map((item) => {
+            const { day, month } = formatDateBadge(item.dataInicio);
+            const statusClass =
+              STATUS_COLORS[item.status] || 'bg-slate-100 text-slate-700 border-slate-200';
+
+            return (
+              <div key={item.id} className="py-2.5 first:pt-0 last:pb-0 flex items-start gap-3">
+                {/* Badge de Data */}
+                <div className="shrink-0 w-11 h-12 bg-slate-100 border border-slate-200 rounded flex flex-col items-center justify-center text-center">
+                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider leading-none">
+                    {month}
+                  </span>
+                  <span className="text-[16px] font-black text-[#0f2938] leading-none mt-0.5">
+                    {day}
+                  </span>
+                </div>
+
+                {/* Conteúdo do Cronograma */}
+                <div className="flex flex-col gap-1 min-w-0 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${statusClass}`}>
+                      {item.status}
+                    </span>
+                    {item.local && (
+                      <span className="text-[11px] text-slate-500 truncate flex items-center gap-0.5">
+                        <span className="material-symbols-outlined text-[12px]">location_on</span>
+                        {item.local}
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="text-[13px] font-semibold text-slate-900 leading-snug line-clamp-2">
+                    {item.titulo}
+                  </h3>
+
+                  {item.descricao && (
+                    <p className="text-[12px] text-slate-500 leading-normal line-clamp-2">
+                      {item.descricao}
+                    </p>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* ── Rodapé Informativo ── */}
+      <div className="p-2.5 bg-slate-50 border-t border-slate-100 text-center">
+        <Link
+          href="/cronogramas"
+          className="text-[11px] font-semibold text-[#0f2938] hover:text-secondary transition-colors"
+        >
+          Consultar calendário letivo oficial completo →
+        </Link>
+      </div>
+    </aside>
+  );
+}

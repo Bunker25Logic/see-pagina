@@ -125,12 +125,18 @@
 /* ── Base ──────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-on-background);
   font-family: var(--font-inter-loaded, "Inter", sans-serif);
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+  position: relative;
 }
 
 /* ── Utilitários customizados ──────────────────────────────────── */

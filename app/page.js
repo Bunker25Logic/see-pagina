@@ -4,6 +4,7 @@ import Sidebar from '@/components/sidebar/Sidebar';
 import Divider from '@/components/ui/Divider';
 import { getFeaturedStory, getSecondaryNews, getRecentNewsForUpdates } from '@/lib/news';
 import { getActiveBanners } from '@/lib/banners';
+import { getActiveCronogramas } from '@/lib/cronogramas';
 
 export const metadata = {
   title: 'Início',
@@ -19,27 +20,27 @@ export const revalidate = 300;
  * Server Component assíncrono — busca dados no Supabase em paralelo.
  */
 export default async function HomePage() {
-  const [featuredStory, secondaryNews, updates, banners] = await Promise.all([
+  const [featuredStory, secondaryNews, updates, banners, cronogramas] = await Promise.all([
     getFeaturedStory(),
     getSecondaryNews(3),
     getRecentNewsForUpdates(3),
     getActiveBanners(),
+    getActiveCronogramas(),
   ]);
 
   return (
-    <div className="w-full max-w-300 mx-auto px-margin-mobile md:px-margin-desktop py-margin-desktop grid grid-cols-1 md:grid-cols-12 gap-gutter">
+    <div className="w-full max-w-300 mx-auto px-margin-mobile md:px-margin-desktop py-4 md:py-margin-desktop grid grid-cols-1 md:grid-cols-12 gap-gutter min-w-0">
 
       {/* ── Área de Conteúdo Principal ── */}
-      <div className="md:col-span-8 lg:col-span-9 flex flex-col gap-stack-lg">
+      <div className="min-w-0 md:col-span-8 lg:col-span-9 flex flex-col gap-stack-lg">
         {featuredStory && <FeaturedStory story={featuredStory} />}
         {featuredStory && secondaryNews.length > 0 && <Divider />}
         {secondaryNews.length > 0 && <NewsGrid news={secondaryNews} />}
       </div>
 
-      {/* ── Sidebar ── */}
-      <Sidebar updates={updates} banners={banners} />
+      {/* ── Sidebar com Cronogramas Setoriais em Abas ── */}
+      <Sidebar updates={updates} banners={banners} cronogramas={cronogramas} />
 
     </div>
   );
 }
-
