@@ -46,12 +46,15 @@ export default function NewsCard({ news }) {
           </span>
 
           <h3 className="font-editorial text-[16px] sm:text-[17px] font-bold text-primary dark:text-slate-100 group-hover:text-secondary transition-colors leading-snug line-clamp-2">
-            <Link href={`/noticias/${slug}`}>
+            <Link
+              href={`/noticias/${slug}`}
+              className="block first-letter:text-[1.24em] first-letter:font-black first-letter:text-secondary dark:first-letter:text-amber-400"
+            >
               {title}
             </Link>
           </h3>
 
-          <p className="font-body-md text-[13px] text-on-surface-variant dark:text-slate-300 line-clamp-2 leading-relaxed">
+          <p className="font-body-md text-[13px] text-on-surface-variant dark:text-slate-300 line-clamp-3 leading-relaxed first-letter:text-[1.32em] first-letter:font-editorial first-letter:font-black first-letter:text-primary dark:first-letter:text-amber-400">
             {excerpt}
           </p>
         </div>

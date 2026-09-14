@@ -62,18 +62,18 @@ export default function FeaturedStory({ story }) {
           </span>
         </div>
 
-        {/* Título Principal (h1 semântico) */}
+        {/* Título Principal com primeira letra destacada no padrão de portais */}
         <h1 className="font-editorial text-[22px] sm:text-[28px] md:text-[32px] text-primary dark:text-slate-50 leading-[1.24] font-extrabold tracking-tight group-hover:text-secondary transition-colors duration-200 wrap-break-word">
           <Link
             href={`/noticias/${slug}`}
-            className="hover:underline decoration-secondary/50 underline-offset-4"
+            className="block hover:underline decoration-secondary/50 underline-offset-4 first-letter:text-[1.26em] first-letter:font-black first-letter:text-secondary dark:first-letter:text-amber-400"
           >
             {title}
           </Link>
         </h1>
 
-        {/* Resumo com entrelinha jornalística */}
-        <p className="font-body-lg text-[15px] sm:text-body-lg text-on-surface-variant dark:text-slate-300 leading-relaxed">
+        {/* Resumo com primeira letra destacada no padrão de portais (sem separação da palavra) */}
+        <p className="font-body-lg text-[15px] sm:text-body-lg text-on-surface-variant dark:text-slate-300 leading-relaxed first-letter:text-[1.38em] sm:first-letter:text-[1.48em] first-letter:font-editorial first-letter:font-black first-letter:text-primary dark:first-letter:text-amber-400">
           {excerpt}
         </p>
 

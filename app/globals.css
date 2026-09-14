@@ -222,6 +222,18 @@ body {
   word-break: break-word;
 }
 
+/* Letra Capitular (Drop Cap) jornalística no primeiro parágrafo */
+.article-body > p:first-of-type::first-letter {
+  font-family: var(--font-editorial, var(--font-merriweather-loaded, Georgia, serif));
+  font-size: 3.2em;
+  line-height: 0.82;
+  float: left;
+  font-weight: 800;
+  margin-right: 0.12em;
+  margin-bottom: -0.05em;
+  color: var(--color-primary);
+}
+
 .article-body h2 {
   font-family: var(--font-editorial, var(--font-merriweather-loaded, Georgia, serif));
   font-size: 22px;

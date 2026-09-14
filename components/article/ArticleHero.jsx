@@ -42,8 +42,8 @@ export default function ArticleHero({ story }) {
         </span>
       </div>
 
-      {/* Título com padrão editorial jornalístico */}
-      <h1 className="font-display-lg text-display-lg text-primary leading-[1.2] md:leading-[1.22] tracking-tight font-bold">
+      {/* Título com padrão editorial jornalístico e primeira letra destacada */}
+      <h1 className="font-display-lg text-display-lg text-primary leading-[1.2] md:leading-[1.22] tracking-tight font-bold first-letter:text-[1.22em] first-letter:font-black first-letter:text-secondary dark:first-letter:text-amber-400">
         {title}
       </h1>
 

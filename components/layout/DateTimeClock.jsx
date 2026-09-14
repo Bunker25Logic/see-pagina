@@ -55,7 +55,7 @@ function getTimeData() {
   };
 }
 
-export default function DateTimeClock() {
+export function useAcreDateTime() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -63,7 +63,6 @@ export default function DateTimeClock() {
       setData(getTimeData());
     };
 
-    // Agenda a primeira atualização do cliente de forma assíncrona evitando cascading render síncrono
     const initialTimer = setTimeout(update, 0);
     const intervalTimer = setInterval(update, 10000);
 
@@ -73,41 +72,82 @@ export default function DateTimeClock() {
     };
   }, []);
 
+  return data;
+}
+
+/**
+ * DateDisplay — Componente focado exclusivamente na data oficial local do Acre.
+ * Posicionado ao lado da previsão do tempo na TopBar com o ano sempre presente.
+ */
+export function DateDisplay() {
+  const data = useAcreDateTime();
+
   return (
     <div
-      className="inline-flex items-center gap-1.5 sm:gap-2.5 text-slate-200 select-none shrink-0"
-      title="Horário oficial local de Brasiléia - Acre (Fuso UTC-5)"
+      className="inline-flex items-center text-slate-200 select-none whitespace-nowrap shrink-0"
+      title="Data oficial de Brasiléia - Acre"
       suppressHydrationWarning
     >
-      {/* Data (completa no desktop, compacta no mobile) */}
-      <span className="hidden md:inline text-[12px] font-medium text-slate-300" suppressHydrationWarning>
+      {/* Desktop: Dia da semana + Data completa com ano */}
+      <span className="hidden md:inline text-[12px] font-medium text-slate-200/95" suppressHydrationWarning>
         {data ? (
           <>
-            <span className="text-slate-400">{data.weekday}, </span>
-            {data.desktopDate}
+            <span className="text-slate-300 font-semibold">{data.weekday}, </span>
+            <span>{data.desktopDate}</span>
           </>
         ) : (
           <span className="text-slate-400 opacity-60">Carregando...</span>
         )}
       </span>
 
-      <span className="md:hidden text-[11px] font-semibold text-slate-300 tracking-tight" suppressHydrationWarning>
-        {data ? data.mobileDate : '-- --- ----'}
+      {/* Mobile: Formato enxuto com ano garantido */}
+      <span className="md:hidden text-[11px] font-medium text-slate-200/90 tracking-tight" suppressHydrationWarning>
+        {data ? `${data.weekday}, ${data.mobileDate}` : '-- --- ----'}
       </span>
-
-      {/* Relógio Digital Elegante e Apresentável com Horário do Acre */}
-      <div className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-[#0f2c3f]/90 border border-[#255779] text-amber-300 shadow-xs">
-        <span
-          className={`w-1.5 h-1.5 rounded-full ${data ? 'bg-emerald-400 animate-pulse' : 'bg-emerald-400/40'} shrink-0`}
-        />
-        <span
-          className="font-mono text-[12px] sm:text-[13px] font-bold tracking-wider tabular-nums leading-none min-w-8.5 text-center"
-          suppressHydrationWarning
-        >
-          {data ? data.time : '--:--'}
-        </span>
-      </div>
     </div>
   );
 }
 
+/**
+ * TimeClock — Relógio digital oficial do Acre.
+ * Proporção compacta, elegante e equilibrada com ícone contemporâneo.
+ */
+export function TimeClock() {
+  const data = useAcreDateTime();
+
+  return (
+    <div
+      className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-[#0c2436] border border-amber-400/35 hover:border-amber-400/50 transition-all text-amber-300 shadow-2xs select-none shrink-0"
+      title="Horário oficial local de Brasiléia - Acre (Fuso UTC-5)"
+      suppressHydrationWarning
+    >
+      <span
+        className="material-symbols-outlined text-[14px] sm:text-[15px] text-amber-400 drop-shadow-[0_0_4px_rgba(245,158,11,0.4)] shrink-0"
+        aria-hidden="true"
+      >
+        schedule
+      </span>
+      <span
+        className="font-mono text-[12px] sm:text-[13px] font-bold tracking-wider tabular-nums leading-none text-center text-amber-300"
+        suppressHydrationWarning
+      >
+        {data ? data.time : '--:--'}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * Default export mantido para compatibilidade.
+ */
+export default function DateTimeClock({ variant = 'both' }) {
+  if (variant === 'date') return <DateDisplay />;
+  if (variant === 'clock') return <TimeClock />;
+
+  return (
+    <div className="inline-flex items-center gap-2.5">
+      <DateDisplay />
+      <TimeClock />
+    </div>
+  );
+}
