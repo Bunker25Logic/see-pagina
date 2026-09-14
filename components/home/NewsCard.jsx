@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import NewsViewBadge from '@/components/news/NewsViewBadge';
 
 /**
  * NewsCard — Card de notícia individual para a grade secundária.
@@ -69,6 +70,7 @@ export default function NewsCard({ news }) {
           <span>Continuar lendo</span>
           <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
         </Link>
+        <NewsViewBadge count={news.viewsCount} />
       </div>
     </article>
   );

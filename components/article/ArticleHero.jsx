@@ -1,15 +1,19 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import NewsViewBadge from '@/components/news/NewsViewBadge';
+import ViewTracker from '@/components/article/ViewTracker';
 
 /**
  * ArticleHero — Área de cabeçalho da página de notícia.
- * Exibe: breadcrumb, categoria, título, autor/data e imagem.
+ * Exibe: breadcrumb, categoria, título, autor/data, visualizações e imagem.
  */
 export default function ArticleHero({ story }) {
-  const { title, category, date, author, imageUrl, imageAlt, slug } = story;
+  const { id, title, category, date, author, imageUrl, imageAlt, slug } = story;
 
   return (
     <header className="flex flex-col gap-stack-md">
+      {/* Rastreamento silencioso de visualização */}
+      <ViewTracker newsId={id} />
       {/* Breadcrumb */}
       <nav aria-label="Caminho de navegação" className="flex items-center gap-unit text-on-surface-variant">
         <Link
@@ -32,7 +36,7 @@ export default function ArticleHero({ story }) {
         </span>
       </nav>
 
-      {/* Categoria + Data */}
+      {/* Categoria + Data + Visualizações */}
       <div className="flex items-center gap-stack-sm flex-wrap">
         <span className="inline-flex items-center bg-secondary text-on-secondary font-label-caps text-label-caps uppercase tracking-wider px-2.5 py-1 rounded-xs shadow-2xs">
           {category}
@@ -40,6 +44,8 @@ export default function ArticleHero({ story }) {
         <span className="font-caption text-caption text-on-surface-variant font-medium">
           Publicado em {date}
         </span>
+        <span className="text-outline-variant/60">•</span>
+        <NewsViewBadge count={story.viewsCount} size="sm" showLabel />
       </div>
 
       {/* Título com padrão editorial jornalístico e primeira letra destacada */}

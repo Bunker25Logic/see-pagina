@@ -1,6 +1,6 @@
 /**
  * Educa SEE — Service Worker Inteligente
- * Versão: educa-see-v4
+ * Versão: educa-see-v5
  *
  * Estratégia de Cache:
  * - Next.js RSC (Server Components / _rsc) & Supabase & APIs: NETWORK ONLY (sempre dados frescos)
@@ -9,7 +9,7 @@
  * - Ativação imediata e limpeza de caches antigos com skipWaiting() e clients.claim()
  */
 
-const CACHE_NAME = 'educa-see-v4';
+const CACHE_NAME = 'educa-see-v5';
 
 // Apenas arquivos verdadeiramente estáticos (NUNCA rotas HTML dinâmicas do Next.js)
 const STATIC_ASSETS = [

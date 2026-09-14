@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import NewsViewBadge from '@/components/news/NewsViewBadge';
 
 /**
  * FeaturedStory — Notícia em destaque com padrão editorial jornalístico contemporâneo.
@@ -89,9 +90,12 @@ export default function FeaturedStory({ story }) {
             </span>
           </Link>
 
-          <span className="text-[11px] font-semibold text-outline uppercase tracking-wider">
-            SEE-AC Oficial
-          </span>
+          <div className="flex items-center gap-3">
+            <NewsViewBadge count={story.viewsCount} />
+            <span className="text-[11px] font-semibold text-outline uppercase tracking-wider hidden sm:inline">
+              SEE-AC Oficial
+            </span>
+          </div>
         </div>
       </div>
     </article>

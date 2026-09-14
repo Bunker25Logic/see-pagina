@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import WeatherWidget from './WeatherWidget';
-import { DateDisplay, TimeClock } from './DateTimeClock';
+import { DateDisplay } from './DateTimeClock';
+import HeaderSearch from './HeaderSearch';
 import MensagemDiaModal from './MensagemDiaModal';
 
 /**
@@ -10,7 +11,7 @@ import MensagemDiaModal from './MensagemDiaModal';
  *
  * Layout:
  * - Lado Esquerdo: Previsão do Tempo de Brasiléia + Data Oficial do Acre coladinha.
- * - Lado Direito: Relógio Digital + Ícone da Mensagem do Dia no canto.
+ * - Lado Direito: Lupa de Busca Animada + Ícone da Mensagem do Dia no canto.
  */
 export default function TopBar({ mensagem }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,10 +43,10 @@ export default function TopBar({ mensagem }) {
             <DateDisplay />
           </div>
 
-          {/* ── LADO DIREITO: Relógio Digital + Ícone de Mensagem do Dia no Canto ── */}
+          {/* ── LADO DIREITO: Lupa de Busca Animada + Ícone de Mensagem do Dia no Canto ── */}
           <div className="flex items-center justify-end gap-2 sm:gap-2.5 shrink-0">
-            {/* Relógio Digital Oficial de Brasiléia */}
-            <TimeClock />
+            {/* Lupa de Busca de Notícias */}
+            <HeaderSearch />
 
             {/* Separador vertical sutil */}
             <span className="w-px h-3.5 bg-white/20 shrink-0" aria-hidden="true" />

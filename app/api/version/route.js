@@ -4,7 +4,7 @@ const APP_VERSION =
   process.env.NEXT_PUBLIC_APP_BUILD_ID ||
   process.env.VERCEL_GIT_COMMIT_SHA ||
   process.env.NEXT_PUBLIC_APP_VERSION ||
-  '1.2.0';
+  '1.3.0';
 const BUILD_TIME = new Date().toISOString();
 
 export const dynamic = 'force-dynamic';

@@ -4,6 +4,8 @@ import { getActiveBanners } from '@/lib/banners';
 import ArticleHero from '@/components/article/ArticleHero';
 import ArticleBody from '@/components/article/ArticleBody';
 import ArticleRelated from '@/components/article/ArticleRelated';
+import ArticleReactions from '@/components/article/ArticleReactions';
+import ArticleComments from '@/components/article/ArticleComments';
 import EventAdBanners from '@/components/sidebar/EventAdBanners';
 
 /** Sempre renderiza conteúdo fresco (conteúdo pode ser editado a qualquer hora). */
@@ -54,6 +56,12 @@ export default async function NewsArticlePage({ params }) {
         <article className="md:col-span-8 lg:col-span-9 flex flex-col gap-stack-lg">
           <ArticleHero story={story} />
           <ArticleBody content={story.content} />
+          <ArticleReactions
+            newsId={story.id}
+            initialLikes={story.likesCount}
+            initialDislikes={story.dislikesCount}
+          />
+          <ArticleComments newsId={story.id} />
         </article>
 
         {/* ── Sidebar ── */}
