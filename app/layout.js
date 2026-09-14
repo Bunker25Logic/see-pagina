@@ -88,6 +88,21 @@ export default function RootLayout({ children }) {
         />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+        {/* Script de bloqueio de flash (FOUC): Inicializa o tema estritamente pelo localStorage */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (localStorage.getItem('theme') === 'dark') {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-background text-on-background">
         <PwaManager />

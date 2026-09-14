@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ================================================================
    DESIGN SYSTEM — Portal SEE / Núcleo de Educação de Brasiléia
    Tokens baseados em Material Design 3 com paleta institucional
@@ -114,12 +116,48 @@
   --spacing-stack-sm:        8px;
   --spacing-unit:            4px;
 
-  /* ── Bordas ──────────────────────────────────────────────────── */
-  --radius-sm:      0.125rem;
-  --radius-DEFAULT: 0.125rem;
-  --radius-lg:      0.25rem;
-  --radius-xl:      0.5rem;
-  --radius-2xl:     0.75rem;
+  /* ── Bordas Lapidadas Contemporâneas ─────────────────────────── */
+  --radius-xs:      0.25rem;
+  --radius-sm:      0.5rem;
+  --radius-DEFAULT: 0.75rem;
+  --radius-md:      0.875rem;
+  --radius-lg:      1rem;
+  --radius-xl:      1.25rem;
+  --radius-2xl:     1.5rem;
+  --radius-full:    9999px;
+}
+
+/* ── MODO ESCURO EXCLUSIVAMENTE MANUAL ─────────────────────────
+   Ativado APENAS via classe .dark no <html> pelo botão ThemeToggle.
+   Dispositivos com prefers-color-scheme: dark NÃO ativam o tema escuro.
+───────────────────────────────────────────────────────────────── */
+html.dark {
+  --color-background:                #0b1622;
+  --color-on-background:             #f1f5f9;
+  --color-surface:                   #0e1d2c;
+  --color-on-surface:                #f8fafc;
+  --color-surface-variant:           #1b3247;
+  --color-on-surface-variant:        #94a3b8;
+  --color-surface-bright:            #172b3c;
+  --color-surface-dim:               #070e17;
+  --color-surface-container-lowest:  #0e1d2c;
+  --color-surface-container-low:     #132537;
+  --color-surface-container:         #172c41;
+  --color-surface-container-high:    #1d354d;
+  --color-surface-container-highest: #23405c;
+  --color-inverse-surface:           #f8fafc;
+  --color-inverse-on-surface:        #0f172a;
+  --color-outline:                   #64748b;
+  --color-outline-variant:           #244259;
+  --color-primary:                   #93c5fd;
+  --color-on-primary:                #0b1e36;
+  --color-primary-container:         #1d3d63;
+  --color-on-primary-container:      #bfdbfe;
+}
+
+/* Transição suave de cor de fundo global ao alternar tema */
+body, header, aside, article, footer, nav {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
 /* ── Base ──────────────────────────────────────────────────────── */

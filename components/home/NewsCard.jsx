@@ -18,38 +18,54 @@ export default function NewsCard({ news }) {
   const { title, excerpt, category, imageUrl, imageAlt, slug } = news;
 
   return (
-    <article className="bg-surface-container-lowest border border-outline-variant p-stack-sm flex flex-col gap-stack-sm hover:shadow-md transition-shadow rounded-sm">
-      {/* Imagem */}
-      {imageUrl ? (
-        <div className="relative w-full aspect-4/3 overflow-hidden rounded-sm">
-          <Image
-            src={imageUrl}
-            alt={imageAlt || title}
-            fill
-            className="object-cover transition-transform duration-300 hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
-          />
-        </div>
-      ) : null}
-
-      {/* Conteúdo */}
-      <div className="flex flex-col gap-unit">
-        <span className="font-label-caps text-label-caps text-secondary uppercase tracking-wider">
-          {category}
-        </span>
-
-        <h3 className="font-headline-md text-headline-md text-primary leading-tight">
+    <article className="group bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-3.5 sm:p-4 flex flex-col justify-between gap-3 shadow-2xs hover:shadow-md hover:border-secondary/40 transition-all duration-300">
+      <div>
+        {/* Imagem */}
+        {imageUrl ? (
           <Link
             href={`/noticias/${slug}`}
-            className="hover:text-secondary transition-colors"
+            className="relative w-full aspect-16/10 overflow-hidden rounded-lg block bg-slate-100 dark:bg-slate-800 mb-3"
+            tabIndex={-1}
+            aria-hidden="true"
           >
-            {title}
+            <Image
+              src={imageUrl}
+              alt={imageAlt || title}
+              fill
+              className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+            />
           </Link>
-        </h3>
+        ) : null}
 
-        <p className="font-body-md text-body-md text-on-surface-variant line-clamp-3">
-          {excerpt}
-        </p>
+        {/* Conteúdo */}
+        <div className="flex flex-col gap-1.5">
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-secondary bg-secondary/10 px-2 py-0.5 rounded-full w-fit">
+            <span className="w-1 h-1 rounded-full bg-secondary" />
+            {category}
+          </span>
+
+          <h3 className="font-editorial text-[16px] sm:text-[17px] font-bold text-primary dark:text-slate-100 group-hover:text-secondary transition-colors leading-snug line-clamp-2">
+            <Link href={`/noticias/${slug}`}>
+              {title}
+            </Link>
+          </h3>
+
+          <p className="font-body-md text-[13px] text-on-surface-variant dark:text-slate-300 line-clamp-2 leading-relaxed">
+            {excerpt}
+          </p>
+        </div>
+      </div>
+
+      {/* Ação rápida */}
+      <div className="pt-2 border-t border-outline-variant/30 flex items-center justify-between">
+        <Link
+          href={`/noticias/${slug}`}
+          className="text-[12px] font-semibold text-secondary hover:underline inline-flex items-center gap-1 group-hover:gap-1.5 transition-all"
+        >
+          <span>Continuar lendo</span>
+          <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+        </Link>
       </div>
     </article>
   );

@@ -23,7 +23,7 @@ export default function TopBar({ mensagem }) {
   return (
     <>
       <div
-        className="w-full bg-[#0c2331] text-slate-100 border-b border-[#1b3d52] relative z-40"
+        className="w-full bg-[#163c54] text-slate-100 border-b border-[#245373] relative z-40"
         role="region"
         aria-label="Barra informativa superior"
       >

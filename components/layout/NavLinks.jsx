@@ -34,8 +34,8 @@ export default function NavLinks() {
             href={link.href}
             className={`font-semibold text-[14px] sm:text-[15px] pb-1 transition-all whitespace-nowrap shrink-0 ${
               isActive
-                ? 'text-[#0f2938] border-b-[2.5px] border-[#b45309] font-bold'
-                : 'text-slate-600 hover:text-[#0f2938] border-b-[2.5px] border-transparent font-medium'
+                ? 'text-primary dark:text-amber-400 border-b-[2.5px] border-amber-500 font-bold'
+                : 'text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white border-b-[2.5px] border-transparent font-medium'
             }`}
             aria-current={isActive ? 'page' : undefined}
           >

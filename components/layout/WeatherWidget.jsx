@@ -142,15 +142,102 @@ function AnimatedStormIcon({ size = 20 }) {
   );
 }
 
+function AnimatedMoonIcon({ size = 20 }) {
+  return (
+    <span className="inline-flex items-center justify-center shrink-0" style={{ width: size, height: size }}>
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="overflow-visible"
+      >
+        {/* Lua crescente noturna com brilho suave */}
+        <g className="animate-[pulse_4s_ease-in-out_infinite] origin-center" transform="translate(1, 0) scale(0.9)">
+          <path
+            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+            fill="#fef08a"
+            stroke="#fde047"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </g>
+        {/* Estrelas cintilantes discretas */}
+        <circle cx="19" cy="6" r="1" fill="#fef08a" className="animate-ping" />
+        <circle cx="19" cy="6" r="0.75" fill="#ffffff" />
+        <circle cx="8" cy="4" r="0.6" fill="#fef08a" opacity="0.8" />
+      </svg>
+    </span>
+  );
+}
+
+function AnimatedPartlyCloudyNightIcon({ size = 20 }) {
+  return (
+    <span className="inline-flex items-center justify-center shrink-0" style={{ width: size, height: size }}>
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="overflow-visible"
+      >
+        {/* Lua crescente atrás da nuvem (lado superior direito) */}
+        <g className="animate-[pulse_4s_ease-in-out_infinite] origin-center" transform="translate(10, 1) scale(0.6)">
+          <path
+            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+            fill="#fef08a"
+            stroke="#fde047"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </g>
+        {/* Estrelinha suave ao fundo */}
+        <circle cx="9" cy="5" r="0.75" fill="#fef08a" className="animate-pulse" />
+        {/* Nuvem flutuando suavemente em primeiro plano */}
+        <path
+          d="M15 17a3.5 3.5 0 0 0-.4-6.98A4.5 4.5 0 0 0 6 12a3.5 3.5 0 0 0 .4 6.98h8.6z"
+          fill="#94a3b8"
+          className="animate-[pulse_5s_ease-in-out_infinite]"
+        />
+      </svg>
+    </span>
+  );
+}
+
 /**
- * Retorna o ícone animado e rótulo correspondente ao código WMO do Open-Meteo.
+ * Determina se atualmente é dia ou noite no fuso horário do Acre (America/Rio_Branco).
  */
-function getWeatherVisual(code) {
+function getIsDayAcre() {
+  try {
+    const hourStr = new Intl.DateTimeFormat('pt-BR', {
+      timeZone: 'America/Rio_Branco',
+      hour: 'numeric',
+      hour12: false,
+    }).format(new Date());
+    const hour = parseInt(hourStr, 10);
+    return hour >= 6 && hour < 18;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Retorna o ícone animado e rótulo correspondente ao código WMO do Open-Meteo e ciclo diurno/noturno.
+ */
+function getWeatherVisual(code, isDay = true) {
   if (code === 0) {
-    return { icon: <AnimatedSunIcon />, label: 'Ensolarado' };
+    return isDay
+      ? { icon: <AnimatedSunIcon />, label: 'Ensolarado' }
+      : { icon: <AnimatedMoonIcon />, label: 'Céu Limpo' };
   }
   if (code === 1 || code === 2) {
-    return { icon: <AnimatedPartlyCloudyIcon />, label: 'Parcialmente Nublado' };
+    return isDay
+      ? { icon: <AnimatedPartlyCloudyIcon />, label: 'Parcialmente Nublado' }
+      : { icon: <AnimatedPartlyCloudyNightIcon />, label: 'Parcialmente Nublado' };
   }
   if (code === 3) {
     return { icon: <AnimatedCloudyIcon />, label: 'Nublado' };
@@ -164,26 +251,29 @@ function getWeatherVisual(code) {
   if (code >= 95) {
     return { icon: <AnimatedStormIcon />, label: 'Trovoadas' };
   }
-  // Padrão Acre / Brasiléia (clima tropical com sol e nuvens)
-  return { icon: <AnimatedPartlyCloudyIcon />, label: 'Tempo Bom' };
+  // Padrão Brasiléia / Acre
+  return isDay
+    ? { icon: <AnimatedPartlyCloudyIcon />, label: 'Tempo Bom' }
+    : { icon: <AnimatedPartlyCloudyNightIcon />, label: 'Tempo Bom' };
 }
 
 export default function WeatherWidget() {
-  const [weather, setWeather] = useState({
-    temp: 28,
+  const [weather, setWeather] = useState(() => ({
+    temp: 24,
     code: 1,
     city: 'Brasiléia, AC',
+    isDay: getIsDayAcre(),
     loaded: false,
-  });
+  }));
 
   useEffect(() => {
     let isMounted = true;
 
     async function fetchWeather() {
       try {
-        // Coordenadas geográficas de Brasiléia - Acre
+        // Coordenadas geográficas de Brasiléia - Acre com is_day
         const res = await fetch(
-          'https://api.open-meteo.com/v1/forecast?latitude=-11.0161&longitude=-68.7472&current=temperature_2m,weather_code&timezone=America%2FRio_Branco'
+          'https://api.open-meteo.com/v1/forecast?latitude=-11.0161&longitude=-68.7472&current=temperature_2m,weather_code,is_day&timezone=America%2FRio_Branco'
         );
         if (!res.ok) return;
         const data = await res.json();
@@ -191,6 +281,7 @@ export default function WeatherWidget() {
           setWeather({
             temp: Math.round(data.current.temperature_2m),
             code: data.current.weather_code,
+            isDay: data.current.is_day === 1,
             city: 'Brasiléia, AC',
             loaded: true,
           });
@@ -201,15 +292,22 @@ export default function WeatherWidget() {
     }
 
     fetchWeather();
-    return () => { isMounted = false; };
+    // Atualiza a cada 15 minutos
+    const interval = setInterval(fetchWeather, 15 * 60 * 1000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
-  const visual = getWeatherVisual(weather.code);
+  const visual = getWeatherVisual(weather.code, weather.isDay);
 
   return (
     <div
       className="inline-flex items-center gap-2 text-[12px] font-medium text-slate-200 shrink-0 hover:text-white transition-colors cursor-default"
       title={`Previsão em tempo real: ${visual.label} em ${weather.city}`}
+      suppressHydrationWarning
     >
       {visual.icon}
       <span className="font-semibold text-white tracking-wide">{weather.temp}°C</span>

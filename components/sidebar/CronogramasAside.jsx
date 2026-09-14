@@ -42,22 +42,22 @@ export default function CronogramasAside({ initialItems = [] }) {
 
   return (
     <aside
-      className="bg-white border border-outline-variant rounded-sm shadow-xs overflow-hidden flex flex-col"
+      className="bg-surface-container-lowest border border-outline-variant/70 rounded-2xl shadow-xs overflow-hidden flex flex-col transition-all duration-300"
       aria-label="Cronogramas Setoriais"
     >
       {/* ── Cabeçalho do Widget ── */}
-      <div className="p-3.5 bg-slate-50 border-b border-outline-variant flex items-center justify-between">
+      <div className="p-3.5 bg-surface-container-low dark:bg-surface-container border-b border-outline-variant/40 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[#0f2938] text-[20px]">
+          <span className="material-symbols-outlined text-primary dark:text-amber-400 text-[20px]">
             calendar_clock
           </span>
-          <h2 className="font-editorial text-[17px] font-bold text-[#0f2938] leading-none">
+          <h2 className="font-editorial text-[16px] sm:text-[17px] font-bold text-primary dark:text-slate-100 leading-none">
             Cronogramas
           </h2>
         </div>
         <Link
           href="/cronogramas"
-          className="text-[12px] font-semibold text-secondary hover:underline flex items-center gap-0.5"
+          className="text-[12px] font-semibold text-secondary dark:text-emerald-400 hover:underline flex items-center gap-0.5"
         >
           Ver todos
           <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
@@ -66,7 +66,7 @@ export default function CronogramasAside({ initialItems = [] }) {
 
       {/* ── Abas de Navegação pelos Setores ── */}
       <div
-        className="flex items-center gap-1.5 p-2 bg-[#f8fafc] border-b border-outline-variant overflow-x-auto no-scrollbar"
+        className="flex items-center gap-1.5 p-2 bg-surface-container-lowest dark:bg-surface-container-low/40 border-b border-outline-variant/40 overflow-x-auto no-scrollbar"
         role="tablist"
       >
         {TABS.map((tab) => {
@@ -79,17 +79,19 @@ export default function CronogramasAside({ initialItems = [] }) {
               role="tab"
               aria-selected={isActive}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-2.5 py-1 rounded text-[12px] font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-2.5 py-1 rounded-lg text-[12px] font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
                 isActive
-                  ? 'bg-[#0f2938] text-white shadow-xs'
-                  : 'text-slate-600 hover:bg-slate-200 hover:text-slate-900'
+                  ? 'bg-primary dark:bg-amber-400 text-white dark:text-slate-900 shadow-2xs font-bold'
+                  : 'text-on-surface-variant hover:bg-slate-200/70 dark:hover:bg-slate-800 hover:text-on-surface'
               }`}
             >
               <span>{tab.label}</span>
               {count > 0 && (
                 <span
-                  className={`text-[10px] px-1 py-0.2 rounded-full font-bold ${
-                    isActive ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'
+                  className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                    isActive
+                      ? 'bg-white/20 dark:bg-slate-900/20 text-white dark:text-slate-900'
+                      : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
                   }`}
                 >
                   {count}
@@ -101,9 +103,9 @@ export default function CronogramasAside({ initialItems = [] }) {
       </div>
 
       {/* ── Lista de Eventos / Prazos da Aba Ativa ── */}
-      <div className="p-3 flex flex-col divide-y divide-slate-100 max-h-85 overflow-y-auto">
+      <div className="p-3 flex flex-col divide-y divide-outline-variant/30 max-h-85 overflow-y-auto">
         {currentItems.length === 0 ? (
-          <div className="py-6 text-center text-slate-400 text-[13px]">
+          <div className="py-6 text-center text-on-surface-variant/70 text-[13px]">
             Nenhum compromisso agendado para este setor no momento.
           </div>
         ) : (
@@ -113,13 +115,13 @@ export default function CronogramasAside({ initialItems = [] }) {
               STATUS_COLORS[item.status] || 'bg-slate-100 text-slate-700 border-slate-200';
 
             return (
-              <div key={item.id} className="py-2.5 first:pt-0 last:pb-0 flex items-start gap-3">
-                {/* Badge de Data */}
-                <div className="shrink-0 w-11 h-12 bg-slate-100 border border-slate-200 rounded flex flex-col items-center justify-center text-center">
-                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider leading-none">
+              <div key={item.id} className="py-3 first:pt-0 last:pb-0 flex items-start gap-3">
+                {/* Badge de Data com estilo folhinha */}
+                <div className="shrink-0 w-11 h-12 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg flex flex-col items-center justify-center text-center shadow-2xs">
+                  <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider leading-none">
                     {month}
                   </span>
-                  <span className="text-[16px] font-black text-[#0f2938] leading-none mt-0.5">
+                  <span className="text-[16px] font-black text-primary dark:text-slate-100 leading-none mt-0.5">
                     {day}
                   </span>
                 </div>
@@ -127,23 +129,23 @@ export default function CronogramasAside({ initialItems = [] }) {
                 {/* Conteúdo do Cronograma */}
                 <div className="flex flex-col gap-1 min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${statusClass}`}>
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md border ${statusClass}`}>
                       {item.status}
                     </span>
                     {item.local && (
-                      <span className="text-[11px] text-slate-500 truncate flex items-center gap-0.5">
+                      <span className="text-[11px] text-on-surface-variant truncate flex items-center gap-0.5">
                         <span className="material-symbols-outlined text-[12px]">location_on</span>
                         {item.local}
                       </span>
                     )}
                   </div>
 
-                  <h3 className="text-[13px] font-semibold text-slate-900 leading-snug line-clamp-2">
+                  <h3 className="text-[13px] font-semibold text-on-surface leading-snug line-clamp-2">
                     {item.titulo}
                   </h3>
 
                   {item.descricao && (
-                    <p className="text-[12px] text-slate-500 leading-normal line-clamp-2">
+                    <p className="text-[12px] text-on-surface-variant leading-normal line-clamp-2">
                       {item.descricao}
                     </p>
                   )}
@@ -155,10 +157,10 @@ export default function CronogramasAside({ initialItems = [] }) {
       </div>
 
       {/* ── Rodapé Informativo ── */}
-      <div className="p-2.5 bg-slate-50 border-t border-slate-100 text-center">
+      <div className="p-2.5 bg-surface-container-low dark:bg-surface-container border-t border-outline-variant/30 text-center">
         <Link
           href="/cronogramas"
-          className="text-[11px] font-semibold text-[#0f2938] hover:text-secondary transition-colors"
+          className="text-[11px] font-semibold text-primary dark:text-amber-400 hover:text-secondary transition-colors"
         >
           Consultar calendário letivo oficial completo →
         </Link>

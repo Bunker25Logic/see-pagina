@@ -1,9 +1,11 @@
-const CACHE_NAME = 'educa-see-v2';
+const CACHE_NAME = 'educa-see-v3';
 
 // Recursos essenciais para cache inicial
 const STATIC_ASSETS = [
   '/',
+  '/escolas',
   '/cronogramas',
+  '/eventos',
   '/manifest.json',
   '/icon.svg',
   '/icon-192.png',

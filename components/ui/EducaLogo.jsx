@@ -1,27 +1,131 @@
 'use client';
 
+import { useId } from 'react';
+
 /**
- * Logo oficial vetorial do Portal Educa Brasiléia (SEE Acre).
- * Suporta o monograma estilizado [EB] e a versão com ícone oficial.
+ * Emblema Vetorial da Bandeira Oficial do Estado do Acre.
+ * Inspirado fielmente na bandeira estadual (Lei nº 1.170/1995):
+ * - Divisão diagonal: Amarelo Ouro (superior esquerdo) e Verde Amazônico (inferior direito).
+ * - Estrela Altaneira vermelha de 5 pontas no quadrante superior.
+ * - Formato badge com cantos suaves, acabamento esmaltado e relevo institucional.
+ */
+function AcreFlagBadge({ size = 38, className = '' }) {
+  const clipId = useId();
+  const yellowId = useId();
+  const greenId = useId();
+  const starId = useId();
+  const sheenId = useId();
+
+  // Proporção harmônica próxima ao 10:7 oficial da bandeira
+  const width = Math.round(size * 1.35);
+  const height = size;
+
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 54 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`shrink-0 transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_1px_2px_rgba(0,0,0,0.12)] ${className}`}
+      aria-label="Bandeira do Estado do Acre"
+      role="img"
+    >
+      <defs>
+        {/* Recorte com cantos suavemente arredondados */}
+        <clipPath id={clipId}>
+          <rect x="0" y="0" width="54" height="40" rx="6" ry="6" />
+        </clipPath>
+
+        {/* Amarelo Ouro Nobre da Bandeira do Acre */}
+        <linearGradient id={yellowId} x1="0%" y1="0%" x2="70%" y2="80%">
+          <stop offset="0%" stopColor="#ffdc19" />
+          <stop offset="100%" stopColor="#f59e0b" />
+        </linearGradient>
+
+        {/* Verde Floresta Amazônica do Acre */}
+        <linearGradient id={greenId} x1="30%" y1="20%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#00963f" />
+          <stop offset="100%" stopColor="#005d25" />
+        </linearGradient>
+
+        {/* Estrela Altaneira Vermelha */}
+        <linearGradient id={starId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ef4444" />
+          <stop offset="100%" stopColor="#b91c1c" />
+        </linearGradient>
+
+        {/* Brilho e profundidade vitrificada */}
+        <linearGradient id={sheenId} x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.3" />
+          <stop offset="45%" stopColor="#ffffff" stopOpacity="0.05" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.10" />
+        </linearGradient>
+      </defs>
+
+      {/* Conteúdo com recorte da bandeira */}
+      <g clipPath={`url(#${clipId})`}>
+        {/* Metade Superior Esquerda — Amarelo Ouro */}
+        <polygon points="0,0 54,0 0,40" fill={`url(#${yellowId})`} />
+
+        {/* Metade Inferior Direita — Verde Floresta */}
+        <polygon points="54,0 54,40 0,40" fill={`url(#${greenId})`} />
+
+        {/* Estrela Altaneira de 5 pontas */}
+        <g transform="translate(16, 13)">
+          {/* Sombra sutil para destaque da estrela */}
+          <polygon
+            points="0,-6.5 1.53,-2.1 6.18,-2.01 2.47,0.8 3.82,5.26 0,2.6 -3.82,5.26 -2.47,0.8 -6.18,-2.01 -1.53,-2.1"
+            fill="#7f1d1d"
+            opacity="0.25"
+            transform="translate(0, 0.5)"
+          />
+          <polygon
+            points="0,-6.5 1.53,-2.1 6.18,-2.01 2.47,0.8 3.82,5.26 0,2.6 -3.82,5.26 -2.47,0.8 -6.18,-2.01 -1.53,-2.1"
+            fill={`url(#${starId})`}
+            stroke="#ffffff"
+            strokeWidth="0.5"
+            strokeLinejoin="round"
+          />
+        </g>
+
+        {/* Efeito vitrificado / highlight */}
+        <rect width="54" height="40" fill={`url(#${sheenId})`} />
+      </g>
+
+      {/* Borda fina e precisa para contraste em qualquer cor de fundo */}
+      <rect
+        x="0.5"
+        y="0.5"
+        width="53"
+        height="39"
+        rx="5.5"
+        ry="5.5"
+        fill="none"
+        stroke="rgba(0,0,0,0.14)"
+        strokeWidth="1"
+      />
+    </svg>
+  );
+}
+
+/**
+ * Logo oficial do Portal Educa Brasiléia (SEE Acre).
  *
- * @param {{ size?: number, showText?: boolean, className?: string, variant?: 'eb' | 'vector' }} props
+ * @param {{ size?: number, showText?: boolean, className?: string, variant?: 'acre' | 'eb' | 'vector' }} props
  */
 export default function EducaLogo({
   size = 40,
   showText = true,
   className = '',
-  variant = 'eb',
+  variant = 'acre',
+  inverted = false,
 }) {
   return (
     <div className={`inline-flex items-center gap-3 select-none ${className}`}>
-      {variant === 'eb' ? (
-        /* Monograma Oficial EB em Squircle Azul Petróleo Escuro */
-        <div
-          style={{ width: size, height: size }}
-          className="bg-[#0f2938] text-white rounded-lg flex items-center justify-center font-serif font-black tracking-tighter text-[20px] shadow-sm shrink-0 border border-[#1e445b] group-hover:bg-[#133749] transition-colors"
-        >
-          EB
-        </div>
+      {variant === 'eb' || variant === 'acre' || variant === 'flag' ? (
+        /* Emblema Oficial da Bandeira do Acre */
+        <AcreFlagBadge size={size} />
       ) : (
         /* Versão Vetorial com Livro Aberto, Chama Verde e Estrela Altaneira */
         <svg
@@ -113,10 +217,18 @@ export default function EducaLogo({
       {/* Identificação Tipográfica Oficial */}
       {showText && (
         <div className="flex flex-col leading-none">
-          <span className="font-editorial text-[21px] sm:text-[23px] text-[#0f2938] tracking-tight font-bold">
+          <span
+            className={`font-editorial text-[21px] sm:text-[23px] ${
+              inverted ? 'text-white' : 'text-[#0f2938] dark:text-slate-100'
+            } tracking-tight font-bold`}
+          >
             Educa Brasiléia
           </span>
-          <span className="text-[11px] font-medium tracking-wide text-slate-500 mt-1">
+          <span
+            className={`text-[11px] font-medium tracking-wide ${
+              inverted ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'
+            } mt-1`}
+          >
             Núcleo de Educação · SEE-AC
           </span>
         </div>
