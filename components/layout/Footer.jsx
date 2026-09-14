@@ -230,18 +230,18 @@ export default function Footer() {
                 </div>
               </div>
 
-              {/* Minimapa do Google Maps nas coordenadas do Núcleo */}
+              {/* Minimapa do Google Maps nas coordenadas oficiais do Núcleo */}
               <div className="relative w-full h-32 sm:h-36 rounded-lg overflow-hidden border border-white/15 bg-slate-900/80 shadow-inner group mt-0.5">
                 <iframe
                   title="Localização do Núcleo de Educação de Brasiléia no Google Maps"
-                  src="https://maps.google.com/maps?q=-11.0148913,-68.7457419&hl=pt-BR&z=16&output=embed"
+                  src="https://www.google.com/maps/embed?pb=!1m20!1m8!1m3!1d244.77092995819353!2d-68.74815360274657!3d-11.013481713450044!3m2!1i1024!2i768!4f13.1!4m9!3e9!4m3!3m2!1d-11.0135024!2d-68.7480624!4m3!3m2!1d-11.013503799999999!2d-68.7480611!5e0!3m2!1spt-BR!2sus!4v1789362192729!5m2!1spt-BR!2sus"
                   className="w-full h-full border-0 filter contrast-[1.05] opacity-90 group-hover:opacity-100 transition-opacity"
                   loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  aria-label="Minimapa do Google Maps na Av. Benjamin Constant, 68, Centro, Brasiléia"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  aria-label="Minimapa do Google Maps no Núcleo de Educação de Brasiléia"
                 />
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=-11.0148913,-68.7457419"
+                  href="https://www.google.com/maps?q=-11.0135024,-68.7480624"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="absolute bottom-2 right-2 inline-flex items-center gap-1 px-2 py-1 text-[10px] sm:text-[11px] font-medium text-white bg-slate-950/85 hover:bg-emerald-600 backdrop-blur-md rounded-md shadow-md border border-white/15 transition-all hover:scale-[1.02]"
