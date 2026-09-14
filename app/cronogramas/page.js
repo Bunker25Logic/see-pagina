@@ -7,7 +7,8 @@ export const metadata = {
     'Consulte os cronogramas oficiais do Núcleo de Educação de Brasiléia (SEE-AC): DIRE, Ensino, Transporte, Cultura e Esporte, e Administração.',
 };
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function CronogramasPage() {
   const cronogramas = await getActiveCronogramas();

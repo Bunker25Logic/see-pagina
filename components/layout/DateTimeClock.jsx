@@ -35,17 +35,22 @@ function getTimeData() {
   const monthShort = new Intl.DateTimeFormat('pt-BR', {
     timeZone: TIMEZONE,
     month: 'short',
-  }).format(now).replace('.', '').toUpperCase();
+  }).format(now).replace('.', '').toLowerCase();
 
   const monthFull = new Intl.DateTimeFormat('pt-BR', {
     timeZone: TIMEZONE,
     month: 'long',
   }).format(now);
 
+  const year = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: TIMEZONE,
+    year: 'numeric',
+  }).format(now);
+
   return {
     weekday,
-    desktopDate: `${day} de ${monthFull}`,
-    mobileDate: `${day} ${monthShort}`,
+    desktopDate: `${day} de ${monthFull} de ${year}`,
+    mobileDate: `${day} ${monthShort} ${year}`,
     time,
   };
 }
@@ -87,7 +92,7 @@ export default function DateTimeClock() {
       </span>
 
       <span className="md:hidden text-[11px] font-semibold text-slate-300 tracking-tight" suppressHydrationWarning>
-        {data ? data.mobileDate : '-- ---'}
+        {data ? data.mobileDate : '-- --- ----'}
       </span>
 
       {/* Relógio Digital Elegante e Apresentável com Horário do Acre */}

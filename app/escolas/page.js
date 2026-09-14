@@ -7,7 +7,8 @@ export const metadata = {
     'Guia oficial das escolas estaduais vinculadas ao Núcleo de Educação de Brasiléia — Secretaria de Estado de Educação do Acre (SEE/AC). Consulte equipes gestoras, quantitativo de alunos e canais de atendimento.',
 };
 
-export const revalidate = 60; // revalida a cada 1 minuto para refletir novos cadastros
+export const dynamic = 'force-dynamic';
+export const revalidate = 0; // atualização instantânea a cada request / router.refresh()
 
 /**
  * EscolasPage — Painel de excelência das escolas da rede estadual de Brasiléia.

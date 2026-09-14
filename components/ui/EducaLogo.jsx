@@ -1,22 +1,46 @@
 'use client';
 
+import Image from 'next/image';
 import { useId } from 'react';
 
 /**
- * Emblema Vetorial da Bandeira Oficial do Estado do Acre.
- * Inspirado fielmente na bandeira estadual (Lei nº 1.170/1995):
- * - Divisão diagonal: Amarelo Ouro (superior esquerdo) e Verde Amazônico (inferior direito).
- * - Estrela Altaneira vermelha de 5 pontas no quadrante superior.
- * - Formato badge com cantos suaves, acabamento esmaltado e relevo institucional.
+ * Brasão Oficial de Armas do Estado do Acre.
+ * Renderiza fielmente o brasão histórico e oficial do Estado do Acre (Lei nº 1.170/1995):
+ * - Resplendor dourado com a Estrela Vermelha Altaneira no ápice;
+ * - Escudo ovalado com a Seringueira, o corte de látex, o leopardo e a cabana seringueira;
+ * - Orlado pelos ramos de café frutificado e seringueira, atados pelo listel;
+ * - Divisa oficial "NEC LVCEO PLVRIMVS" e datas históricas "6-8-1902" e "24-1-1903".
  */
-function AcreFlagBadge({ size = 38, className = '' }) {
+export function AcreCoatOfArms({ size = 42, className = '' }) {
+  const height = Math.round(size * (226 / 230));
+
+  return (
+    <div
+      className={`shrink-0 transition-transform duration-300 group-hover:scale-105 flex items-center justify-center ${className}`}
+      style={{ width: size, height }}
+    >
+      <Image
+        src="/brasao-acre.svg"
+        alt="Brasão Oficial de Armas do Estado do Acre"
+        width={size}
+        height={height}
+        className="w-full h-full object-contain filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.18)] select-none pointer-events-none"
+        priority
+      />
+    </div>
+  );
+}
+
+/**
+ * Emblema Vetorial da Bandeira do Acre (mantido para compatibilidade).
+ */
+export function AcreFlagBadge({ size = 38, className = '' }) {
   const clipId = useId();
   const yellowId = useId();
   const greenId = useId();
   const starId = useId();
   const sheenId = useId();
 
-  // Proporção harmônica próxima ao 10:7 oficial da bandeira
   const width = Math.round(size * 1.35);
   const height = size;
 
@@ -32,30 +56,25 @@ function AcreFlagBadge({ size = 38, className = '' }) {
       role="img"
     >
       <defs>
-        {/* Recorte com cantos suavemente arredondados */}
         <clipPath id={clipId}>
           <rect x="0" y="0" width="54" height="40" rx="6" ry="6" />
         </clipPath>
 
-        {/* Amarelo Ouro Nobre da Bandeira do Acre */}
         <linearGradient id={yellowId} x1="0%" y1="0%" x2="70%" y2="80%">
           <stop offset="0%" stopColor="#ffdc19" />
           <stop offset="100%" stopColor="#f59e0b" />
         </linearGradient>
 
-        {/* Verde Floresta Amazônica do Acre */}
         <linearGradient id={greenId} x1="30%" y1="20%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#00963f" />
           <stop offset="100%" stopColor="#005d25" />
         </linearGradient>
 
-        {/* Estrela Altaneira Vermelha */}
         <linearGradient id={starId} x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#ef4444" />
           <stop offset="100%" stopColor="#b91c1c" />
         </linearGradient>
 
-        {/* Brilho e profundidade vitrificada */}
         <linearGradient id={sheenId} x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#ffffff" stopOpacity="0.3" />
           <stop offset="45%" stopColor="#ffffff" stopOpacity="0.05" />
@@ -63,17 +82,11 @@ function AcreFlagBadge({ size = 38, className = '' }) {
         </linearGradient>
       </defs>
 
-      {/* Conteúdo com recorte da bandeira */}
       <g clipPath={`url(#${clipId})`}>
-        {/* Metade Superior Esquerda — Amarelo Ouro */}
         <polygon points="0,0 54,0 0,40" fill={`url(#${yellowId})`} />
-
-        {/* Metade Inferior Direita — Verde Floresta */}
         <polygon points="54,0 54,40 0,40" fill={`url(#${greenId})`} />
 
-        {/* Estrela Altaneira de 5 pontas */}
         <g transform="translate(16, 13)">
-          {/* Sombra sutil para destaque da estrela */}
           <polygon
             points="0,-6.5 1.53,-2.1 6.18,-2.01 2.47,0.8 3.82,5.26 0,2.6 -3.82,5.26 -2.47,0.8 -6.18,-2.01 -1.53,-2.1"
             fill="#7f1d1d"
@@ -89,11 +102,9 @@ function AcreFlagBadge({ size = 38, className = '' }) {
           />
         </g>
 
-        {/* Efeito vitrificado / highlight */}
         <rect width="54" height="40" fill={`url(#${sheenId})`} />
       </g>
 
-      {/* Borda fina e precisa para contraste em qualquer cor de fundo */}
       <rect
         x="0.5"
         y="0.5"
@@ -111,11 +122,12 @@ function AcreFlagBadge({ size = 38, className = '' }) {
 
 /**
  * Logo oficial do Portal Educa Brasiléia (SEE Acre).
+ * Apresenta o Brasão de Armas do Estado do Acre com a identificação institucional.
  *
- * @param {{ size?: number, showText?: boolean, className?: string, variant?: 'acre' | 'eb' | 'vector' }} props
+ * @param {{ size?: number, showText?: boolean, className?: string, variant?: 'acre' | 'brasao' | 'flag' | 'eb', inverted?: boolean }} props
  */
 export default function EducaLogo({
-  size = 40,
+  size = 42,
   showText = true,
   className = '',
   variant = 'acre',
@@ -123,95 +135,12 @@ export default function EducaLogo({
 }) {
   return (
     <div className={`inline-flex items-center gap-3 select-none ${className}`}>
-      {variant === 'eb' || variant === 'acre' || variant === 'flag' ? (
-        /* Emblema Oficial da Bandeira do Acre */
+      {variant === 'flag' ? (
+        /* Versão Bandeira do Acre */
         <AcreFlagBadge size={size} />
       ) : (
-        /* Versão Vetorial com Livro Aberto, Chama Verde e Estrela Altaneira */
-        <svg
-          width={size}
-          height={size}
-          viewBox="0 0 512 512"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="shrink-0 transition-transform duration-300 group-hover:scale-105"
-        >
-          <defs>
-            <linearGradient id="logoBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#001d3d" />
-              <stop offset="100%" stopColor="#002b5c" />
-            </linearGradient>
-
-            <linearGradient id="logoGreenGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#006e27" />
-              <stop offset="60%" stopColor="#10b981" />
-              <stop offset="100%" stopColor="#34d399" />
-            </linearGradient>
-
-            <linearGradient id="logoGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#fef08a" />
-              <stop offset="50%" stopColor="#eab308" />
-              <stop offset="100%" stopColor="#ca8a04" />
-            </linearGradient>
-
-            <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#000000" floodOpacity="0.3" />
-            </filter>
-          </defs>
-
-          <rect width="512" height="512" rx="116" fill="url(#logoBgGrad)" />
-          <rect
-            x="10"
-            y="10"
-            width="492"
-            height="492"
-            rx="106"
-            fill="none"
-            stroke="rgba(255,255,255,0.12)"
-            strokeWidth="4"
-          />
-
-          <g filter="url(#logoGlow)">
-            <path
-              d="M 256 376 C 215 356 145 356 92 380 C 84 384 76 378 76 369 L 76 219 C 76 212 81 206 88 203 C 142 180 215 182 256 208 Z"
-              fill="#ffffff"
-            />
-            <path
-              d="M 256 376 C 297 356 367 356 420 380 C 428 384 436 378 436 369 L 436 219 C 436 212 431 206 424 203 C 370 180 297 182 256 208 Z"
-              fill="#f1f5f9"
-            />
-            <path d="M 254 208 L 254 378 L 258 378 L 258 208 Z" fill="#cbd5e1" />
-
-            <path d="M 124 250 Q 180 234 228 248" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" />
-            <path d="M 124 282 Q 180 266 228 280" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" />
-            <path d="M 124 314 Q 180 298 228 312" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" />
-
-            <path d="M 284 248 Q 332 234 388 250" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" />
-            <path d="M 284 280 Q 332 266 388 282" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" />
-            <path d="M 284 312 Q 332 298 388 314" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" />
-
-            <path
-              d="M 256 106 C 230 146 216 176 226 212 C 235 192 248 182 256 174 C 264 182 277 192 286 212 C 296 176 282 146 256 106 Z"
-              fill="url(#logoGreenGrad)"
-            />
-
-            <path
-              d="M 256 134 C 243 156 238 176 244 196 C 248 186 252 180 256 176 C 260 180 264 186 268 196 C 274 176 269 156 256 134 Z"
-              fill="url(#logoGoldGrad)"
-            />
-
-            <g transform="translate(256, 84)">
-              <polygon
-                points="0,-22 6.5,-7 22,-6 10,4.5 14,20 0,11 -14,20 -10,4.5 -22,-6 -6.5,-7"
-                fill="url(#logoGoldGrad)"
-                stroke="#ffffff"
-                strokeWidth="1.5"
-                strokeLinejoin="round"
-              />
-              <circle cx="0" cy="0" r="3" fill="#ffffff" />
-            </g>
-          </g>
-        </svg>
+        /* Brasão Oficial do Estado do Acre (padrão) */
+        <AcreCoatOfArms size={size} />
       )}
 
       {/* Identificação Tipográfica Oficial */}

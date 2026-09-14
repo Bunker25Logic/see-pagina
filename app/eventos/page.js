@@ -7,7 +7,8 @@ export const metadata = {
     'Confira os próximos eventos e atividades promovidos pelo Núcleo de Educação de Brasiléia — Secretaria de Educação do Acre.',
 };
 
-export const revalidate = 300; // revalida a cada 5 minutos
+export const dynamic = 'force-dynamic';
+export const revalidate = 0; // sempre fresco para refletir novos eventos instantaneamente
 
 /**
  * EventosPage — Próximos eventos e eventos realizados.

@@ -33,23 +33,9 @@ export default async function Header() {
               <EducaLogo size={38} showText={true} variant="acre" />
             </Link>
 
-            {/* Ações Rápidas no Mobile: Alternador de Tema + Calendário */}
-            <div className="flex items-center gap-2 lg:hidden shrink-0 ml-2">
+            {/* Ação no Mobile: Alternador de Tema */}
+            <div className="flex items-center lg:hidden shrink-0 ml-2">
               <ThemeToggle size={32} />
-
-              <Link
-                href="/cronogramas"
-                aria-label="Ver cronogramas e calendário"
-                className="w-8 h-8 rounded-lg border border-red-200 dark:border-red-900/60 overflow-hidden flex flex-col items-center bg-white dark:bg-slate-800 shadow-2xs hover:opacity-90 transition-opacity"
-                title="Calendário e Cronogramas"
-              >
-                <div className="w-full bg-[#b91c1c] h-2.5 flex items-center justify-center">
-                  <div className="w-1 h-1 rounded-full bg-white/70" />
-                </div>
-                <span className="text-[10px] font-bold text-slate-800 dark:text-slate-100 leading-none mt-1">
-                  {new Date().getDate()}
-                </span>
-              </Link>
             </div>
           </div>
 
@@ -59,23 +45,9 @@ export default async function Header() {
               <NavLinks />
             </div>
 
-            {/* Ações Desktop: Alternador de Tema + Calendário */}
-            <div className="hidden lg:flex items-center gap-2.5 text-slate-500 shrink-0">
+            {/* Ação Desktop: Alternador de Tema */}
+            <div className="hidden lg:flex items-center text-slate-500 shrink-0">
               <ThemeToggle size={34} />
-
-              <Link
-                href="/cronogramas"
-                aria-label="Ver calendário e cronogramas oficiais"
-                className="w-8 h-8 rounded-lg border border-red-200 dark:border-red-900/60 overflow-hidden flex flex-col items-center bg-white dark:bg-slate-800 shadow-2xs hover:scale-105 transition-transform"
-                title="Calendário e Cronogramas"
-              >
-                <div className="w-full bg-[#b91c1c] h-2.5 flex items-center justify-center">
-                  <div className="w-1 h-1 rounded-full bg-white/70" />
-                </div>
-                <span className="text-[10px] font-bold text-slate-800 dark:text-slate-100 leading-none mt-1">
-                  {new Date().getDate()}
-                </span>
-              </Link>
             </div>
           </div>
 

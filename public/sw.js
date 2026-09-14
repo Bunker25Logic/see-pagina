@@ -1,16 +1,26 @@
-const CACHE_NAME = 'educa-see-v3';
+/**
+ * Educa SEE — Service Worker Inteligente
+ * Versão: educa-see-v4
+ *
+ * Estratégia de Cache:
+ * - Next.js RSC (Server Components / _rsc) & Supabase & APIs: NETWORK ONLY (sempre dados frescos)
+ * - Navegação de Páginas HTML (request.mode === 'navigate'): NETWORK FIRST com fallback para cache offline
+ * - Ativos Estáticos (_next/static, imagens, fontes): Stale-While-Revalidate
+ * - Ativação imediata e limpeza de caches antigos com skipWaiting() e clients.claim()
+ */
 
-// Recursos essenciais para cache inicial
+const CACHE_NAME = 'educa-see-v4';
+
+// Apenas arquivos verdadeiramente estáticos (NUNCA rotas HTML dinâmicas do Next.js)
 const STATIC_ASSETS = [
-  '/',
-  '/escolas',
-  '/cronogramas',
-  '/eventos',
+  '/brasao-acre.svg',
   '/manifest.json',
   '/icon.svg',
   '/icon-192.png',
   '/icon-512.png',
+  '/icon-512-maskable.png',
   '/favicon-32x32.png',
+  '/apple-touch-icon.png',
 ];
 
 // Instalação do Service Worker
@@ -20,43 +30,57 @@ self.addEventListener('install', (event) => {
       return cache.addAll(STATIC_ASSETS);
     })
   );
-  // Assume o controle imediatamente sem esperar reiniciar as abas
+  // Assume o controle imediatamente sem esperar reiniciar abas
   self.skipWaiting();
 });
 
-// Ativação e limpeza de caches antigos
+// Ativação e limpeza imediata de versões antigas
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((name) => {
-          if (name !== CACHE_NAME) {
-            return caches.delete(name);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
+    caches
+      .keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((name) => {
+            if (name !== CACHE_NAME) {
+              console.log('[SW] Removendo cache legado:', name);
+              return caches.delete(name);
+            }
+          })
+        );
+      })
+      .then(() => self.clients.claim())
   );
 });
 
-// Estratégia de requisições:
-// - Para API de versão ou Supabase: sempre NETWORK FIRST (evita dados defasados)
-// - Para navegação de páginas (HTML): Network first com fallback para cache
-// - Para estáticos (imagens, fontes, css, js): Stale-While-Revalidate
+// Interceptação de requisições
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Não intercepta chamadas de API, Supabase ou rotas dinâmicas especiais
+  // 1. NUNCA interceptar:
+  // - Requisições que não sejam GET
+  // - Chamadas para o Supabase (*.supabase.co)
+  // - Rotas de API interna (/api/*)
+  // - Requisições Next.js RSC (_rsc, header RSC, Accept: text/x-component)
+  // - Dados dinâmicos do Next.js (/_next/data/*)
+  const isRscRequest =
+    url.searchParams.has('_rsc') ||
+    request.headers.get('RSC') === '1' ||
+    (request.headers.get('accept') && request.headers.get('accept').includes('text/x-component')) ||
+    url.pathname.includes('/_next/data/');
+
   if (
-    url.pathname.startsWith('/api/') ||
+    request.method !== 'GET' ||
     url.hostname.includes('supabase.co') ||
-    request.method !== 'GET'
+    url.pathname.startsWith('/api/') ||
+    isRscRequest
   ) {
-    return; // Deixa o navegador/fetch nativo lidar
+    return; // Passa direto para a rede nativa do navegador
   }
 
-  // Requisição de navegação (páginas HTML)
+  // 2. Navegação de páginas HTML (Document): NETWORK FIRST
+  // Tenta buscar a versão mais recente do servidor. Se a rede falhar, usa o cache offline.
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
@@ -72,17 +96,19 @@ self.addEventListener('fetch', (event) => {
         .catch(async () => {
           const cachedResponse = await caches.match(request);
           if (cachedResponse) return cachedResponse;
-          const homeResponse = await caches.match('/');
-          if (homeResponse) return homeResponse;
-          return new Response('Página indisponível offline no momento.', {
-            headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-          });
+
+          return new Response(
+            '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Offline | Educa Brasiléia</title><style>body{font-family:system-ui,-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#002045;color:#fff;text-align:center;padding:20px}h1{font-size:22px;margin-bottom:8px}p{color:#cbd5e1;font-size:14px;max-width:320px;margin:0 auto 20px}button{background:#10b981;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:600;cursor:pointer}</style></head><body><div><h1>Você está offline</h1><p>Não foi possível conectar ao Educa Brasiléia. Verifique sua conexão e tente novamente.</p><button onclick="window.location.reload()">Tentar novamente</button></div></body></html>',
+            {
+              headers: { 'Content-Type': 'text/html; charset=utf-8' },
+            }
+          );
         })
     );
     return;
   }
 
-  // Recursos estáticos: Stale-While-Revalidate
+  // 3. Recursos estáticos (_next/static, imagens, fontes, svgs): Stale-While-Revalidate
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       const fetchPromise = fetch(request)
@@ -102,9 +128,19 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Mensagem para forçar atualização quando o cliente solicitar
+// Mensagens de controle enviadas pelo cliente
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
+  if (!event.data) return;
+
+  if (event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
+  }
+
+  if (event.data.type === 'CLEAR_CACHE') {
+    event.waitUntil(
+      caches.keys().then((keys) => {
+        return Promise.all(keys.map((k) => caches.delete(k)));
+      })
+    );
   }
 });

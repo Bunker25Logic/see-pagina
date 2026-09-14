@@ -2,7 +2,7 @@ import FeaturedStory from '@/components/home/FeaturedStory';
 import NewsGrid from '@/components/home/NewsGrid';
 import Sidebar from '@/components/sidebar/Sidebar';
 import Divider from '@/components/ui/Divider';
-import { getFeaturedStory, getSecondaryNews, getRecentNewsForUpdates } from '@/lib/news';
+import { getFeaturedStory, getSecondaryNews } from '@/lib/news';
 import { getActiveBanners } from '@/lib/banners';
 import { getActiveCronogramas } from '@/lib/cronogramas';
 
@@ -12,18 +12,18 @@ export const metadata = {
     'Confira as últimas notícias e informações oficiais do Núcleo de Educação de Brasiléia — Secretaria de Educação do Estado do Acre.',
 };
 
-/** Revalida a página a cada 5 minutos. */
-export const revalidate = 300;
+/** Sempre renderiza conteúdo em tempo real (notícias, banners, cronogramas). */
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 /**
  * HomePage — Tela inicial do Portal SEE.
  * Server Component assíncrono — busca dados no Supabase em paralelo.
  */
 export default async function HomePage() {
-  const [featuredStory, secondaryNews, updates, banners, cronogramas] = await Promise.all([
+  const [featuredStory, secondaryNews, banners, cronogramas] = await Promise.all([
     getFeaturedStory(),
     getSecondaryNews(3),
-    getRecentNewsForUpdates(3),
     getActiveBanners(),
     getActiveCronogramas(),
   ]);
@@ -38,8 +38,8 @@ export default async function HomePage() {
         {secondaryNews.length > 0 && <NewsGrid news={secondaryNews} />}
       </div>
 
-      {/* ── Sidebar com Cronogramas Setoriais em Abas ── */}
-      <Sidebar updates={updates} banners={banners} cronogramas={cronogramas} />
+      {/* ── Sidebar com Cronogramas Setoriais (PC/Desktop) e Banners ── */}
+      <Sidebar banners={banners} cronogramas={cronogramas} />
 
     </div>
   );

@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 export default function PwaManager() {
   const router = useRouter();
   const [codeUpdateAvailable, setCodeUpdateAvailable] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [dbNotification, setDbNotification] = useState(null);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallToast, setShowInstallToast] = useState(false);
@@ -18,12 +19,13 @@ export default function PwaManager() {
   const [toastProgress, setToastProgress] = useState(100);
   
   const currentVersionRef = useRef(null);
+  const swRegistrationRef = useRef(null);
   const isIosDevice =
     typeof navigator !== 'undefined' &&
     (/iPhone|iPad|iPod/i.test(navigator.userAgent) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
 
-  // 1. Registro do Service Worker e Checagem de Versão do Código
+  // 1. Registro do Service Worker e Checagem Automática de Atualizações
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -59,12 +61,19 @@ export default function PwaManager() {
       }, 1500);
     }
 
-    // Registro do Service Worker
+    // Registro do Service Worker com bypass de cache HTTP
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
-        .register('/sw.js')
+        .register('/sw.js', { updateViaCache: 'none' })
         .then((registration) => {
-          // Monitora se há um novo Service Worker esperando
+          swRegistrationRef.current = registration;
+
+          // Se já há um Service Worker esperando na fila para assumir
+          if (registration.waiting && navigator.serviceWorker.controller) {
+            setCodeUpdateAvailable(true);
+          }
+
+          // Monitora se há um novo Service Worker sendo baixado ou instalado
           registration.addEventListener('updatefound', () => {
             const newWorker = registration.installing;
             if (newWorker) {
@@ -90,16 +99,23 @@ export default function PwaManager() {
       });
     }
 
-    // Checagem inteligente de versão da API (/api/version)
+    // Checagem inteligente de versão da API (/api/version) e verificação no SW
     const checkAppVersion = async () => {
       try {
-        const res = await fetch(`/api/version?t=${Date.now()}`, { cache: 'no-store' });
+        // Força checagem de atualização do worker no navegador/servidor
+        if (swRegistrationRef.current) {
+          swRegistrationRef.current.update().catch(() => {});
+        }
+
+        const res = await fetch(`/api/version?t=${Date.now()}`, {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache, no-store' },
+        });
         if (!res.ok) return;
         const data = await res.json();
         
         if (!currentVersionRef.current) {
           currentVersionRef.current = data.version;
-          // Salva localmente
           sessionStorage.setItem('educa_app_version', data.version);
         } else if (currentVersionRef.current !== data.version) {
           console.log('[PWA] Nova versão detectada:', data.version);
@@ -113,21 +129,38 @@ export default function PwaManager() {
     // Checagem inicial
     checkAppVersion();
 
-    // Polling a cada 45 segundos e ao focar na janela
-    const interval = setInterval(checkAppVersion, 45000);
-    const onFocus = () => checkAppVersion();
-    window.addEventListener('focus', onFocus);
+    // Polling a cada 30 segundos
+    const interval = setInterval(checkAppVersion, 30000);
+
+    // Eventos ao retornar ao app no celular (desbloqueio de tela, mudança de aba, retorno online)
+    const onForeground = () => {
+      checkAppVersion();
+      // Atualiza também dados do router para garantir que notícias/cronogramas não fiquem defasados
+      router.refresh();
+    };
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        onForeground();
+      }
+    };
+
+    window.addEventListener('focus', onForeground);
+    window.addEventListener('online', onForeground);
+    document.addEventListener('visibilitychange', onVisibilityChange);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       window.removeEventListener('appinstalled', handleAppInstalled);
-      window.removeEventListener('focus', onFocus);
+      window.removeEventListener('focus', onForeground);
+      window.removeEventListener('online', onForeground);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       clearInterval(interval);
       if (toastTimer) clearTimeout(toastTimer);
     };
-  }, []);
+  }, [router, isIosDevice]);
 
-  // 2. Supabase Realtime: Notícias, Banners e Eventos Novos em Tempo Real
+  // 2. Supabase Realtime: Notícias, Escolas, Banners, Eventos, Cronogramas e Mensagem do Dia em Tempo Real
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -141,31 +174,35 @@ export default function PwaManager() {
 
     if (!supabase) return;
 
-    // Inscrição no canal Realtime para a tabela 'news'
+    // Inscrição multicanal para refletir alterações de qualquer tabela instantaneamente
     const channel = supabase
-      .channel('portal-realtime-updates')
+      .channel('portal-realtime-all-tables')
+      // Tabela de Notícias
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'news' },
+        { event: '*', schema: 'public', table: 'news' },
         (payload) => {
-          const newStory = payload.new;
-          setDbNotification({
-            type: 'news',
-            title: 'Nova Notícia Publicada!',
-            message: newStory.title || 'Uma nova matéria acabou de sair no portal.',
-            slug: newStory.slug,
-          });
-          // Revalida dados do router suavemente
+          if (payload.eventType === 'INSERT') {
+            const newStory = payload.new;
+            setDbNotification({
+              type: 'news',
+              title: 'Nova Notícia Publicada!',
+              message: newStory.title || 'Uma nova matéria acabou de sair no portal.',
+              slug: newStory.slug,
+            });
+          }
           router.refresh();
         }
       )
+      // Tabela de Escolas (Guia das Escolas da Rede)
       .on(
         'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'news' },
+        { event: '*', schema: 'public', table: 'schools' },
         () => {
           router.refresh();
         }
       )
+      // Tabela de Banners
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'banners' },
@@ -173,9 +210,26 @@ export default function PwaManager() {
           router.refresh();
         }
       )
+      // Tabela de Eventos
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'events' },
+        () => {
+          router.refresh();
+        }
+      )
+      // Tabela de Cronogramas Setoriais (DIRE, Ensino, Transporte, etc.)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'cronogramas' },
+        () => {
+          router.refresh();
+        }
+      )
+      // Tabela de Mensagem do Dia
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'mensagens_dia' },
         () => {
           router.refresh();
         }
@@ -187,19 +241,41 @@ export default function PwaManager() {
     };
   }, [router]);
 
-  // Função para aplicar a atualização do código
-  const applyCodeUpdate = () => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistration().then((reg) => {
-        if (reg && reg.waiting) {
-          reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-        } else {
-          window.location.reload();
-        }
-      });
-    } else {
-      window.location.reload();
+  // Função para aplicar a atualização do código instantaneamente
+  const applyCodeUpdate = async () => {
+    setIsUpdating(true);
+
+    try {
+      // 1. Limpa todas as instâncias legadas de CacheStorage
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map((name) => caches.delete(name)));
+      }
+    } catch (e) {
+      console.warn('[PWA] Limpeza de cache:', e);
     }
+
+    // 2. Notifica o Service Worker para assumir o controle imediatamente
+    if ('serviceWorker' in navigator) {
+      try {
+        const reg = await navigator.serviceWorker.getRegistration();
+        if (reg) {
+          if (reg.waiting) {
+            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            reg.waiting.postMessage({ type: 'CLEAR_CACHE' });
+          } else if (reg.active) {
+            reg.active.postMessage({ type: 'CLEAR_CACHE' });
+          }
+        }
+      } catch (e) {
+        console.warn('[PWA] Erro ao comunicar com Service Worker:', e);
+      }
+    }
+
+    // 3. Força o recarregamento limpo da página
+    setTimeout(() => {
+      window.location.reload();
+    }, 250);
   };
 
   // 3. Temporizador do Toast de Instalação (com pausa ao passar o mouse ou abrir instruções)
@@ -266,17 +342,21 @@ export default function PwaManager() {
           </div>
           <div className="flex items-center justify-end gap-2 pt-1 border-t border-white/10">
             <button
+              disabled={isUpdating}
               onClick={() => setCodeUpdateAvailable(false)}
-              className="px-3 py-1.5 text-xs text-white/70 hover:text-white transition-colors cursor-pointer"
+              className="px-3 py-1.5 text-xs text-white/70 hover:text-white transition-colors cursor-pointer disabled:opacity-50"
             >
               Depois
             </button>
             <button
+              disabled={isUpdating}
               onClick={applyCodeUpdate}
-              className="px-4 py-1.5 text-xs font-semibold bg-secondary hover:bg-secondary/90 text-white rounded-lg transition-all shadow cursor-pointer flex items-center gap-1.5"
+              className="px-4 py-1.5 text-xs font-semibold bg-secondary hover:bg-secondary/90 disabled:bg-secondary/60 text-white rounded-lg transition-all shadow cursor-pointer flex items-center gap-1.5"
             >
-              <span className="material-symbols-outlined text-[16px]">refresh</span>
-              Atualizar Agora
+              <span className={`material-symbols-outlined text-[16px] ${isUpdating ? 'animate-spin' : ''}`}>
+                {isUpdating ? 'progress_activity' : 'refresh'}
+              </span>
+              {isUpdating ? 'Atualizando...' : 'Atualizar Agora'}
             </button>
           </div>
         </div>
