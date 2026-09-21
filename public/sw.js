@@ -1,15 +1,16 @@
 /**
  * Educa SEE — Service Worker Inteligente
- * Versão: educa-see-v5
+ * Versão: educa-see-v6
  *
  * Estratégia de Cache:
- * - Next.js RSC (Server Components / _rsc) & Supabase & APIs: NETWORK ONLY (sempre dados frescos)
- * - Navegação de Páginas HTML (request.mode === 'navigate'): NETWORK FIRST com fallback para cache offline
- * - Ativos Estáticos (_next/static, imagens, fontes): Stale-While-Revalidate
- * - Ativação imediata e limpeza de caches antigos com skipWaiting() e clients.claim()
+ * - Em localhost / desenvolvimento: BYPASS TOTAL (nunca guarda cache para evitar JS chunks defasados)
+ * - Next.js RSC (Server Components / _rsc) & Supabase & APIs: NETWORK ONLY (dados sempre frescos)
+ * - Navegação de Páginas HTML: NETWORK FIRST com fallback offline
+ * - Ativos Estáticos (_next/static, imagens, fontes): Stale-While-Revalidate em produção
+ * - Ativação imediata e expurgo instantâneo de versões antigas (skipWaiting + clients.claim)
  */
 
-const CACHE_NAME = 'educa-see-v5';
+const CACHE_NAME = 'educa-see-v6';
 
 // Apenas arquivos verdadeiramente estáticos (NUNCA rotas HTML dinâmicas do Next.js)
 const STATIC_ASSETS = [
@@ -34,7 +35,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Ativação e limpeza imediata de versões antigas
+// Ativação e limpeza imediata de TODAS as versões antigas de cache
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches
@@ -43,7 +44,7 @@ self.addEventListener('activate', (event) => {
         return Promise.all(
           cacheNames.map((name) => {
             if (name !== CACHE_NAME) {
-              console.log('[SW] Removendo cache legado:', name);
+              console.log('[SW v6] Purgando cache legado obsoleto:', name);
               return caches.delete(name);
             }
           })
@@ -57,6 +58,17 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
+
+  // 0. Em ambiente LOCALHOST / DESENVOLVIMENTO: NUNCA interceptar nem cachear
+  if (
+    url.hostname === 'localhost' ||
+    url.hostname === '127.0.0.1' ||
+    url.port === '3000' ||
+    url.pathname.includes('/_next/webpack-hmr') ||
+    url.pathname.includes('/_next/static/development')
+  ) {
+    return; // Deixa o navegador e o Turbopack gerenciarem 100% nativo
+  }
 
   // 1. NUNCA interceptar:
   // - Requisições que não sejam GET
@@ -76,11 +88,10 @@ self.addEventListener('fetch', (event) => {
     url.pathname.startsWith('/api/') ||
     isRscRequest
   ) {
-    return; // Passa direto para a rede nativa do navegador
+    return; // Passa direto para a rede nativa do servidor
   }
 
   // 2. Navegação de páginas HTML (Document): NETWORK FIRST
-  // Tenta buscar a versão mais recente do servidor. Se a rede falhar, usa o cache offline.
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
@@ -108,7 +119,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 3. Recursos estáticos (_next/static, imagens, fontes, svgs): Stale-While-Revalidate
+  // 3. Recursos estáticos em produção (_next/static, imagens, fontes): Stale-While-Revalidate
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       const fetchPromise = fetch(request)

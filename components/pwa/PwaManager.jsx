@@ -61,7 +61,31 @@ export default function PwaManager() {
       }, 1500);
     }
 
-    // Registro do Service Worker com bypass de cache HTTP
+    const isDev =
+      process.env.NODE_ENV === 'development' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1';
+
+    // Em ambiente de desenvolvimento (localhost), desregistra qualquer Service Worker e limpa caches
+    if (isDev) {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          for (const reg of registrations) {
+            reg.unregister().then(() => {
+              console.log('[PWA Dev] Service Worker desregistrado no localhost.');
+            });
+          }
+        });
+      }
+      if ('caches' in window) {
+        caches.keys().then((keys) => {
+          keys.forEach((key) => caches.delete(key));
+        });
+      }
+      return;
+    }
+
+    // Registro do Service Worker com bypass de cache HTTP em produção
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/sw.js', { updateViaCache: 'none' })

@@ -9,7 +9,7 @@ import { getActiveMensagemDia } from '@/lib/mensagensDia';
  * Header — Barra de navegação superior do Portal SEE.
  * Layout perfeitamente balanceado:
  * - Logo à esquerda
- * - Abas de navegação (Notícias, Escolas, Eventos, Cronogramas) perfeitamente centralizadas
+ * - Abas de navegação (Notícias, Escolas, Cronogramas) perfeitamente centralizadas
  * - Alternador de tema à direita com simetria equilibrada
  */
 export default async function Header() {
@@ -40,7 +40,7 @@ export default async function Header() {
             </div>
           </div>
 
-          {/* Centro Perfeito: Abas de Navegação (Notícias, Escolas, Eventos, Cronogramas) */}
+          {/* Centro Perfeito: Abas de Navegação (Notícias, Escolas, Cronogramas) */}
           <div className="w-full lg:flex-1 flex items-center justify-center min-w-0">
             <NavLinks />
           </div>

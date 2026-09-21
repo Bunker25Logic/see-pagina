@@ -15,7 +15,7 @@ export default function Sidebar({ banners = [], cronogramas = [] }) {
 
   return (
     <aside
-      className="min-w-0 md:col-span-4 lg:col-span-3 flex flex-col gap-6 border-t md:border-t-0 md:border-l border-outline-variant pt-6 md:pt-0 md:pl-gutter"
+      className="min-w-0 md:col-span-4 lg:col-span-4 flex flex-col gap-6 border-t md:border-t-0 md:border-l border-outline-variant pt-6 md:pt-0 md:pl-gutter"
       aria-label="Barra lateral"
     >
       {/* ── Aside de Cronogramas Setoriais em Abas (Visível SOMENTE no PC / Desktop) ── */}

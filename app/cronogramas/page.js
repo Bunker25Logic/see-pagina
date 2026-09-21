@@ -4,7 +4,7 @@ import CronogramasView from './CronogramasView';
 export const metadata = {
   title: 'Cronogramas Setoriais',
   description:
-    'Consulte os cronogramas oficiais do Núcleo de Educação de Brasiléia (SEE-AC): DIRE, Ensino, Transporte, Cultura e Esporte, e Administração.',
+    'Consulte os cronogramas oficiais do Núcleo de Educação de Brasiléia (SEE-AC): Coordenações de Ensino e de Cultura & Esporte.',
 };
 
 export const dynamic = 'force-dynamic';
@@ -25,7 +25,7 @@ export default async function CronogramasPage() {
           Cronogramas e Calendários Oficiais
         </h1>
         <p className="text-slate-600 text-[16px] max-w-3xl leading-relaxed">
-          Acompanhe os prazos, formações, vistorias de transporte escolar, eventos esportivos e diretrizes administrativas de cada setor da rede estadual em Brasiléia.
+          Acompanhe os prazos pedagógicos, formações continuadas, conselhos de classe e atividades esportivas e culturais da rede estadual em Brasiléia.
         </p>
       </div>
 

@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import { Inter, Merriweather, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
@@ -78,6 +79,7 @@ export default function RootLayout({ children }) {
     <html
       lang="pt-BR"
       className={`${inter.variable} ${merriweather.variable} ${playfairDisplay.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <head>
         {/* Material Symbols — ícones de interface */}
@@ -90,17 +92,11 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
         {/* Script de bloqueio de flash (FOUC): Inicializa o tema estritamente pelo localStorage */}
-        <script
+        <Script
+          id="theme-initializer"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                if (localStorage.getItem('theme') === 'dark') {
-                  document.documentElement.classList.add('dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                }
-              } catch (e) {}
-            `,
+            __html: `try{if(localStorage.getItem('theme')==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}`,
           }}
         />
       </head>

@@ -49,7 +49,7 @@ const SCHOOL_THEMES = {
  * Destaca o brasão da unidade, dados da direção, quantitativo e canais oficiais.
  */
 export default function SchoolCard({ school, viewMode = 'grid' }) {
-  const { name, type, principal, phone, address, studentCount, slug } = school;
+  const { name, type, principal, coordinator, coordinatorPhone, phone, address, studentCount, slug } = school;
   const [copied, setCopied] = useState(false);
   const cardId = useId();
 
@@ -188,6 +188,50 @@ export default function SchoolCard({ school, viewMode = 'grid' }) {
               {principal || 'Gestão Escolar Oficial'}
             </p>
           </div>
+        </div>
+
+        {/* Caixa de Coordenação de Ensino — Posicionada abaixo do Gestor com Telefone */}
+        <div className="p-3 sm:p-3.5 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className="w-9 h-9 rounded-lg bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0 shadow-2xs border border-emerald-200/70 dark:border-emerald-800/50">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
+              </svg>
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400">
+                Coordenação de Ensino
+              </p>
+              <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
+                {coordinator || 'Coordenação Pedagógica'}
+              </p>
+            </div>
+          </div>
+
+          {coordinatorPhone && (
+            <div className="shrink-0 flex items-center gap-1.5 self-start sm:self-auto">
+              <a
+                href={`tel:${coordinatorPhone.replace(/\D/g, '')}`}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-[11px] font-semibold hover:bg-emerald-50 dark:hover:bg-emerald-950 transition-colors"
+                title={`Ligar para coordenação de ensino: ${coordinatorPhone}`}
+              >
+                <svg className="w-3 h-3 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+                <span>{coordinatorPhone}</span>
+              </a>
+            </div>
+          )}
         </div>
       </div>
 

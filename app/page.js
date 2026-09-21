@@ -32,7 +32,7 @@ export default async function HomePage() {
     <div className="w-full max-w-300 mx-auto px-margin-mobile md:px-margin-desktop py-4 md:py-margin-desktop grid grid-cols-1 md:grid-cols-12 gap-gutter min-w-0">
 
       {/* ── Área de Conteúdo Principal ── */}
-      <div className="min-w-0 md:col-span-8 lg:col-span-9 flex flex-col gap-stack-lg">
+      <div className="min-w-0 md:col-span-8 lg:col-span-8 flex flex-col gap-stack-lg">
         {featuredStory && <FeaturedStory story={featuredStory} />}
         {featuredStory && secondaryNews.length > 0 && <Divider />}
         {secondaryNews.length > 0 && <NewsGrid news={secondaryNews} />}

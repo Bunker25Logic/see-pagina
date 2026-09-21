@@ -4,11 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 const TABS = [
-  { id: 'dire',            label: 'DIRE' },
   { id: 'ensino',          label: 'Ensino' },
-  { id: 'transporte',      label: 'Transporte' },
   { id: 'cultura_esporte', label: 'Cultura e Esporte' },
-  { id: 'administracao',   label: 'Administração' },
 ];
 
 const STATUS_COLORS = {
@@ -35,7 +32,7 @@ function formatDateBadge(dateString) {
 }
 
 export default function CronogramasAside({ initialItems = [] }) {
-  const [activeTab, setActiveTab] = useState('dire');
+  const [activeTab, setActiveTab] = useState('ensino');
 
   // Filtra itens pelo setor da aba ativa
   const currentItems = initialItems.filter(item => item.setor === activeTab);
@@ -46,27 +43,27 @@ export default function CronogramasAside({ initialItems = [] }) {
       aria-label="Cronogramas Setoriais"
     >
       {/* ── Cabeçalho do Widget ── */}
-      <div className="p-3.5 bg-surface-container-low dark:bg-surface-container border-b border-outline-variant/40 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-primary dark:text-amber-400 text-[20px]">
+      <div className="px-3.5 py-3 bg-surface-container-low dark:bg-surface-container border-b border-outline-variant/40 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="material-symbols-outlined text-primary dark:text-amber-400 text-[20px] shrink-0" aria-hidden="true">
             calendar_clock
           </span>
-          <h2 className="font-editorial text-[16px] sm:text-[17px] font-bold text-primary dark:text-slate-100 leading-none">
+          <h2 className="font-editorial text-[15px] sm:text-[16px] font-bold text-primary dark:text-slate-100 leading-none truncate">
             Cronogramas
           </h2>
         </div>
         <Link
           href="/cronogramas"
-          className="text-[12px] font-semibold text-secondary dark:text-emerald-400 hover:underline flex items-center gap-0.5"
+          className="text-[12px] font-semibold text-secondary dark:text-emerald-400 hover:underline flex items-center gap-0.5 whitespace-nowrap shrink-0"
         >
-          Ver todos
-          <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+          <span>Ver todos</span>
+          <span className="material-symbols-outlined text-[14px]" aria-hidden="true">arrow_forward</span>
         </Link>
       </div>
 
-      {/* ── Abas de Navegação pelos Setores ── */}
+      {/* ── Abas de Navegação pelos Setores (2 Setores Ativos: Ensino, Cultura e Esporte) ── */}
       <div
-        className="flex items-center gap-1.5 p-2 bg-surface-container-lowest dark:bg-surface-container-low/40 border-b border-outline-variant/40 overflow-x-auto no-scrollbar"
+        className="grid grid-cols-2 gap-1.5 p-2 bg-surface-container-lowest dark:bg-surface-container-low/40 border-b border-outline-variant/40"
         role="tablist"
       >
         {TABS.map((tab) => {
@@ -79,16 +76,16 @@ export default function CronogramasAside({ initialItems = [] }) {
               role="tab"
               aria-selected={isActive}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-2.5 py-1 rounded-lg text-[12px] font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-2 py-1.5 rounded-lg text-[12px] font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center min-w-0 ${
                 isActive
                   ? 'bg-primary dark:bg-amber-400 text-white dark:text-slate-900 shadow-2xs font-bold'
                   : 'text-on-surface-variant hover:bg-slate-200/70 dark:hover:bg-slate-800 hover:text-on-surface'
               }`}
             >
-              <span>{tab.label}</span>
+              <span className="truncate">{tab.label}</span>
               {count > 0 && (
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                  className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold shrink-0 ${
                     isActive
                       ? 'bg-white/20 dark:bg-slate-900/20 text-white dark:text-slate-900'
                       : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
@@ -115,7 +112,7 @@ export default function CronogramasAside({ initialItems = [] }) {
               STATUS_COLORS[item.status] || 'bg-slate-100 text-slate-700 border-slate-200';
 
             return (
-              <div key={item.id} className="py-3 first:pt-0 last:pb-0 flex items-start gap-3">
+              <div key={item.id} className="py-3 first:pt-0 last:pb-0 flex items-start gap-2.5">
                 {/* Badge de Data com estilo folhinha */}
                 <div className="shrink-0 w-11 h-12 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg flex flex-col items-center justify-center text-center shadow-2xs">
                   <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider leading-none">
@@ -128,24 +125,24 @@ export default function CronogramasAside({ initialItems = [] }) {
 
                 {/* Conteúdo do Cronograma */}
                 <div className="flex flex-col gap-1 min-w-0 flex-1">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md border ${statusClass}`}>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md border shrink-0 ${statusClass}`}>
                       {item.status}
                     </span>
                     {item.local && (
-                      <span className="text-[11px] text-on-surface-variant truncate flex items-center gap-0.5">
-                        <span className="material-symbols-outlined text-[12px]">location_on</span>
-                        {item.local}
+                      <span className="text-[11px] text-on-surface-variant truncate flex items-center gap-0.5 min-w-0">
+                        <span className="material-symbols-outlined text-[12px] shrink-0" aria-hidden="true">location_on</span>
+                        <span className="truncate">{item.local}</span>
                       </span>
                     )}
                   </div>
 
-                  <h3 className="text-[13px] font-semibold text-on-surface leading-snug line-clamp-2">
+                  <h3 className="text-[13px] font-semibold text-on-surface leading-snug line-clamp-2 wrap-break-word">
                     {item.titulo}
                   </h3>
 
                   {item.descricao && (
-                    <p className="text-[12px] text-on-surface-variant leading-normal line-clamp-2">
+                    <p className="text-[12px] text-on-surface-variant leading-normal line-clamp-2 wrap-break-word">
                       {item.descricao}
                     </p>
                   )}
@@ -160,7 +157,7 @@ export default function CronogramasAside({ initialItems = [] }) {
       <div className="p-2.5 bg-surface-container-low dark:bg-surface-container border-t border-outline-variant/30 text-center">
         <Link
           href="/cronogramas"
-          className="text-[11px] font-semibold text-primary dark:text-amber-400 hover:text-secondary transition-colors"
+          className="text-[11px] font-semibold text-primary dark:text-amber-400 hover:text-secondary transition-colors inline-block leading-normal"
         >
           Consultar calendário letivo oficial completo →
         </Link>
