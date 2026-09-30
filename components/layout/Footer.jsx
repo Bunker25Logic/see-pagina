@@ -13,7 +13,11 @@ const navLinks = [
 ];
 
 const serviceLinks = [
-  { href: '/transparencia', label: 'Transparência' },
+  {
+    href: 'https://transparencia.ac.gov.br/despesas?filtro=orgao&orgao=SECRETARIA%20DE%20ESTADO%20DA%20EDUCA%C3%87%C3%83O%2CCULTURA%20E%20ESPORTES%20-%20SEE',
+    label: 'Transparência',
+    external: true,
+  },
   { href: '/privacidade', label: 'Privacidade' },
   { href: '/portal-professor', label: 'Portal do Professor' },
   {
