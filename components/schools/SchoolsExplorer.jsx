@@ -153,7 +153,7 @@ export default function SchoolsExplorer({ schools = [] }) {
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
-              Todas as Escolas ({schools.length})
+              Todas as Instituições ({schools.length})
             </button>
             <button
               type="button"
@@ -231,7 +231,7 @@ export default function SchoolsExplorer({ schools = [] }) {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar por nome da escola, gestor(a) ou endereço..."
+              placeholder="Buscar por instituição, gestor(a) ou endereço..."
               className="w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-slate-800 text-xs sm:text-sm text-slate-900 dark:text-slate-100 rounded-xl border border-slate-200 dark:border-slate-700 focus:border-emerald-500 dark:focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all placeholder:text-slate-400"
             />
             {search && (

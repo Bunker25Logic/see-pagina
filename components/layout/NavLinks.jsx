@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const navLinks = [
-  { href: '/',            label: 'Notícias' },
-  { href: '/escolas',     label: 'Escolas'  },
+  { href: '/',            label: 'Início' },
+  { href: '/noticias',    label: 'Notícias' },
+  { href: '/escolas',     label: 'Instituições' },
   { href: '/cronogramas', label: 'Cronogramas' },
 ];
 

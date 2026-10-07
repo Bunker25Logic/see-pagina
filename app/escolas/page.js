@@ -2,16 +2,16 @@ import { getAllSchools } from '@/lib/schools';
 import SchoolsExplorer from '@/components/schools/SchoolsExplorer';
 
 export const metadata = {
-  title: 'Escolas da Rede Estadual | Educa Brasiléia',
+  title: 'Instituições da Rede Estadual | Educa Brasiléia',
   description:
-    'Guia oficial das escolas estaduais vinculadas ao Núcleo de Educação de Brasiléia — Secretaria de Estado de Educação do Acre (SEE/AC). Consulte equipes gestoras, quantitativo de alunos e canais de atendimento.',
+    'Guia oficial das instituições de ensino vinculadas ao Núcleo de Educação de Brasiléia — Secretaria de Estado de Educação do Acre (SEE/AC). Consulte equipes gestoras, quantitativo de alunos e canais de atendimento.',
 };
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // atualização instantânea a cada request / router.refresh()
 
 /**
- * EscolasPage — Painel de excelência das escolas da rede estadual de Brasiléia.
+ * EscolasPage — Painel de excelência das instituições de ensino da rede estadual de Brasiléia.
  */
 export default async function EscolasPage() {
   const schools = await getAllSchools();
@@ -41,13 +41,13 @@ export default async function EscolasPage() {
 
               {/* Título Principal Editorial */}
               <h1 className="font-editorial text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight leading-tight">
-                Rede Escolar de Brasiléia
+                Instituições de Ensino de Brasiléia
               </h1>
 
               {/* Descrição com tom acolhedor e transparente */}
               <p className="font-body-lg text-slate-600 dark:text-slate-300 mt-3 text-base sm:text-lg leading-relaxed">
-                Conheça as unidades de ensino da rede estadual, consulte as equipes gestoras,
-                o quantitativo de matrículas e entre em contato direto pelo canal oficial da escola.
+                Conheça as instituições e unidades da rede estadual, consulte as equipes gestoras,
+                o quantitativo de matrículas e entre em contato direto pelo canal oficial de cada unidade.
               </p>
             </div>
 
@@ -61,7 +61,7 @@ export default async function EscolasPage() {
               </div>
               <div className="text-xs">
                 <strong className="block font-bold text-slate-900 dark:text-slate-100 text-sm">
-                  Gestão Escolar Participativa
+                  Gestão Institucional Participativa
                 </strong>
                 <p className="text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
                   Canais diretos para aproximar família, estudantes e corpo docente.

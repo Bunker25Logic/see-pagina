@@ -7,7 +7,7 @@ import EducaLogo from '@/components/ui/EducaLogo';
 const navLinks = [
   { href: '/', label: 'Início' },
   { href: '/noticias', label: 'Notícias' },
-  { href: '/escolas', label: 'Escolas' },
+  { href: '/escolas', label: 'Instituições' },
   { href: '/cronogramas', label: 'Cronogramas' },
   { href: '/calendario', label: 'Calendário' },
 ];
