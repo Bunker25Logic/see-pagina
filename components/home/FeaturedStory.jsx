@@ -18,7 +18,7 @@ import NewsViewBadge from '@/components/news/NewsViewBadge';
  * }}} props
  */
 export default function FeaturedStory({ story }) {
-  const { title, excerpt, category, date, imageUrl, imageAlt, slug } = story;
+  const { title, excerpt, category, date, author, imageUrl, imageAlt, slug } = story;
 
   return (
     <article className="group bg-surface-container-lowest border border-outline-variant/70 rounded-2xl p-4 sm:p-6 flex flex-col gap-stack-md shadow-xs hover:shadow-xl hover:border-secondary/40 transition-all duration-300">
@@ -57,6 +57,13 @@ export default function FeaturedStory({ story }) {
             {date}
           </span>
 
+          {author && (
+            <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-primary dark:text-emerald-300 bg-primary/5 dark:bg-emerald-950/40 border border-primary/15 dark:border-emerald-800/40 px-2.5 py-0.5 rounded-full">
+              <span className="material-symbols-outlined text-[14px] text-secondary">person</span>
+              <span>Por {author}</span>
+            </span>
+          )}
+
           <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-medium text-on-surface-variant/80">
             <span className="material-symbols-outlined text-[14px]">schedule</span>
             3 min de leitura
@@ -93,7 +100,7 @@ export default function FeaturedStory({ story }) {
           <div className="flex items-center gap-3">
             <NewsViewBadge count={story.viewsCount} />
             <span className="text-[11px] font-semibold text-outline uppercase tracking-wider hidden sm:inline">
-              SEE-AC Oficial
+              {author ? `Por ${author}` : 'SEE-AC Oficial'}
             </span>
           </div>
         </div>

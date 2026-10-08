@@ -146,6 +146,13 @@ export default function CronogramasAside({ initialItems = [] }) {
                       {item.descricao}
                     </p>
                   )}
+
+                  {item.author && (
+                    <div className="flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-100 dark:border-slate-800/60" title={`Publicado por: ${item.author}`}>
+                      <span className="material-symbols-outlined text-[13px] text-secondary shrink-0">person</span>
+                      <span className="truncate">Publicado por: <strong className="font-semibold text-slate-700 dark:text-slate-300">{item.author}</strong></span>
+                    </div>
+                  )}
                 </div>
               </div>
             );

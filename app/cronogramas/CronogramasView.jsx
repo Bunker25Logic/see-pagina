@@ -37,7 +37,8 @@ export default function CronogramasView({ cronogramas = [], sectors = [] }) {
       !search.trim() ||
       item.titulo?.toLowerCase().includes(search.toLowerCase()) ||
       item.descricao?.toLowerCase().includes(search.toLowerCase()) ||
-      item.local?.toLowerCase().includes(search.toLowerCase());
+      item.local?.toLowerCase().includes(search.toLowerCase()) ||
+      item.author?.toLowerCase().includes(search.toLowerCase());
     return matchesSector && matchesSearch;
   });
 
@@ -145,9 +146,18 @@ export default function CronogramasView({ cronogramas = [], sectors = [] }) {
                   </h2>
 
                   {item.descricao && (
-                    <p className="text-slate-600 dark:text-slate-400 text-[14px] leading-relaxed mb-4">
+                    <p className="text-slate-600 dark:text-slate-400 text-[14px] leading-relaxed mb-3">
                       {item.descricao}
                     </p>
+                  )}
+
+                  {item.author && (
+                    <div className="flex items-center gap-1.5 text-[12px] text-slate-600 dark:text-slate-300 mb-3.5 bg-slate-100/80 dark:bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700/80 w-fit">
+                      <span className="material-symbols-outlined text-[15px] text-emerald-600 dark:text-emerald-400">
+                        badge
+                      </span>
+                      <span>Publicado por: <strong className="font-semibold text-slate-900 dark:text-slate-100">{item.author}</strong></span>
+                    </div>
                   )}
                 </div>
 

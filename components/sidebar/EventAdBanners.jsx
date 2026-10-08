@@ -155,9 +155,9 @@ function BannerCard({ banner, onOpenZoom }) {
               </Link>
             )
           ) : (
-            <span className="text-[11px] text-slate-400 font-medium flex items-center gap-0.5">
+            <span className="text-[11px] text-slate-400 font-medium flex items-center gap-0.5" title={banner.author ? `Publicado por: ${banner.author}` : 'Publicação Oficial'}>
               <span className="material-symbols-outlined text-[13px]">verified</span>
-              Oficial
+              {banner.author ? banner.author : 'Oficial'}
             </span>
           )}
         </div>
@@ -273,13 +273,21 @@ export default function EventAdBanners({ banners }) {
             </div>
 
             {/* Rodapé com detalhes e link se houver */}
-            {(zoomedBanner.subtitle || zoomedBanner.linkUrl) && (
+            {(zoomedBanner.subtitle || zoomedBanner.linkUrl || zoomedBanner.author) && (
               <div className="p-3.5 px-4 bg-slate-900 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs">
-                {zoomedBanner.subtitle && (
-                  <p className="text-slate-300 leading-relaxed max-w-md line-clamp-2">
-                    {zoomedBanner.subtitle}
-                  </p>
-                )}
+                <div className="flex flex-col gap-1">
+                  {zoomedBanner.subtitle && (
+                    <p className="text-slate-300 leading-relaxed max-w-md line-clamp-2">
+                      {zoomedBanner.subtitle}
+                    </p>
+                  )}
+                  {zoomedBanner.author && (
+                    <span className="text-[11px] text-slate-400 flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[13px] text-emerald-400">person</span>
+                      Publicado por: <strong className="text-slate-200">{zoomedBanner.author}</strong>
+                    </span>
+                  )}
+                </div>
                 {zoomedBanner.linkUrl && (
                   <a
                     href={zoomedBanner.linkUrl}

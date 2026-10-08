@@ -41,10 +41,13 @@ function getAvatarColor(name = '') {
 }
 
 /**
- * ArticleComments — Seção de comentários da comunidade escolar com nome/apelido e tempo real.
+ * ArticleComments — Seção de comentários da comunidade com filtro de moderação.
+ * Comentários enviados ficam visíveis apenas para o autor como "Aguardando aprovação".
+ * Outros usuários só visualizam após aprovação do Administrador Geral.
  */
 export default function ArticleComments({ newsId }) {
   const [comments, setComments] = useState([]);
+  const [myPendingComments, setMyPendingComments] = useState([]);
   const [authorName, setAuthorName] = useState('');
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +57,7 @@ export default function ArticleComments({ newsId }) {
   const [fingerprint, setFingerprint] = useState(null);
   const listRef = useRef(null);
 
-  // 1. Carrega dados iniciais do leitor e lista de comentários
+  // 1. Carrega dados do leitor, comentários aprovados públicos e comentários pendentes locais do usuário
   useEffect(() => {
     let isMounted = true;
 
@@ -67,13 +70,31 @@ export default function ArticleComments({ newsId }) {
         try {
           const savedName = localStorage.getItem('educa_commenter_name');
           if (savedName && isMounted) setAuthorName(savedName);
+
+          const savedPending = localStorage.getItem(`educa_pending_comments_${newsId}`);
+          if (savedPending && isMounted) {
+            setMyPendingComments(JSON.parse(savedPending) || []);
+          }
         } catch {}
 
         const res = await fetch(`/api/news/comments?newsId=${newsId}`);
         if (!res.ok) return;
         const data = await res.json();
         if (isMounted) {
-          setComments(data.comments || []);
+          const approved = data.comments || [];
+          setComments(approved);
+
+          // Limpa dos pendentes os comentários que já foram aprovados no banco
+          setMyPendingComments((prev) => {
+            const filtered = prev.filter(
+              (p) => !approved.some((a) => a.id === p.id || (a.content === p.content && a.author_name === p.author_name))
+            );
+            try {
+              localStorage.setItem(`educa_pending_comments_${newsId}`, JSON.stringify(filtered));
+            } catch {}
+            return filtered;
+          });
+
           setIsLoading(false);
         }
       } catch (err) {
@@ -89,7 +110,7 @@ export default function ArticleComments({ newsId }) {
     };
   }, [newsId]);
 
-  // 2. Inscrição no Supabase Realtime para novos comentários aparecerem instantaneamente
+  // 2. Inscrição no Supabase Realtime para comentários aprovados em tempo real
   useEffect(() => {
     if (typeof window === 'undefined' || !newsId) return;
 
@@ -108,11 +129,64 @@ export default function ArticleComments({ newsId }) {
         { event: 'INSERT', schema: 'public', table: 'news_comments', filter: `news_id=eq.${newsId}` },
         (payload) => {
           const newComment = payload.new;
-          setComments((prev) => {
-            // Evita duplicatas se o próprio usuário acabou de inserir
-            if (prev.some((c) => c.id === newComment.id)) return prev;
-            return [...prev, newComment];
-          });
+          // Apenas adiciona à lista pública se foi aprovado!
+          if (newComment && newComment.is_approved) {
+            setComments((prev) => {
+              if (prev.some((c) => c.id === newComment.id)) return prev;
+              return [...prev, newComment];
+            });
+
+            // Se pertencia à fila local de pendentes do usuário, remove
+            setMyPendingComments((prev) => {
+              const updated = prev.filter((p) => p.id !== newComment.id);
+              try {
+                localStorage.setItem(`educa_pending_comments_${newsId}`, JSON.stringify(updated));
+              } catch {}
+              return updated;
+            });
+          }
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'news_comments', filter: `news_id=eq.${newsId}` },
+        (payload) => {
+          const updated = payload.new;
+          if (updated && updated.is_approved) {
+            // Comentário foi aprovado pelo administrador!
+            setComments((prev) => {
+              if (prev.some((c) => c.id === updated.id)) return prev;
+              return [...prev, updated];
+            });
+
+            setMyPendingComments((prev) => {
+              const cleaned = prev.filter((p) => p.id !== updated.id);
+              try {
+                localStorage.setItem(`educa_pending_comments_${newsId}`, JSON.stringify(cleaned));
+              } catch {}
+              return cleaned;
+            });
+          } else if (updated && !updated.is_approved) {
+            // Removido da aprovação
+            setComments((prev) => prev.filter((c) => c.id !== updated.id));
+          }
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: 'DELETE', schema: 'public', table: 'news_comments', filter: `news_id=eq.${newsId}` },
+        (payload) => {
+          const deleted = payload.old;
+          if (deleted && deleted.id) {
+            setComments((prev) => prev.filter((c) => c.id !== deleted.id));
+            setMyPendingComments((prev) => {
+              const cleaned = prev.filter((p) => p.id !== deleted.id);
+              try {
+                localStorage.setItem(`educa_pending_comments_${newsId}`, JSON.stringify(cleaned));
+              } catch {}
+              return cleaned;
+            });
+          }
         }
       )
       .subscribe();
@@ -168,17 +242,26 @@ export default function ArticleComments({ newsId }) {
         return;
       }
 
-      // Adiciona o comentário na lista imediatamente
-      if (data.comment) {
-        setComments((prev) => {
-          if (prev.some((c) => c.id === data.comment.id)) return prev;
-          return [...prev, data.comment];
-        });
-      }
+      // Adiciona o comentário na lista de pendentes DO PRÓPRIO USUÁRIO
+      const newPending = {
+        id: data.comment?.id || `local_${Date.now()}`,
+        author_name: trimmedName,
+        content: trimmedContent,
+        created_at: new Date().toISOString(),
+        is_approved: false,
+        isPending: true,
+      };
+
+      setMyPendingComments((prev) => {
+        const nextPending = [newPending, ...prev];
+        try {
+          localStorage.setItem(`educa_pending_comments_${newsId}`, JSON.stringify(nextPending));
+        } catch {}
+        return nextPending;
+      });
 
       setContent('');
-      setSuccessMsg('Comentário publicado com sucesso!');
-      setTimeout(() => setSuccessMsg(''), 4000);
+      setSuccessMsg('Comentário enviado com sucesso! Ele está aguardando a aprovação do administrador para ser exibido publicamente.');
     } catch {
       setErrorMsg('Erro de conexão ao enviar comentário. Tente novamente.');
     } finally {
@@ -197,7 +280,7 @@ export default function ArticleComments({ newsId }) {
           </h3>
         </div>
         <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-secondary/10 text-secondary border border-secondary/20">
-          {comments.length} {comments.length === 1 ? 'comentário' : 'comentários'}
+          {comments.length} {comments.length === 1 ? 'comentário público' : 'comentários públicos'}
         </span>
       </div>
 
@@ -223,7 +306,7 @@ export default function ArticleComments({ newsId }) {
 
           <div className="flex items-end">
             <span className="text-[11px] text-on-surface-variant/80 pb-2">
-              Seu nome ficará visível junto ao comentário.
+              Seu comentário passará por moderação da administração antes de ser publicado.
             </span>
           </div>
         </div>
@@ -254,9 +337,12 @@ export default function ArticleComments({ newsId }) {
         )}
 
         {successMsg && (
-          <div className="p-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 text-emerald-700 dark:text-emerald-300 text-xs font-semibold flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[16px]">check_circle</span>
-            {successMsg}
+          <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-xs font-medium flex items-start gap-2 shadow-2xs">
+            <span className="material-symbols-outlined text-[18px] text-amber-600 dark:text-amber-400 shrink-0">hourglass_top</span>
+            <div className="flex-1">
+              <strong className="font-bold block mb-0.5">Comentário recebido!</strong>
+              {successMsg}
+            </div>
           </div>
         )}
 
@@ -273,12 +359,65 @@ export default function ArticleComments({ newsId }) {
             <span className="material-symbols-outlined text-[16px]">
               {isSubmitting ? 'progress_activity' : 'send'}
             </span>
-            {isSubmitting ? 'Enviando...' : 'Publicar Comentário'}
+            {isSubmitting ? 'Enviando...' : 'Enviar para Moderação'}
           </button>
         </div>
       </form>
 
-      {/* ── Lista de Comentários Publicados ── */}
+      {/* ── CARD EXCLUSIVO DO USUÁRIO: COMENTÁRIOS DELE AGUARDANDO APROVAÇÃO ── */}
+      {myPendingComments.length > 0 && (
+        <div className="p-4 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/60 flex flex-col gap-3 shadow-2xs">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300">
+              <span className="material-symbols-outlined text-[20px] text-amber-600 dark:text-amber-400">
+                pending_actions
+              </span>
+              <h4 className="text-xs sm:text-sm font-bold">
+                Seu{myPendingComments.length > 1 ? 's comentários estão' : ' comentário está'} aguardando aprovação
+              </h4>
+            </div>
+            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-200/70 dark:bg-amber-900/80 text-amber-900 dark:text-amber-200">
+              {myPendingComments.length} pendente{myPendingComments.length > 1 ? 's' : ''}
+            </span>
+          </div>
+
+          <p className="text-[12px] text-amber-800/80 dark:text-amber-300/80 leading-relaxed">
+            Este conteúdo é visível <strong>apenas para você</strong> neste momento. Assim que o administrador aprovar, ele será publicado para todos os usuários do portal.
+          </p>
+
+          <div className="flex flex-col gap-2.5 pt-1 border-t border-amber-200/60 dark:border-amber-800/40">
+            {myPendingComments.map((pc) => {
+              const initial = (pc.author_name || 'U').charAt(0).toUpperCase();
+              return (
+                <div
+                  key={pc.id || pc.created_at}
+                  className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-amber-300/70 dark:border-amber-800/60 shadow-2xs flex items-start gap-3"
+                >
+                  <div className="w-8 h-8 rounded-full shrink-0 flex items-center justify-center font-bold text-xs bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200">
+                    {initial}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 flex-wrap mb-1">
+                      <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100">
+                        {pc.author_name}
+                      </span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/80 px-2 py-0.5 rounded-md border border-amber-200 dark:border-amber-800/60 flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[12px]">schedule</span>
+                        Aguardando Aprovação
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line wrap-break-word">
+                      {pc.content}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ── Lista de Comentários Aprovados Públicos ── */}
       <div ref={listRef} className="flex flex-col gap-3">
         {isLoading ? (
           <div className="py-8 text-center text-on-surface-variant/60 text-xs animate-pulse flex items-center justify-center gap-2">
@@ -290,9 +429,9 @@ export default function ArticleComments({ newsId }) {
             <span className="material-symbols-outlined text-slate-300 dark:text-slate-600 text-4xl block mb-2">
               chat_bubble_outline
             </span>
-            <p className="text-sm font-semibold text-on-surface">Ainda não há comentários nesta matéria</p>
+            <p className="text-sm font-semibold text-on-surface">Ainda não há comentários aprovados nesta matéria</p>
             <p className="text-xs text-on-surface-variant mt-0.5">
-              Seja o primeiro a compartilhar sua opinião com a rede escolar de Brasiléia!
+              Seja o primeiro a enviar suas considerações para moderação e publicação!
             </p>
           </div>
         ) : (

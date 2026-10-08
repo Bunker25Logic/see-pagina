@@ -18,7 +18,8 @@ function isCommentRateLimited(key, limitMs = 4000) {
 
 /**
  * GET /api/news/comments?newsId=...
- * Retorna os comentários públicos da matéria ordenados cronologicamente.
+ * Retorna apenas os comentários APROVADOS da matéria ordenados cronologicamente.
+ * Comentários pendentes NÃO são exibidos para o público geral.
  */
 export async function GET(request) {
   try {
@@ -32,7 +33,7 @@ export async function GET(request) {
     const supabase = createServerClient();
     const { data, error } = await supabase
       .from('news_comments')
-      .select('id, author_name, content, created_at')
+      .select('id, author_name, content, created_at, is_approved')
       .eq('news_id', newsId)
       .eq('is_approved', true)
       .order('created_at', { ascending: true });
@@ -51,7 +52,8 @@ export async function GET(request) {
 
 /**
  * POST /api/news/comments
- * Cadastra um novo comentário com Nome/Apelido e proteção de taxa.
+ * Cadastra um novo comentário com status is_approved: false (Aguardando moderação).
+ * Só ficará visível publicamente após aprovação do Administrador Geral.
  */
 export async function POST(request) {
   try {
@@ -100,6 +102,7 @@ export async function POST(request) {
 
     const supabase = createServerClient();
 
+    // Inserção com moderação obrigatória: is_approved = false
     const { data, error } = await supabase
       .from('news_comments')
       .insert({
@@ -107,9 +110,9 @@ export async function POST(request) {
         author_name: cleanedName,
         content: cleanedContent,
         device_fingerprint: deviceFingerprint || null,
-        is_approved: true,
+        is_approved: false,
       })
-      .select('id, author_name, content, created_at')
+      .select('id, news_id, author_name, content, created_at, is_approved')
       .single();
 
     if (error) {
@@ -120,7 +123,15 @@ export async function POST(request) {
       );
     }
 
-    return NextResponse.json({ success: true, comment: data });
+    return NextResponse.json({
+      success: true,
+      comment: {
+        ...data,
+        is_approved: false,
+        isPending: true,
+      },
+      message: 'Comentário enviado! Aguardando aprovação da administração.',
+    });
   } catch (err) {
     console.error('[API /api/news/comments POST] Exceção:', err);
     return NextResponse.json(

@@ -22,7 +22,7 @@ import NewsViewBadge from '@/components/news/NewsViewBadge';
 export default function NewsHeroTop({ story }) {
   if (!story) return null;
 
-  const { title, excerpt, category, date, imageUrl, imageAlt, slug, viewsCount = 0 } = story;
+  const { title, excerpt, category, date, author, imageUrl, imageAlt, slug, viewsCount = 0 } = story;
 
   return (
     <article className="group relative rounded-3xl bg-surface-container-lowest border border-outline-variant/70 shadow-md hover:shadow-2xl hover:border-secondary/40 transition-all duration-300 overflow-hidden">
@@ -78,6 +78,13 @@ export default function NewsHeroTop({ story }) {
                 {date}
               </span>
 
+              {author && (
+                <span className="inline-flex items-center gap-1 text-[12px] font-bold text-primary dark:text-amber-400 bg-primary/10 dark:bg-amber-400/10 px-2.5 py-0.5 rounded-full">
+                  <span className="material-symbols-outlined text-[14px]">person</span>
+                  Por {author}
+                </span>
+              )}
+
               <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-medium text-on-surface-variant/80">
                 <span className="material-symbols-outlined text-[14px]">schedule</span>
                 4 min de leitura
@@ -115,7 +122,7 @@ export default function NewsHeroTop({ story }) {
             <div className="flex items-center gap-3">
               <NewsViewBadge count={viewsCount} />
               <span className="text-[11px] font-bold text-outline uppercase tracking-wider hidden sm:inline">
-                SEE-AC Oficial
+                {author ? `Por ${author}` : 'SEE-AC Oficial'}
               </span>
             </div>
           </div>

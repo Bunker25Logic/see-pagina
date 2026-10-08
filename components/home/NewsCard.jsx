@@ -16,7 +16,7 @@ import NewsViewBadge from '@/components/news/NewsViewBadge';
  * }}} props
  */
 export default function NewsCard({ news }) {
-  const { title, excerpt, category, imageUrl, imageAlt, slug } = news;
+  const { title, excerpt, category, date, author, imageUrl, imageAlt, slug } = news;
 
   return (
     <article className="group bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-3.5 sm:p-4 flex flex-col justify-between gap-3 shadow-2xs hover:shadow-md hover:border-secondary/40 transition-all duration-300">
@@ -41,10 +41,19 @@ export default function NewsCard({ news }) {
 
         {/* Conteúdo */}
         <div className="flex flex-col gap-1.5">
-          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-secondary bg-secondary/10 px-2 py-0.5 rounded-full w-fit">
-            <span className="w-1 h-1 rounded-full bg-secondary" />
-            {category}
-          </span>
+          <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-secondary bg-secondary/10 px-2 py-0.5 rounded-full w-fit">
+              <span className="w-1 h-1 rounded-full bg-secondary" />
+              {category}
+            </span>
+
+            {author && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate max-w-[150px]" title={`Publicado por: ${author}`}>
+                <span className="material-symbols-outlined text-[13px] text-secondary">person</span>
+                <span className="truncate">{author}</span>
+              </span>
+            )}
+          </div>
 
           <h3 className="font-editorial text-[16px] sm:text-[17px] font-bold text-primary dark:text-slate-100 group-hover:text-secondary transition-colors leading-snug line-clamp-2">
             <Link

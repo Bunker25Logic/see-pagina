@@ -22,7 +22,7 @@ import NewsViewBadge from '@/components/news/NewsViewBadge';
 export default function NewsTwoColCard({ news }) {
   if (!news) return null;
 
-  const { title, excerpt, category, date, imageUrl, imageAlt, slug, viewsCount = 0 } = news;
+  const { title, excerpt, category, date, author, imageUrl, imageAlt, slug, viewsCount = 0 } = news;
 
   return (
     <article className="group bg-surface-container-lowest border border-outline-variant/65 rounded-2xl p-4 sm:p-4.5 flex flex-col sm:flex-row gap-4 shadow-2xs hover:shadow-lg hover:border-secondary/45 transition-all duration-300">
@@ -58,6 +58,13 @@ export default function NewsTwoColCard({ news }) {
               <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1">
                 <span className="material-symbols-outlined text-[13px]">event</span>
                 {date}
+              </span>
+            )}
+
+            {author && (
+              <span className="text-[11px] font-medium text-slate-600 dark:text-slate-300 flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md" title={`Publicado por: ${author}`}>
+                <span className="material-symbols-outlined text-[13px] text-secondary">person</span>
+                <span className="truncate max-w-32.5">{author}</span>
               </span>
             )}
           </div>
