@@ -279,7 +279,7 @@ export default function CronogramasCalendar({
               >
                 <span className="material-symbols-outlined text-[18px]">chevron_left</span>
               </button>
-              <div className="w-[1px] h-4 bg-slate-200 dark:bg-slate-700" />
+              <div className="w-px h-4 bg-slate-200 dark:bg-slate-700" />
               <button
                 onClick={handleNextMonth}
                 className="p-1 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer"
@@ -386,7 +386,7 @@ export default function CronogramasCalendar({
               <button
                 key={dateKey}
                 onClick={() => onSelectDate?.(dateKey, events)}
-                className={`relative group rounded-lg p-1 sm:p-1.5 border ${containerBg} ${borderColor} min-h-[44px] sm:min-h-[50px] flex flex-col items-center justify-between transition-all duration-200 text-center cursor-pointer focus:outline-hidden focus:ring-1 focus:ring-emerald-500/50 ${
+                className={`relative group rounded-lg p-1 sm:p-1.5 border ${containerBg} ${borderColor} min-h-11 sm:min-h-12.5 flex flex-col items-center justify-between transition-all duration-200 text-center cursor-pointer focus:outline-hidden focus:ring-1 focus:ring-emerald-500/50 ${
                   isToday ? 'ring-1.5 ring-[#163c54] dark:ring-emerald-500 font-bold' : ''
                 } ${hasEvents ? 'shadow-2xs hover:shadow-xs hover:-translate-y-0.5' : ''}`}
                 aria-label={`${day} de ${MONTH_NAMES[cell.month - 1]} de ${cell.year}${
