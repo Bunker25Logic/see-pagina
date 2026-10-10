@@ -177,13 +177,94 @@ body {
   position: relative;
 }
 
+/* ── Scrollbars globais modernas, ultrafinas e elegantes ──────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.7);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.4);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+
+/* Suporte Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
+}
+
+.dark * {
+  scrollbar-color: rgba(100, 116, 139, 0.4) transparent;
+}
+
 /* ── Utilitários customizados ──────────────────────────────────── */
 @layer utilities {
-  /* Esconde scrollbar mantendo a funcionalidade */
+  /* Esconde scrollbar mantendo a funcionalidade de rolagem */
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  /* Scrollbar estilizada ultrafina e charmosa para contêineres laterais */
+  .scrollbar-styled {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.45) transparent;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .scrollbar-styled::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+  .scrollbar-styled::-webkit-scrollbar-track {
+    background: rgba(148, 163, 184, 0.08);
+    border-radius: 9999px;
+  }
+  .scrollbar-styled::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.45);
+    border-radius: 9999px;
+  }
+  .scrollbar-styled::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 116, 139, 0.75);
+  }
+  .dark .scrollbar-styled::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .dark .scrollbar-styled::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.5);
+  }
+  .dark .scrollbar-styled::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.7);
+  }
+
+  /* Efeito de fade nas bordas laterais para contêineres com overflow horizontal */
+  .scroll-fade-x {
+    mask-image: linear-gradient(to right, transparent 0%, black 16px, black calc(100% - 16px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 16px, black calc(100% - 16px), transparent 100%);
+  }
+
+  .scroll-fade-right {
+    mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%);
   }
 
   /* Peso de fonte nos títulos Playfair */

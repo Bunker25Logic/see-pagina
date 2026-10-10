@@ -15,18 +15,20 @@ export default async function CronogramasPage() {
 
   return (
     <div className="w-full max-w-300 mx-auto px-margin-mobile md:px-margin-desktop py-8">
-      {/* ── Cabeçalho da Página ── */}
-      <div className="mb-8 border-b border-outline-variant pb-6">
-        <div className="flex items-center gap-2 text-secondary font-bold text-[12px] uppercase tracking-wider mb-2">
-          <span className="material-symbols-outlined text-[18px]">event_available</span>
+      {/* ── Cabeçalho da Página (Compacto & Elegante) ── */}
+      <div className="mb-5 border-b border-slate-200/80 dark:border-slate-800 pb-4">
+        <div className="flex items-center gap-1.5 text-secondary dark:text-emerald-400 font-bold text-[11px] uppercase tracking-wider mb-1">
+          <span className="material-symbols-outlined text-[15px]">event_available</span>
           Núcleo de Educação de Brasiléia • SEE-AC
         </div>
-        <h1 className="font-editorial text-[30px] md:text-[38px] text-[#0f2938] font-bold leading-tight mb-3">
-          Cronogramas e Calendários Oficiais
-        </h1>
-        <p className="text-slate-600 text-[16px] max-w-3xl leading-relaxed">
-          Acompanhe os prazos pedagógicos, formações continuadas, conselhos de classe e atividades esportivas e culturais da rede estadual em Brasiléia.
-        </p>
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
+          <h1 className="font-editorial text-[22px] sm:text-[26px] text-[#0f2938] dark:text-slate-100 font-bold leading-tight">
+            Cronogramas e Calendários Oficiais
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 text-[12.5px] sm:text-[13px] leading-snug">
+            Prazos pedagógicos, formações continuadas e eventos da rede estadual.
+          </p>
+        </div>
       </div>
 
       {/* ── Componente Interativo com Filtros e Abas ── */}

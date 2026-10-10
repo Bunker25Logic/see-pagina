@@ -49,7 +49,7 @@ export default function NewsTwoColList({ news = [] }) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 bg-surface-container-low/70 dark:bg-slate-900/60 p-3 sm:p-4 rounded-2xl border border-outline-variant/50 transition-colors">
 
         {/* Pílulas de Categoria */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-styled pb-1.5 sm:pb-0">
           <button
             type="button"
             onClick={() => setSelectedCategory('all')}

@@ -143,7 +143,7 @@ export default function SchoolsExplorer({ schools = [] }) {
       <div className="bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col gap-4">
         {/* Linha 1: Abas de Nível de Ensino (Segmented Controls) */}
         <div className="flex items-center justify-between flex-wrap gap-3 border-b border-slate-100 dark:border-slate-800/80 pb-3">
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-styled py-1">
             <button
               type="button"
               onClick={() => setSelectedLevel('all')}
