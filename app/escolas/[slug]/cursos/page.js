@@ -9,7 +9,12 @@ export const revalidate = 0;
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const schools = await getAllSchools();
-  const school = schools.find((s) => s.slug === slug);
+  let school = schools.find((s) => s.slug === slug);
+
+  if (!school) {
+    const { FALLBACK_SCHOOLS } = await import('@/lib/schools');
+    school = FALLBACK_SCHOOLS.find((s) => s.slug === slug) || FALLBACK_SCHOOLS.find((s) => s.offersCourses);
+  }
 
   if (!school) {
     return {
@@ -27,13 +32,21 @@ export async function generateMetadata({ params }) {
 export default async function SchoolCoursesPage({ params }) {
   const { slug } = await params;
   const schools = await getAllSchools();
-  const school = schools.find((s) => s.slug === slug);
+  let school = schools.find((s) => s.slug === slug);
 
-  if (!school) {
-    notFound();
+  if (!school && (slug === 'cursos' || slug?.includes('curso') || slug?.includes('profissional'))) {
+    school = schools.find((s) => s.offersCourses) || schools.find((s) => s.slug === 'centro-educacao-profissional-tecnologica-brasileia');
   }
 
-  const courses = await getCoursesBySchool(slug);
+  if (!school) {
+    const { FALLBACK_SCHOOLS } = await import('@/lib/schools');
+    school =
+      FALLBACK_SCHOOLS.find((s) => s.slug === slug) ||
+      FALLBACK_SCHOOLS.find((s) => s.offersCourses) ||
+      FALLBACK_SCHOOLS[FALLBACK_SCHOOLS.length - 1];
+  }
+
+  const courses = await getCoursesBySchool(school?.slug || slug);
 
   return (
     <div className="w-full min-h-[calc(100vh-140px)] bg-slate-50/50 dark:bg-[#08121a] py-8 sm:py-12 transition-colors">

@@ -8,6 +8,7 @@ const navLinks = [
   { href: '/', label: 'Início' },
   { href: '/noticias', label: 'Notícias' },
   { href: '/escolas', label: 'Instituições' },
+  { href: '/cursos', label: 'Cursos Gratuitos' },
   { href: '/cronogramas', label: 'Cronogramas' },
   { href: '/calendario', label: 'Calendário' },
 ];
