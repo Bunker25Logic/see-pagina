@@ -1,11 +1,18 @@
 'use client';
 
 import { useState, useId } from 'react';
+import Link from 'next/link';
 
 /**
  * Paletas de cores institucionais personalizadas para cada escola de Brasiléia.
  */
 const SCHOOL_THEMES = {
+  'centro-educacao-profissional-tecnologica-brasileia': {
+    initials: 'EP',
+    gradient: 'from-indigo-600 via-blue-700 to-indigo-900',
+    accentColor: 'text-indigo-700 dark:text-indigo-400',
+    badgeBg: 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800/40',
+  },
   'escola-coronel-manoel-fontenele-de-castro': {
     initials: 'CF',
     gradient: 'from-emerald-600 via-emerald-700 to-teal-800',
@@ -49,7 +56,18 @@ const SCHOOL_THEMES = {
  * Destaca o brasão da unidade, dados da direção, quantitativo e canais oficiais.
  */
 export default function SchoolCard({ school, viewMode = 'grid' }) {
-  const { name, type, principal, coordinator, coordinatorPhone, phone, address, studentCount, slug } = school;
+  const {
+    name,
+    type,
+    principal,
+    coordinator,
+    coordinatorPhone,
+    phone,
+    address,
+    studentCount,
+    slug,
+    offersCourses,
+  } = school;
   const [copied, setCopied] = useState(false);
   const cardId = useId();
 
@@ -132,6 +150,36 @@ export default function SchoolCard({ school, viewMode = 'grid' }) {
             </div>
           )}
         </div>
+
+        {/* Aba Exclusiva de Cursos Disponíveis quando a instituição oferece serviços de cursos */}
+        {offersCourses && (
+          <div className="pt-0.5">
+            <Link
+              href={`/escolas/${slug}/cursos`}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-linear-to-r from-indigo-500/10 via-blue-500/10 to-teal-500/10 hover:from-indigo-500/20 hover:to-teal-500/20 dark:from-indigo-950/60 dark:to-teal-950/60 border border-indigo-200/90 dark:border-indigo-800/80 text-indigo-700 dark:text-indigo-300 text-xs font-bold transition-all shadow-2xs hover:shadow-xs hover:border-indigo-400 dark:hover:border-indigo-600 group/courseTab"
+              title={`Acessar aba exclusiva de cursos disponíveis na ${name}`}
+            >
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-500 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600 dark:bg-indigo-400" />
+              </span>
+              <span className="font-extrabold text-indigo-900 dark:text-indigo-100">
+                Cursos Disponíveis
+              </span>
+              <span className="text-[10px] uppercase tracking-wider font-black px-1.5 py-0.5 rounded-md bg-indigo-600 text-white dark:bg-indigo-500">
+                Vagas Gratuitas
+              </span>
+              <svg
+                className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 group-hover/courseTab:translate-x-0.5 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+        )}
 
         {/* Nome da Escola */}
         <div>
@@ -285,21 +333,36 @@ export default function SchoolCard({ school, viewMode = 'grid' }) {
           <span className="text-xs text-slate-400 italic">Contato pelo Núcleo SEE</span>
         )}
 
-        {/* Botão de WhatsApp Oficial da Escola */}
-        {whatsappUrl && (
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all duration-200"
-          >
-            {/* Ícone oficial do WhatsApp */}
-            <svg className="w-4 h-4 fill-white shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12.004 2C6.48 2 2 6.48 2 12.004c0 1.763.46 3.486 1.332 5.006L2 22l5.12-1.306A9.957 9.957 0 0 0 12.004 22c5.523 0 10.004-4.48 10.004-9.996C22.008 6.48 17.527 2 12.004 2zm5.82 14.343c-.244.684-1.215 1.306-1.996 1.472-.534.113-1.233.203-3.578-.772-2.993-1.246-4.925-4.29-5.074-4.488-.148-.198-1.215-1.616-1.215-3.082 0-1.466.768-2.188 1.04-2.486.273-.298.595-.373.794-.373.199 0 .397.002.57.01.184.01.43-.07.672.511.248.595.845 2.062.919 2.211.074.149.124.323.025.522-.099.199-.149.323-.298.497-.148.174-.313.389-.447.522-.149.149-.304.31-.13.61.173.298.774 1.277 1.662 2.067 1.144 1.018 2.106 1.334 2.404 1.482.298.149.472.124.646-.074.174-.199.744-.868.943-1.166.198-.298.397-.248.67-.149.273.099 1.737.82 2.035.969.298.149.496.223.57.347.075.124.075.72-.169 1.404z" />
-            </svg>
-            <span>Falar no WhatsApp</span>
-          </a>
-        )}
+        <div className="flex flex-wrap items-center gap-2">
+          {offersCourses && (
+            <Link
+              href={`/escolas/${slug}/cursos`}
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all duration-200"
+              title="Acessar página exclusiva de cursos disponíveis"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              <span>Ver Cursos & Vagas</span>
+            </Link>
+          )}
+
+          {/* Botão de WhatsApp Oficial da Escola */}
+          {whatsappUrl && (
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all duration-200"
+            >
+              {/* Ícone oficial do WhatsApp */}
+              <svg className="w-4 h-4 fill-white shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12.004 2C6.48 2 2 6.48 2 12.004c0 1.763.46 3.486 1.332 5.006L2 22l5.12-1.306A9.957 9.957 0 0 0 12.004 22c5.523 0 10.004-4.48 10.004-9.996C22.008 6.48 17.527 2 12.004 2zm5.82 14.343c-.244.684-1.215 1.306-1.996 1.472-.534.113-1.233.203-3.578-.772-2.993-1.246-4.925-4.29-5.074-4.488-.148-.198-1.215-1.616-1.215-3.082 0-1.466.768-2.188 1.04-2.486.273-.298.595-.373.794-.373.199 0 .397.002.57.01.184.01.43-.07.672.511.248.595.845 2.062.919 2.211.074.149.124.323.025.522-.099.199-.149.323-.298.497-.148.174-.313.389-.447.522-.149.149-.304.31-.13.61.173.298.774 1.277 1.662 2.067 1.144 1.018 2.106 1.334 2.404 1.482.298.149.472.124.646-.074.174-.199.744-.868.943-1.166.198-.298.397-.248.67-.149.273.099 1.737.82 2.035.969.298.149.496.223.57.347.075.124.075.72-.169 1.404z" />
+              </svg>
+              <span>Falar no WhatsApp</span>
+            </a>
+          )}
+        </div>
       </div>
     </article>
   );

@@ -22,7 +22,12 @@ export default function SchoolsExplorer({ schools = [] }) {
   );
 
   const fundamentalCount = useMemo(
-    () => schools.filter((s) => !s.type?.toLowerCase().includes('médio')).length,
+    () => schools.filter((s) => !s.type?.toLowerCase().includes('médio') && !s.offersCourses).length,
+    [schools]
+  );
+
+  const coursesSchoolsCount = useMemo(
+    () => schools.filter((s) => s.offersCourses).length,
     [schools]
   );
 
@@ -31,10 +36,13 @@ export default function SchoolsExplorer({ schools = [] }) {
     return schools
       .filter((school) => {
         // Filtro por modalidade de ensino
+        if (selectedLevel === 'cursos' && !school.offersCourses) {
+          return false;
+        }
         if (selectedLevel === 'fundamental-medio' && !school.type?.toLowerCase().includes('médio')) {
           return false;
         }
-        if (selectedLevel === 'fundamental' && school.type?.toLowerCase().includes('médio')) {
+        if (selectedLevel === 'fundamental' && (school.type?.toLowerCase().includes('médio') || school.offersCourses)) {
           return false;
         }
 
@@ -46,7 +54,8 @@ export default function SchoolsExplorer({ schools = [] }) {
           school.name?.toLowerCase().includes(query) ||
           school.principal?.toLowerCase().includes(query) ||
           school.shortName?.toLowerCase().includes(query) ||
-          school.address?.toLowerCase().includes(query);
+          school.address?.toLowerCase().includes(query) ||
+          (school.offersCourses && 'cursos gratuitos vagas faculdade'.includes(query));
 
         return matchesQuery;
       })
@@ -176,6 +185,18 @@ export default function SchoolsExplorer({ schools = [] }) {
               }`}
             >
               Ensino Fundamental ({fundamentalCount})
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedLevel('cursos')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
+                selectedLevel === 'cursos'
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/60'
+              }`}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+              Cursos Gratuitos ({coursesSchoolsCount})
             </button>
           </div>
 
