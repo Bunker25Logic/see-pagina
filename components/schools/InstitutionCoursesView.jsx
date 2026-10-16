@@ -377,7 +377,7 @@ export default function InstitutionCoursesView({ school, courses = [] }) {
       {/* ── LISTAGEM DOS CURSOS DISPONÍVEIS & VAGAS ── */}
       <section>
         {filteredCourses.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {filteredCourses.map((course) => {
               const occupancy = course.totalVacancies > 0
                 ? Math.min(100, Math.round((course.filledVacancies / course.totalVacancies) * 100))
@@ -389,96 +389,146 @@ export default function InstitutionCoursesView({ school, courses = [] }) {
               return (
                 <article
                   key={course.id}
-                  className="bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-6 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between gap-5 relative overflow-hidden group"
+                  className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-6 sm:p-7 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between gap-6 relative overflow-hidden group"
                 >
-                  {/* Faixa decorativa no topo */}
+                  {/* Faixa decorativa superior */}
                   <div
                     className={`absolute top-0 left-0 right-0 h-1.5 bg-linear-to-r ${
                       isFull
                         ? 'from-slate-400 to-slate-500'
                         : isLow
                         ? 'from-amber-500 to-rose-500'
-                        : 'from-indigo-600 to-teal-500'
+                        : 'from-indigo-600 via-sky-500 to-emerald-500'
                     }`}
                   />
 
-                  <div className="flex flex-col gap-3.5">
-                    {/* Topo do Card: Categoria + Badge de Status */}
+                  {/* ── SEÇÃO 1: CABEÇALHO, ÁREA & TÍTULO DO CURSO ── */}
+                  <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between gap-2 flex-wrap">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/40">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/50">
                         {course.category}
                       </span>
 
-                      {/* Status das Vagas */}
+                      {/* Status das Vagas com Indicador Vivo */}
                       {isFull ? (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
-                          Vagas Esgotadas
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                          Turma Esgotada
                         </span>
                       ) : isLow ? (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40 animate-pulse">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-50 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 animate-pulse">
+                          <span className="w-2 h-2 rounded-full bg-amber-500" />
                           Últimas Vagas!
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                           Inscrições Abertas
                         </span>
                       )}
                     </div>
 
-                    {/* Título do Curso */}
                     <h2 className="font-editorial text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-snug">
                       {course.title}
                     </h2>
 
-                    {/* Descrição / Ementa */}
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                       {course.description}
                     </p>
-
-                    {/* Ficha Rápida: Carga Horária, Turno e Modalidade */}
-                    <div className="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 dark:border-slate-800/80 text-xs">
-                      <div className="flex flex-col">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Carga Horária</span>
-                        <strong className="text-slate-800 dark:text-slate-200 font-semibold">{course.workload}</strong>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Turno</span>
-                        <strong className="text-slate-800 dark:text-slate-200 font-semibold">{course.shift}</strong>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Modalidade</span>
-                        <strong className="text-slate-800 dark:text-slate-200 font-semibold">{course.modality}</strong>
-                      </div>
-                    </div>
-
-                    {/* Requisitos */}
-                    {course.requirements && (
-                      <div className="text-xs text-slate-500 dark:text-slate-400 flex items-start gap-1.5 bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800">
-                        <svg className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>Requisitos: <strong>{course.requirements}</strong></span>
-                      </div>
-                    )}
                   </div>
 
-                  {/* ── BLOCO DE CONTROLE E VISUALIZAÇÃO DE VAGAS DISPONÍVEIS ── */}
-                  <div className="flex flex-col gap-3 pt-2">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-slate-600 dark:text-slate-300">
-                        Disponibilidade de Vagas
+                  {/* ── SEÇÃO 2: FORMATO ACADÊMICO & ESPECIFICAÇÕES (BEM SEPARADAS) ── */}
+                  <div className="bg-slate-50/90 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 rounded-2xl p-4 grid grid-cols-3 gap-3 divide-x divide-slate-200 dark:divide-slate-700/60">
+                    <div className="flex flex-col pl-1 first:pl-0">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1">
+                        <svg className="w-3 h-3 text-indigo-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Carga
                       </span>
-                      <span className="font-bold text-slate-900 dark:text-slate-100">
-                        <strong className={`text-base ${isFull ? 'text-slate-400' : isLow ? 'text-amber-600' : 'text-emerald-600'}`}>
-                          {course.availableVacancies}
-                        </strong> / {course.totalVacancies} disponíveis
-                      </span>
+                      <strong className="text-slate-900 dark:text-slate-100 font-extrabold text-sm sm:text-base mt-0.5">
+                        {course.workload}
+                      </strong>
                     </div>
 
-                    {/* Barra de Progresso de Vagas */}
-                    <div className="w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200/80 dark:border-slate-700">
+                    <div className="flex flex-col pl-3">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1">
+                        <svg className="w-3 h-3 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        Turno
+                      </span>
+                      <strong className="text-slate-900 dark:text-slate-100 font-extrabold text-sm sm:text-base mt-0.5">
+                        {course.shift}
+                      </strong>
+                    </div>
+
+                    <div className="flex flex-col pl-3">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1">
+                        <svg className="w-3 h-3 text-emerald-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        Modalidade
+                      </span>
+                      <strong className="text-slate-900 dark:text-slate-100 font-extrabold text-sm sm:text-base mt-0.5">
+                        {course.modality}
+                      </strong>
+                    </div>
+                  </div>
+
+                  {/* ── SEÇÃO 3: REQUISITOS MÍNIMOS DE INGRESSO ── */}
+                  {course.requirements && (
+                    <div className="text-xs text-slate-600 dark:text-slate-300 flex items-start gap-2.5 bg-indigo-50/50 dark:bg-indigo-950/30 p-3 rounded-xl border border-indigo-100 dark:border-indigo-900/50">
+                      <svg className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                      <div>
+                        <span className="font-bold text-indigo-900 dark:text-indigo-200">Requisitos para Ingresso: </span>
+                        <span>{course.requirements}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ── SEÇÃO 4: COCKPIT DE CONTROLE DE VAGAS EM TEMPO REAL ── */}
+                  <div
+                    className={`rounded-2xl p-4 sm:p-5 flex flex-col gap-3.5 border transition-all ${
+                      isFull
+                        ? 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700'
+                        : isLow
+                        ? 'bg-linear-to-br from-amber-50/70 via-orange-50/40 to-white dark:from-amber-950/30 dark:via-orange-950/20 dark:to-slate-900 border-amber-200 dark:border-amber-800/60'
+                        : 'bg-linear-to-br from-emerald-50/70 via-teal-50/40 to-white dark:from-emerald-950/30 dark:via-teal-950/20 dark:to-slate-900 border-emerald-200 dark:border-emerald-800/60'
+                    }`}
+                  >
+                    <div className="flex items-baseline justify-between">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                          Disponibilidade de Vagas
+                        </span>
+                        <div className="flex items-baseline gap-2 mt-0.5">
+                          <span
+                            className={`text-2xl sm:text-3xl font-black ${
+                              isFull ? 'text-slate-400' : isLow ? 'text-amber-600' : 'text-emerald-600'
+                            }`}
+                          >
+                            {course.availableVacancies}
+                          </span>
+                          <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+                            vagas livres de {course.totalVacancies}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-slate-700 dark:text-slate-200">
+                          {course.filledVacancies} ocupadas
+                        </span>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                          {occupancy}% preenchido
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Barra de Progresso com Cantos Arredondados */}
+                    <div className="w-full h-2.5 bg-slate-200/80 dark:bg-slate-700/60 rounded-full overflow-hidden">
                       <div
                         className={`h-full transition-all duration-500 rounded-full ${
                           isFull
@@ -488,53 +538,52 @@ export default function InstitutionCoursesView({ school, courses = [] }) {
                             : 'bg-linear-to-r from-emerald-500 to-teal-500'
                         }`}
                         style={{ width: `${occupancy}%` }}
-                        title={`${occupancy}% das vagas preenchidas`}
                       />
                     </div>
 
-                    {/* Datas / Previsão */}
-                    <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1">
+                    {/* Datas Oficiais */}
+                    <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200/60 dark:border-slate-700/40">
                       {course.registrationEnd && (
-                        <span>Inscrições até: <strong>{new Date(course.registrationEnd).toLocaleDateString('pt-BR')}</strong></span>
+                        <span>Inscrições até: <strong className="text-slate-700 dark:text-slate-300">{new Date(course.registrationEnd).toLocaleDateString('pt-BR')}</strong></span>
                       )}
                       {course.classesStart && (
-                        <span>Aulas em: <strong>{new Date(course.classesStart).toLocaleDateString('pt-BR')}</strong></span>
+                        <span>Aulas em: <strong className="text-slate-700 dark:text-slate-300">{new Date(course.classesStart).toLocaleDateString('pt-BR')}</strong></span>
                       )}
                     </div>
+                  </div>
 
-                    {/* Ação: Botão de Inscrição / Interesse */}
-                    <div className="pt-2 flex items-center justify-between gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleOpenEnrollment(course)}
-                        disabled={isFull}
-                        className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs shadow-xs transition-all cursor-pointer ${
-                          isFull
-                            ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
-                            : 'bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white shadow-indigo-500/20 hover:shadow-md'
-                        }`}
+                  {/* ── SEÇÃO 5: AÇÕES E ATENDIMENTO ── */}
+                  <div className="flex items-center justify-between gap-3 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenEnrollment(course)}
+                      disabled={isFull}
+                      className={`flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-xs sm:text-sm shadow-xs transition-all cursor-pointer ${
+                        isFull
+                          ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
+                          : 'bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white shadow-indigo-500/20 hover:shadow-md'
+                      }`}
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>{isFull ? 'Vagas Esgotadas' : 'Garantir Vaga Gratuita'}</span>
+                    </button>
+
+                    {whatsappUrl && (
+                      <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors shrink-0"
+                        title="Tirar dúvidas sobre este curso com a coordenação no WhatsApp"
+                        aria-label="Tirar dúvidas no WhatsApp"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <svg className="w-5 h-5 fill-[#25D366]" viewBox="0 0 24 24">
+                          <path d="M12.004 2C6.48 2 2 6.48 2 12.004c0 1.763.46 3.486 1.332 5.006L2 22l5.12-1.306A9.957 9.957 0 0 0 12.004 22c5.523 0 10.004-4.48 10.004-9.996C22.008 6.48 17.527 2 12.004 2zm5.82 14.343c-.244.684-1.215 1.306-1.996 1.472-.534.113-1.233.203-3.578-.772-2.993-1.246-4.925-4.29-5.074-4.488-.148-.198-1.215-1.616-1.215-3.082 0-1.466.768-2.188 1.04-2.486.273-.298.595-.373.794-.373.199 0 .397.002.57.01.184.01.43-.07.672.511.248.595.845 2.062.919 2.211.074.149.124.323.025.522-.099.199-.149.323-.298.497-.148.174-.313.389-.447.522-.149.149-.304.31-.13.61.173.298.774 1.277 1.662 2.067 1.144 1.018 2.106 1.334 2.404 1.482.298.149.472.124.646-.074.174-.199.744-.868.943-1.166.198-.298.397-.248.67-.149.273.099 1.737.82 2.035.969.298.149.496.223.57.347.075.124.075.72-.169 1.404z" />
                         </svg>
-                        <span>{isFull ? 'Lista de Espera / Esgotado' : 'Garantir Vaga Gratuita'}</span>
-                      </button>
-
-                      {whatsappUrl && (
-                        <a
-                          href={whatsappUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors"
-                          title="Tirar dúvidas sobre este curso com o polo no WhatsApp"
-                          aria-label="Tirar dúvidas no WhatsApp"
-                        >
-                          <svg className="w-4 h-4 fill-[#25D366]" viewBox="0 0 24 24">
-                            <path d="M12.004 2C6.48 2 2 6.48 2 12.004c0 1.763.46 3.486 1.332 5.006L2 22l5.12-1.306A9.957 9.957 0 0 0 12.004 22c5.523 0 10.004-4.48 10.004-9.996C22.008 6.48 17.527 2 12.004 2zm5.82 14.343c-.244.684-1.215 1.306-1.996 1.472-.534.113-1.233.203-3.578-.772-2.993-1.246-4.925-4.29-5.074-4.488-.148-.198-1.215-1.616-1.215-3.082 0-1.466.768-2.188 1.04-2.486.273-.298.595-.373.794-.373.199 0 .397.002.57.01.184.01.43-.07.672.511.248.595.845 2.062.919 2.211.074.149.124.323.025.522-.099.199-.149.323-.298.497-.148.174-.313.389-.447.522-.149.149-.304.31-.13.61.173.298.774 1.277 1.662 2.067 1.144 1.018 2.106 1.334 2.404 1.482.298.149.472.124.646-.074.174-.199.744-.868.943-1.166.198-.298.397-.248.67-.149.273.099 1.737.82 2.035.969.298.149.496.223.57.347.075.124.075.72-.169 1.404z" />
-                          </svg>
-                        </a>
-                      )}
-                    </div>
+                      </a>
+                    )}
                   </div>
                 </article>
               );
