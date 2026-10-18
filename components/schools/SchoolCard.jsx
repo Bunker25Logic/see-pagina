@@ -153,24 +153,33 @@ export default function SchoolCard({ school, viewMode = 'grid' }) {
 
         {/* Selo Institucional do Polo Oficial de Cursos Gratuitos */}
         {offersCourses && (
-          <div className="rounded-xl p-3 bg-linear-to-r from-indigo-50/90 via-sky-50/60 to-emerald-50/60 dark:from-indigo-950/50 dark:via-sky-950/30 dark:to-emerald-950/30 border border-indigo-200/90 dark:border-indigo-800/80 flex items-center gap-3 shadow-2xs">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-              <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            <div className="flex flex-col min-w-0">
-              <div className="flex items-center gap-1.5 flex-wrap">
+          <div className="rounded-2xl p-4 bg-linear-to-r from-indigo-50/95 via-sky-50/70 to-emerald-50/70 dark:from-indigo-950/60 dark:via-sky-950/40 dark:to-emerald-950/40 border border-indigo-200/90 dark:border-indigo-800/80 flex flex-col gap-2.5 shadow-xs">
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
                 <span className="text-[11px] font-black uppercase tracking-wider text-indigo-900 dark:text-indigo-200">
-                  Polo de Cursos Gratuitos
-                </span>
-                <span className="px-1.5 py-0.5 rounded-md bg-emerald-600 text-white text-[9px] font-black uppercase tracking-wider leading-none">
-                  Vagas Abertas
+                  Polo de Cursos Gratuitos do Estado
                 </span>
               </div>
-              <span className="text-xs text-slate-600 dark:text-slate-300 truncate">
-                Formação profissional pública com inscrições presenciais
+              <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider leading-none animate-pulse">
+                Inscrições Abertas
               </span>
+            </div>
+
+            {/* Chips de cursos em destaque */}
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {['Informática Básica', 'Assistente Administrativo', 'Redes & Manutenção', 'Marketing Digital', 'Cuidador de Idosos', 'Inglês Básico'].map((cName) => (
+                <span
+                  key={cName}
+                  className="px-2 py-0.5 rounded-md bg-white/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border border-indigo-100 dark:border-indigo-900 text-[10px] font-semibold"
+                >
+                  {cName}
+                </span>
+              ))}
             </div>
           </div>
         )}

@@ -25,7 +25,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `Cursos Disponíveis — ${school.shortName || school.name} | Educa Brasiléia`,
-    description: `Confira os cursos gratuitos disponíveis, quantitativo de vagas abertas e faça sua pré-inscrição na ${school.name} pelo Núcleo de Educação de Brasiléia (SEE/AC).`,
+    description: `Confira os cursos gratuitos disponíveis, o quantitativo de vagas abertas e as orientações para matrícula presencial no ${school.name} pelo Núcleo de Educação de Brasiléia (SEE/AC).`,
   };
 }
 

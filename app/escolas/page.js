@@ -1,4 +1,5 @@
 import { getAllSchools } from '@/lib/schools';
+import { getAllCourses } from '@/lib/courses';
 import SchoolsExplorer from '@/components/schools/SchoolsExplorer';
 
 export const metadata = {
@@ -13,8 +14,12 @@ export const revalidate = 0; // atualização instantânea a cada request / rout
 /**
  * EscolasPage — Painel de excelência das instituições de ensino da rede estadual de Brasiléia.
  */
-export default async function EscolasPage() {
-  const schools = await getAllSchools();
+export default async function EscolasPage({ searchParams }) {
+  const { tab } = (await searchParams) || {};
+  const [schools, courses] = await Promise.all([
+    getAllSchools(),
+    getAllCourses(),
+  ]);
 
   return (
     <div className="w-full min-h-[calc(100vh-140px)] bg-slate-50/50 dark:bg-[#08121a] transition-colors">
@@ -74,7 +79,11 @@ export default async function EscolasPage() {
 
       {/* ── CONTEÚDO PRINCIPAL: MOSAICO, FILTROS E CARDS ── */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <SchoolsExplorer schools={schools} />
+        <SchoolsExplorer
+          schools={schools}
+          initialCourses={courses}
+          defaultSection={tab === 'cursos' ? 'cursos' : 'escolas'}
+        />
       </main>
     </div>
   );
