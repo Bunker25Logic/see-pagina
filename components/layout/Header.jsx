@@ -24,8 +24,8 @@ export default async function Header() {
       <div className="w-full max-w-300 mx-auto px-margin-mobile md:px-margin-desktop py-2 sm:py-3">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2.5 sm:gap-4">
 
-          {/* Lado Esquerdo no Desktop / Topo no Mobile (Logo Institucional) */}
-          <div className="flex items-center justify-between lg:justify-start lg:w-1/4 min-w-0 shrink-0">
+          {/* Lado Esquerdo: Logo Institucional */}
+          <div className="flex items-center justify-between lg:justify-start shrink-0 min-w-0">
             <Link
               href="/"
               className="group flex items-center gap-2.5 sm:gap-3 transition-opacity hover:opacity-95 min-w-0"
@@ -40,13 +40,13 @@ export default async function Header() {
             </div>
           </div>
 
-          {/* Centro Perfeito: Abas de Navegação (Início, Notícias, Instituições, Cronogramas) */}
-          <div className="w-full lg:flex-1 flex items-center justify-center min-w-0">
+          {/* Centro: Abas de Navegação perfeitamente encaixadas sem rolagem no PC */}
+          <div className="w-full lg:flex-1 flex items-center justify-center min-w-0 px-2 lg:px-6">
             <NavLinks />
           </div>
 
-          {/* Lado Direito no Desktop: Alternador de Tema (Simetria de 1/4) */}
-          <div className="hidden lg:flex items-center justify-end lg:w-1/4 shrink-0 text-slate-500">
+          {/* Lado Direito: Alternador de Tema */}
+          <div className="hidden lg:flex items-center justify-end shrink-0 text-slate-500">
             <ThemeToggle size={34} />
           </div>
 
