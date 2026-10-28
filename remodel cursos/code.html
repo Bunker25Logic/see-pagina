@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Instituições da Rede Estadual - Educa Brasiléia · SEE-AC</title>
+<!-- Tailwind CSS CDN com plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter e Merriweather para títulos serifados elegantes -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Merriweather:wght@700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Merriweather', 'serif'],
+          },
+          colors: {
+            'gov-navy': '#0F1E36',
+            'gov-emerald': '#047857',
+            'gov-teal': '#0E7490',
+            'wa-green': '#25D366',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-decorations">
+    /* Efeito de transição suave em cards e botões interativos */
+    .school-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .school-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -6px rgba(15, 30, 54, 0.08);
+    }
+    /* Estilização customizada da barra de rolagem */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<!-- BEGIN: Topbar & Header -->
+<header class="bg-white border-b border-slate-200 sticky top-0 z-40" data-purpose="main-header">
+<!-- Faixa superior com clima e utilitários -->
+<div class="bg-slate-900 text-slate-300 text-xs py-1.5 px-4 sm:px-8 flex justify-between items-center">
+<div class="flex items-center space-x-3">
+<span class="inline-flex items-center text-emerald-400 font-medium">
+<svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+          Portal Oficial do Governo do Estado do Acre · SEE-AC
+        </span>
+<span class="hidden md:inline text-slate-500">|</span>
+<span class="hidden md:inline text-slate-300">Núcleo Regional de Educação de Brasiléia</span>
+</div>
+<div class="flex items-center space-x-4">
+<!-- Indicador de clima e data local -->
+<div class="flex items-center space-x-1.5">
+<svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="font-medium text-slate-200">24°C Brasiléia · AC</span>
+</div>
+</div>
+</div>
+<!-- Navegação Primária -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-16">
+<!-- Logo Institucional -->
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold shadow-md shadow-emerald-500/20">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 14l9-5-9-5-9 5 9 5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<div>
+<div class="flex items-center space-x-1.5">
+<span class="text-base font-bold text-slate-900 tracking-tight">Educa Brasiléia</span>
+<span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">SEE-AC</span>
+</div>
+<p class="text-xs text-slate-500">Núcleo de Educação de Brasiléia</p>
+</div>
+</div>
+<!-- Links de Navegação -->
+<nav aria-label="Menu principal" class="hidden md:flex items-center space-x-1">
+<a class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 rounded-lg transition" href="#">Início</a>
+<a class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 rounded-lg transition" href="#">Notícias</a>
+<a aria-current="page" class="px-3.5 py-2 text-sm font-semibold text-emerald-700 bg-emerald-50/80 rounded-lg border border-emerald-200/60 shadow-xs transition" href="#">
+            Instituições
+          </a>
+<a class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 rounded-lg transition" href="#">Cronogramas</a>
+<a class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-emerald-700 rounded-lg transition" href="#">Calendário</a>
+</nav>
+<!-- Acesso rápido e canais -->
+<div class="flex items-center space-x-3">
+<a class="hidden sm:inline-flex items-center space-x-1.5 text-xs font-semibold text-emerald-700 bg-white border border-emerald-300 hover:bg-emerald-50 px-3 py-1.5 rounded-full transition shadow-xs" href="#contato">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span>Canais Oficiais</span>
+</a>
+<button aria-label="Abrir menu de busca" class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- END: Topbar & Header -->
+<!-- BEGIN: Hero & Seção de Destaque -->
+<section class="bg-gradient-to-b from-slate-100/90 to-[#F8FAFC] pt-8 pb-4 border-b border-slate-200/60" data-purpose="hero-section">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Cabeçalho descritivo com contadores visuais -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6">
+<div>
+<nav class="flex items-center text-xs text-slate-500 mb-2 space-x-2">
+<span>SEE-AC</span>
+<span>/</span>
+<span>Município de Brasiléia</span>
+<span>/</span>
+<span class="text-emerald-700 font-medium">Rede Estadual de Ensino</span>
+</nav>
+<h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Instituições da Rede Estadual
+          </h1>
+<p class="mt-2 text-sm sm:text-base text-slate-600 max-w-2xl leading-relaxed">
+            Consulte os dados cadastrais, canais diretos de atendimento por WhatsApp, equipe gestora e modalidades de ensino das unidades escolares em Brasiléia.
+          </p>
+</div>
+<!-- Estatísticas resumidas rápidas -->
+<div class="flex flex-wrap items-center gap-3"><div class="bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-3"><div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">6</div><div><p class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Cursos Ofertados</p><p class="text-xs font-semibold text-slate-800">Gratuitos e com Vagas</p></div></div><div class="bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-3"><div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-sm">480</div><div><p class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Vagas Abertas</p><p class="text-xs font-semibold text-slate-800">Turmas 2026/1</p></div></div><div class="bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-3"><div class="w-8 h-8 rounded-lg bg-green-50 text-emerald-600 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewbox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.149.929 3.182 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.941-.708-1.794s.448-1.273.607-1.446c.16-.174.348-.217.464-.217.116 0 .232.001.333.006.106.005.249-.04.39.299.145.348.492 1.2.535 1.288.043.087.072.188.014.304-.058.116-.087.188-.174.29-.087.101-.184.227-.263.305-.088.086-.179.18-.077.355.101.174.45 1.018 1.222 1.705.992.884 1.828 1.157 2.088 1.288.261.13.414.116.568-.058.154-.174.66-1.144.834-1.536.174-.391.348-.328.58-.242.232.087 1.47.693 1.722.819.252.126.42.188.481.29.061.102.061.59-.083.995z"></path></svg></div><div><p class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Certificação Oficial</p><p class="text-xs font-semibold text-emerald-700">100% Gratuito SEE-AC</p></div></div></div>
+</div>
+</div>
+</section>
+<!-- END: Hero & Seção de Destaque -->
+<!-- BEGIN: Controles de Busca, Filtros e Ordenação -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 pb-6 w-full" data-purpose="search-and-filters">
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-4 sm:p-5 space-y-4">
+<!-- Linha superior de Categorias (Pill Tabs) + Modo de Visualização -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1 border-b border-slate-100">
+<!-- Abas de Filtro de Categoria idênticas à imagem -->
+<div class="flex items-center space-x-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-none" role="tablist"><button aria-selected="true" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white shadow-xs focus:outline-none" role="tab" type="button">Todos os Cursos &amp; Polos (6)</button><button aria-selected="false" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition inline-flex items-center space-x-1.5 focus:outline-none" role="tab" type="button"><span class="w-2 h-2 rounded-full bg-purple-600"></span><span>Tecnologia &amp; Robótica (3)</span></button><button aria-selected="false" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition focus:outline-none" role="tab" type="button">Gestão &amp; Negócios (2)</button><button aria-selected="false" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 transition focus:outline-none" role="tab" type="button">Idiomas Aplicados (1)</button><button aria-selected="false" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 transition focus:outline-none" role="tab" type="button">Ensino Médio Integrado</button></div>
+<!-- Seletor de visualização Grade / Lista -->
+<div class="hidden md:flex items-center space-x-1 border border-slate-200 rounded-xl p-1 bg-slate-50">
+<button aria-label="Visualização em Grade" class="p-1.5 rounded-lg bg-white shadow-xs text-slate-800" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<button aria-label="Visualização em Lista" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-white/60" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Barra de Pesquisa + Dropdown de Ordenação -->
+<div class="flex flex-col md:flex-row items-stretch md:items-center gap-3">
+<!-- Campo de Pesquisa Textual -->
+<div class="relative flex-1">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<input class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 placeholder:text-slate-400 transition" id="school-search" placeholder="Buscar por curso, modalidade, polo ou turno (ex: robótica, informática, noite)..." type="search"/>
+</div>
+<!-- Seletor de Ordenação idêntico à captura -->
+<div class="flex items-center space-x-2 shrink-0">
+<label class="text-xs font-medium text-slate-500 whitespace-nowrap" for="sort-select">Ordenar por:</label>
+<div class="relative">
+<select class="appearance-none bg-slate-50 border border-slate-200 rounded-xl pl-3.5 pr-8 py-2.5 text-xs font-semibold text-slate-700 focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 cursor-pointer" id="sort-select">
+<option selected="">Ordem Alfabética (A-Z)</option>
+<option>Mais Estudantes</option>
+<option>Menos Estudantes</option>
+<option>Bairro / Região</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Controles de Busca, Filtros e Ordenação -->
+<!-- BEGIN: Grid Principal de Instituições -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 flex-1 w-full" data-purpose="school-cards-grid">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"><!-- FLYER 1: Informática Básica e Office --><article class="school-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition"><div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-5 text-white relative"><div class="flex items-center justify-between gap-2 mb-3"><span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/30">Vagas Abertas 2026</span><span class="bg-amber-400 text-slate-900 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs">100% Gratuito</span></div><div class="flex items-start justify-between"><div class="space-y-1"><p class="text-xs font-semibold text-emerald-100 uppercase tracking-wide">Qualificação Profissional</p><h2 class="text-xl font-bold leading-tight font-serif">Informática Básica e Pacote Office</h2></div><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center shrink-0 border border-white/20"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div></div><div class="mt-3 flex flex-wrap gap-2 text-[11px] font-semibold text-white/95"><span class="bg-black/20 px-2 py-0.5 rounded-md">Carga: 80 Horas</span><span class="bg-black/20 px-2 py-0.5 rounded-md">Turno: Vespertino</span><span class="bg-black/20 px-2 py-0.5 rounded-md">30 Vagas</span></div></div><div class="p-5 flex-1 flex flex-col justify-between space-y-4"><div class="space-y-3"><div class="space-y-1.5"><p class="text-xs text-slate-600 leading-relaxed">Domine Windows, editor de texto, planilhas eletrônicas, apresentações e segurança da informação no ambiente de trabalho.</p></div><div class="bg-slate-50 rounded-xl p-3 border border-slate-100 space-y-2"><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Destaques do Panfleto</span><div class="grid grid-cols-2 gap-2 text-xs text-slate-700 font-medium"><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Certificado SEE-AC</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Apostila Digital</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Idade: a partir de 14 anos</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Laboratório Climatizado</span></div></div></div><div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100"><div class="flex items-center space-x-2 truncate"><div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px]">NTE</div><div class="truncate"><p class="font-semibold text-slate-800 truncate">Polo NTE Brasiléia</p><p class="text-slate-500 text-[11px]">Rua Benjamin Constant</p></div></div><span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Matrícula Presencial/Online</span></div></div><div class="pt-2 border-t border-slate-100 flex flex-col gap-2"><a class="w-full inline-flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm transition active:scale-95" href="https://wa.me/5568999128877" target="_blank"><svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.149.929 3.182 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.941-.708-1.794s.448-1.273.607-1.446c.16-.174.348-.217.464-.217.116 0 .232.001.333.006.106.005.249-.04.39.299.145.348.492 1.2.535 1.288.043.087.072.188.014.304-.058.116-.087.188-.174.29-.087.101-.184.227-.263.305-.088.086-.179.18-.077.355.101.174.45 1.018 1.222 1.705.992.884 1.828 1.157 2.088 1.288.261.13.414.116.568-.058.154-.174.66-1.144.834-1.536.174-.391.348-.328.58-.242.232.087 1.47.693 1.722.819.252.126.42.188.481.29.061.102.061.59-.083.995z"></path></svg><span>Garantir Vaga no WhatsApp</span></a><div class="flex items-center justify-between text-[11px] text-slate-500 font-medium px-1"><span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg> Início: 10 de Março</span><span class="text-emerald-700 font-semibold">(68) 99912-8877</span></div></div></div></article><!-- FLYER 2: Robótica & Programação Escolar --><article class="school-card bg-white rounded-2xl border border-purple-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition"><div class="bg-gradient-to-r from-purple-700 to-indigo-700 p-5 text-white relative"><div class="flex items-center justify-between gap-2 mb-3"><span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/30">Turmas Jovens &amp; Escolares</span><span class="bg-amber-400 text-slate-900 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs">100% Gratuito</span></div><div class="flex items-start justify-between"><div class="space-y-1"><p class="text-xs font-semibold text-purple-200 uppercase tracking-wide">Inovação Educacional</p><h2 class="text-xl font-bold leading-tight font-serif">Robótica &amp; Lógica de Programação</h2></div><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center shrink-0 border border-white/20"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div></div><div class="mt-3 flex flex-wrap gap-2 text-[11px] font-semibold text-white/95"><span class="bg-black/20 px-2 py-0.5 rounded-md">Carga: 120 Horas</span><span class="bg-black/20 px-2 py-0.5 rounded-md">Turno: Matutino / Contra-turno</span><span class="bg-black/20 px-2 py-0.5 rounded-md">25 Vagas</span></div></div><div class="p-5 flex-1 flex flex-col justify-between space-y-4"><div class="space-y-3"><div class="space-y-1.5"><p class="text-xs text-slate-600 leading-relaxed">Montagem de circuitos com Arduino, sensores eletrônicos, automação e desenvolvimento de raciocínio lógico computacional prático.</p></div><div class="bg-purple-50/50 rounded-xl p-3 border border-purple-100 space-y-2"><span class="text-[10px] font-bold text-purple-800 uppercase tracking-wider block">Destaques do Panfleto</span><div class="grid grid-cols-2 gap-2 text-xs text-slate-700 font-medium"><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-purple-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Kits de Arduino Inclusos</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-purple-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Projetos Maker SEE</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-purple-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Idade: 11 a 18 anos</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-purple-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Mostra Estadual Acre</span></div></div></div><div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100"><div class="flex items-center space-x-2 truncate"><div class="w-6 h-6 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-[10px]">KJ</div><div class="truncate"><p class="font-semibold text-slate-800 truncate">Escola Integral Kairala José</p><p class="text-slate-500 text-[11px]">Espaço Maker Conectado</p></div></div><span class="text-[11px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full">Com Certificação</span></div></div><div class="pt-2 border-t border-slate-100 flex flex-col gap-2"><a class="w-full inline-flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 shadow-sm transition active:scale-95" href="https://wa.me/5568999884086" target="_blank"><svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.149.929 3.182 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.941-.708-1.794s.448-1.273.607-1.446c.16-.174.348-.217.464-.217.116 0 .232.001.333.006.106.005.249-.04.39.299.145.348.492 1.2.535 1.288.043.087.072.188.014.304-.058.116-.087.188-.174.29-.087.101-.184.227-.263.305-.088.086-.179.18-.077.355.101.174.45 1.018 1.222 1.705.992.884 1.828 1.157 2.088 1.288.261.13.414.116.568-.058.154-.174.66-1.144.834-1.536.174-.391.348-.328.58-.242.232.087 1.47.693 1.722.819.252.126.42.188.481.29.061.102.061.59-.083.995z"></path></svg><span>Garantir Vaga no WhatsApp</span></a><div class="flex items-center justify-between text-[11px] text-slate-500 font-medium px-1"><span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg> Início: 17 de Março</span><span class="text-purple-700 font-semibold">(68) 99988-4086</span></div></div></div></article><!-- FLYER 3: Design Gráfico & Mídias Digitais --><article class="school-card bg-white rounded-2xl border border-cyan-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition"><div class="bg-gradient-to-r from-cyan-600 to-blue-700 p-5 text-white relative"><div class="flex items-center justify-between gap-2 mb-3"><span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/30">Mercado &amp; Criatividade</span><span class="bg-amber-400 text-slate-900 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs">100% Gratuito</span></div><div class="flex items-start justify-between"><div class="space-y-1"><p class="text-xs font-semibold text-cyan-100 uppercase tracking-wide">Comunicação Visual</p><h2 class="text-xl font-bold leading-tight font-serif">Design Gráfico &amp; Mídias Digitais</h2></div><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center shrink-0 border border-white/20"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div></div><div class="mt-3 flex flex-wrap gap-2 text-[11px] font-semibold text-white/95"><span class="bg-black/20 px-2 py-0.5 rounded-md">Carga: 100 Horas</span><span class="bg-black/20 px-2 py-0.5 rounded-md">Turno: Noturno</span><span class="bg-black/20 px-2 py-0.5 rounded-md">28 Vagas</span></div></div><div class="p-5 flex-1 flex flex-col justify-between space-y-4"><div class="space-y-3"><div class="space-y-1.5"><p class="text-xs text-slate-600 leading-relaxed">Criação de marcas, peças publicitárias para redes sociais, tratamento de fotos, vetores e montagem de portfólio digital.</p></div><div class="bg-cyan-50 rounded-xl p-3 border border-cyan-200 space-y-2"><span class="text-[10px] font-bold text-cyan-800 uppercase tracking-wider block">Destaques do Panfleto</span><div class="grid grid-cols-2 gap-2 text-xs text-slate-700 font-medium"><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-cyan-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Canva Pro &amp; Photoshop</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-cyan-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Edição p/ Instagram/TikTok</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-cyan-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Idade: a partir de 15 anos</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-cyan-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Certificado de Extensão</span></div></div></div><div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100"><div class="flex items-center space-x-2 truncate"><div class="w-6 h-6 rounded-full bg-cyan-100 text-cyan-800 flex items-center justify-center font-bold text-[10px]">GV</div><div class="truncate"><p class="font-semibold text-slate-800 truncate">Polo Escola Getúlio Vargas</p><p class="text-slate-500 text-[11px]">Rua Marechal Deodoro</p></div></div><span class="text-[11px] font-bold text-cyan-800 bg-cyan-50 px-2 py-0.5 rounded-full">Prática 100%</span></div></div><div class="pt-2 border-t border-slate-100 flex flex-col gap-2"><a class="w-full inline-flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm transition active:scale-95" href="https://wa.me/5568999745510" target="_blank"><svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.149.929 3.182 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.941-.708-1.794s.448-1.273.607-1.446c.16-.174.348-.217.464-.217.116 0 .232.001.333.006.106.005.249-.04.39.299.145.348.492 1.2.535 1.288.043.087.072.188.014.304-.058.116-.087.188-.174.29-.087.101-.184.227-.263.305-.088.086-.179.18-.077.355.101.174.45 1.018 1.222 1.705.992.884 1.828 1.157 2.088 1.288.261.13.414.116.568-.058.154-.174.66-1.144.834-1.536.174-.391.348-.328.58-.242.232.087 1.47.693 1.722.819.252.126.42.188.481.29.061.102.061.59-.083.995z"></path></svg><span>Garantir Vaga no WhatsApp</span></a><div class="flex items-center justify-between text-[11px] text-slate-500 font-medium px-1"><span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg> Início: 24 de Março</span><span class="text-cyan-800 font-semibold">(68) 99974-5510</span></div></div></div></article><!-- FLYER 4: Assistente Administrativo --><article class="school-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition"><div class="bg-gradient-to-r from-blue-700 to-indigo-800 p-5 text-white relative"><div class="flex items-center justify-between gap-2 mb-3"><span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/30">Mercado Corporativo</span><span class="bg-amber-400 text-slate-900 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs">100% Gratuito</span></div><div class="flex items-start justify-between"><div class="space-y-1"><p class="text-xs font-semibold text-blue-200 uppercase tracking-wide">Administração &amp; Vendas</p><h2 class="text-xl font-bold leading-tight font-serif">Assistente Administrativo &amp; RH</h2></div><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center shrink-0 border border-white/20"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div></div><div class="mt-3 flex flex-wrap gap-2 text-[11px] font-semibold text-white/95"><span class="bg-black/20 px-2 py-0.5 rounded-md">Carga: 160 Horas</span><span class="bg-black/20 px-2 py-0.5 rounded-md">Turno: Noturno</span><span class="bg-black/20 px-2 py-0.5 rounded-md">35 Vagas</span></div></div><div class="p-5 flex-1 flex flex-col justify-between space-y-4"><div class="space-y-3"><div class="space-y-1.5"><p class="text-xs text-slate-600 leading-relaxed">Rotinas de escritório, comunicação empresarial, noções de contabilidade, controle de estoques e atendimento humanizado.</p></div><div class="bg-blue-50 rounded-xl p-3 border border-blue-200 space-y-2"><span class="text-[10px] font-bold text-blue-800 uppercase tracking-wider block">Destaques do Panfleto</span><div class="grid grid-cols-2 gap-2 text-xs text-slate-700 font-medium"><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-blue-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Certificado de Qualificação</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-blue-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Material Didático Grátis</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-blue-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Ensino Médio em curso/concl.</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-blue-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Simulação de Entrevistas</span></div></div></div><div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100"><div class="flex items-center space-x-2 truncate"><div class="w-6 h-6 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-[10px]">CF</div><div class="truncate"><p class="font-semibold text-slate-800 truncate">Escola Cel. Manoel Fontenele</p><p class="text-slate-500 text-[11px]">Av. Gen. Manoel Fontenele</p></div></div><span class="text-[11px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-full">Alta Empregabilidade</span></div></div><div class="pt-2 border-t border-slate-100 flex flex-col gap-2"><a class="w-full inline-flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm transition active:scale-95" href="https://wa.me/5568999719941" target="_blank"><svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.149.929 3.182 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.941-.708-1.794s.448-1.273.607-1.446c.16-.174.348-.217.464-.217.116 0 .232.001.333.006.106.005.249-.04.39.299.145.348.492 1.2.535 1.288.043.087.072.188.014.304-.058.116-.087.188-.174.29-.087.101-.184.227-.263.305-.088.086-.179.18-.077.355.101.174.45 1.018 1.222 1.705.992.884 1.828 1.157 2.088 1.288.261.13.414.116.568-.058.154-.174.66-1.144.834-1.536.174-.391.348-.328.58-.242.232.087 1.47.693 1.722.819.252.126.42.188.481.29.061.102.061.59-.083.995z"></path></svg><span>Garantir Vaga no WhatsApp</span></a><div class="flex items-center justify-between text-[11px] text-slate-500 font-medium px-1"><span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg> Início: 12 de Março</span><span class="text-blue-800 font-semibold">(68) 99971-9941</span></div></div></div></article><!-- FLYER 5: Manutenção de Computadores & Redes --><article class="school-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition"><div class="bg-gradient-to-r from-teal-600 to-emerald-800 p-5 text-white relative"><div class="flex items-center justify-between gap-2 mb-3"><span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/30">Oficina Prática</span><span class="bg-amber-400 text-slate-900 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs">100% Gratuito</span></div><div class="flex items-start justify-between"><div class="space-y-1"><p class="text-xs font-semibold text-teal-100 uppercase tracking-wide">Suporte Técnico</p><h2 class="text-xl font-bold leading-tight font-serif">Redes &amp; Manutenção de Computadores</h2></div><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center shrink-0 border border-white/20"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div></div><div class="mt-3 flex flex-wrap gap-2 text-[11px] font-semibold text-white/95"><span class="bg-black/20 px-2 py-0.5 rounded-md">Carga: 120 Horas</span><span class="bg-black/20 px-2 py-0.5 rounded-md">Turno: Vespertino</span><span class="bg-black/20 px-2 py-0.5 rounded-md">20 Vagas</span></div></div><div class="p-5 flex-1 flex flex-col justify-between space-y-4"><div class="space-y-3"><div class="space-y-1.5"><p class="text-xs text-slate-600 leading-relaxed">Diagnóstico de hardware, formatação, cabeamento estruturado, configuração de roteadores Wi-Fi e segurança de redes.</p></div><div class="bg-emerald-50 rounded-xl p-3 border border-emerald-200 space-y-2"><span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">Destaques do Panfleto</span><div class="grid grid-cols-2 gap-2 text-xs text-slate-700 font-medium"><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Bancadas Técnicas</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Alicate &amp; Conectores Grátis</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Idade: a partir de 15 anos</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Certificado de 120 Horas</span></div></div></div><div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100"><div class="flex items-center space-x-2 truncate"><div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px]">NTE</div><div class="truncate"><p class="font-semibold text-slate-800 truncate">Polo NTE Brasiléia</p><p class="text-slate-500 text-[11px]">Anexo SEE Brasiléia</p></div></div><span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Vagas Limitadas</span></div></div><div class="pt-2 border-t border-slate-100 flex flex-col gap-2"><a class="w-full inline-flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm transition active:scale-95" href="https://wa.me/5568999128877" target="_blank"><svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.149.929 3.182 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.941-.708-1.794s.448-1.273.607-1.446c.16-.174.348-.217.464-.217.116 0 .232.001.333.006.106.005.249-.04.39.299.145.348.492 1.2.535 1.288.043.087.072.188.014.304-.058.116-.087.188-.174.29-.087.101-.184.227-.263.305-.088.086-.179.18-.077.355.101.174.45 1.018 1.222 1.705.992.884 1.828 1.157 2.088 1.288.261.13.414.116.568-.058.154-.174.66-1.144.834-1.536.174-.391.348-.328.58-.242.232.087 1.47.693 1.722.819.252.126.42.188.481.29.061.102.061.59-.083.995z"></path></svg><span>Garantir Vaga no WhatsApp</span></a><div class="flex items-center justify-between text-[11px] text-slate-500 font-medium px-1"><span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg> Início: 18 de Março</span><span class="text-emerald-700 font-semibold">(68) 99912-8877</span></div></div></div></article><!-- FLYER 6: Inglês Básico Aplicado --><article class="school-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition"><div class="bg-gradient-to-r from-slate-800 to-emerald-950 p-5 text-white relative"><div class="flex items-center justify-between gap-2 mb-3"><span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/30">Comunicação Global</span><span class="bg-amber-400 text-slate-900 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-xs">100% Gratuito</span></div><div class="flex items-start justify-between"><div class="space-y-1"><p class="text-xs font-semibold text-emerald-300 uppercase tracking-wide">Língua Estrangeira</p><h2 class="text-xl font-bold leading-tight font-serif">Inglês Básico Instrumental &amp; Turismo</h2></div><div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center shrink-0 border border-white/20"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></div></div><div class="mt-3 flex flex-wrap gap-2 text-[11px] font-semibold text-white/95"><span class="bg-black/20 px-2 py-0.5 rounded-md">Carga: 90 Horas</span><span class="bg-black/20 px-2 py-0.5 rounded-md">Turno: Sábados / Matutino</span><span class="bg-black/20 px-2 py-0.5 rounded-md">25 Vagas</span></div></div><div class="p-5 flex-1 flex flex-col justify-between space-y-4"><div class="space-y-3"><div class="space-y-1.5"><p class="text-xs text-slate-600 leading-relaxed">Vocabulário voltado para comércio fronteiriço, atendimento ao turista, conversação cotidiana essencial e leitura na internet.</p></div><div class="bg-slate-50 rounded-xl p-3 border border-slate-100 space-y-2"><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Destaques do Panfleto</span><div class="grid grid-cols-2 gap-2 text-xs text-slate-700 font-medium"><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Áudio e Prática Oral</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Vocabulário de Fronteira</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Sem Pré-requisito</span></div><div class="flex items-center space-x-1.5"><svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg><span>Certificado SEE Acre</span></div></div></div><div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100"><div class="flex items-center space-x-2 truncate"><div class="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-[10px]">KJ</div><div class="truncate"><p class="font-semibold text-slate-800 truncate">Polo Kairala José Kairala</p><p class="text-slate-500 text-[11px]">Brasiléia - AC</p></div></div><span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Turma Especial</span></div></div><div class="pt-2 border-t border-slate-100 flex flex-col gap-2"><a class="w-full inline-flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm transition active:scale-95" href="https://wa.me/5568999884086" target="_blank"><svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.149.929 3.182 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.771-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.941-.708-1.794s.448-1.273.607-1.446c.16-.174.348-.217.464-.217.116 0 .232.001.333.006.106.005.249-.04.39.299.145.348.492 1.2.535 1.288.043.087.072.188.014.304-.058.116-.087.188-.174.29-.087.101-.184.227-.263.305-.088.086-.179.18-.077.355.101.174.45 1.018 1.222 1.705.992.884 1.828 1.157 2.088 1.288.261.13.414.116.568-.058.154-.174.66-1.144.834-1.536.174-.391.348-.328.58-.242.232.087 1.47.693 1.722.819.252.126.42.188.481.29.061.102.061.59-.083.995z"></path></svg><span>Garantir Vaga no WhatsApp</span></a><div class="flex items-center justify-between text-[11px] text-slate-500 font-medium px-1"><span class="flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg> Início: 15 de Março</span><span class="text-slate-800 font-semibold">(68) 99988-4086</span></div></div></div></article></div>
+<!-- Paginação ou Indicador de Fim da Listagem -->
+<div class="mt-10 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 border-t border-slate-200/80 pt-6">
+<p>Mostrando 6 panfletos de cursos com inscrições ativas em Brasiléia · 100% Gratuitos SEE-AC</p>
+<div class="flex items-center space-x-2 mt-3 sm:mt-0">
+<button class="px-3.5 py-1.5 border border-slate-200 rounded-lg bg-white text-slate-700 hover:bg-slate-50 font-medium transition" disabled="" type="button">Anterior</button>
+<span class="px-3 py-1.5 bg-slate-900 text-white rounded-lg font-bold">1</span>
+<button class="px-3 py-1.5 border border-slate-200 rounded-lg bg-white text-slate-700 hover:bg-slate-50 font-medium transition" type="button">2</button>
+<button class="px-3.5 py-1.5 border border-slate-200 rounded-lg bg-white text-slate-700 hover:bg-slate-50 font-medium transition" type="button">Próxima</button>
+</div>
+</div>
+</main>
+<!-- END: Grid Principal de Instituições -->
+<!-- BEGIN: Rodapé Institucional -->
+<footer class="bg-slate-900 text-slate-400 text-xs border-t border-slate-800" data-purpose="main-footer" id="contato">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-slate-800">
+<!-- Coluna 1: Órgão Oficial -->
+<div class="space-y-3">
+<div class="flex items-center space-x-2 text-white font-bold text-sm">
+<div class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center text-white">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 14l9-5-9-5-9 5 9 5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<span>Secretaria de Estado de Educação e Cultura · SEE</span>
+</div>
+<p class="leading-relaxed text-slate-400">
+            Governo do Estado do Acre · Coordenação Regional do Alto Acre / Brasiléia.
+          </p>
+</div>
+<!-- Coluna 2: Central de Atendimento -->
+<div class="space-y-2">
+<h3 class="text-white font-semibold text-xs tracking-wider uppercase">Atendimento ao Cidadão</h3>
+<p>Horário de Atendimento: Segunda a Sexta, das 07h30 às 13h30</p>
+<p>Ouvidoria Geral: (68) 3213-2300</p>
+<p>E-mail: see.brasileia@ac.gov.br</p>
+</div>
+<!-- Coluna 3: Links Úteis -->
+<div class="space-y-2">
+<h3 class="text-white font-semibold text-xs tracking-wider uppercase">Portais Relacionados</h3>
+<div class="flex flex-col space-y-1.5">
+<a class="hover:text-emerald-400 transition" href="#">Portal do Aluno (SAGE)</a>
+<a class="hover:text-emerald-400 transition" href="#">Boletim Online e Frequência</a>
+<a class="hover:text-emerald-400 transition" href="#">Calendário Letivo 2026/2027</a>
+</div>
+</div>
+</div>
+<div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-slate-500 text-[11px] gap-2">
+<p>© 2026 Secretaria de Estado de Educação do Acre. Todos os direitos reservados.</p>
+<p>Desenvolvido para máxima transparência e acesso rápido da comunidade escolar.</p>
+</div>
+</div>
+</footer>
+<!-- END: Rodapé Institucional -->
+<!-- Interações Rápidas de Filtro e Busca -->
+<script data-purpose="interaction-scripts">
+    // Busca interativa simples em tempo real
+    const searchInput = document.getElementById('school-search');
+    const cards = document.querySelectorAll('.school-card');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase().trim();
+        cards.forEach(card => {
+          const cardText = card.innerText.toLowerCase();
+          if (cardText.includes(query)) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    }
+  </script>
+</body></html>

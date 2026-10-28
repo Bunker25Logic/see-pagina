@@ -5,7 +5,7 @@ import SchoolsExplorer from '@/components/schools/SchoolsExplorer';
 export const metadata = {
   title: 'Instituições da Rede Estadual | Educa Brasiléia',
   description:
-    'Guia oficial das instituições de ensino vinculadas ao Núcleo de Educação de Brasiléia — Secretaria de Estado de Educação do Acre (SEE/AC). Consulte equipes gestoras, quantitativo de alunos e canais de atendimento.',
+    'Guia oficial das instituições de ensino vinculadas ao Núcleo de Educação de Brasiléia — Secretaria de Estado de Educação do Acre (SEE/AC). Consulte equipes gestoras, quantitativo de alunos, canais de atendimento e cursos de educação profissional.',
 };
 
 export const dynamic = 'force-dynamic';

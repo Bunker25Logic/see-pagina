@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import CourseIcon from '@/components/schools/CourseIcon';
 
 /**
  * Matriz curricular oficial dos cursos profissionalizantes do polo estadual.
@@ -638,7 +639,11 @@ export default function InstitutionCoursesView({ school, courses = [] }) {
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center justify-between gap-2 flex-wrap">
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wider border ${categoryStyle.badge}`}>
-                          {categoryStyle.icon}
+                          {(course.iconType || course.icon_type) ? (
+                            <CourseIcon type={course.iconType || course.icon_type} className="w-4 h-4 text-current" />
+                          ) : (
+                            categoryStyle.icon
+                          )}
                           <span>{course.category}</span>
                         </span>
 
@@ -1069,7 +1074,7 @@ export default function InstitutionCoursesView({ school, courses = [] }) {
 
                 <div>
                   <span className="block text-slate-400 font-bold uppercase text-[10px]">Horário de Atendimento</span>
-                  <span className="text-slate-700 dark:text-slate-200 font-semibold text-emerald-700 dark:text-emerald-400">
+                  <span className="font-semibold text-emerald-700 dark:text-emerald-400">
                     Seg. a Sex.: 08h às 12h e 14h às 21h
                   </span>
                 </div>

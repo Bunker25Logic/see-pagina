@@ -2,6 +2,7 @@
 
 import { useState, useId } from 'react';
 import Link from 'next/link';
+import { isProfessionalEducationType } from '@/lib/schools';
 
 /**
  * Paletas de cores institucionais personalizadas para cada escola de Brasiléia.
@@ -49,13 +50,21 @@ const SCHOOL_THEMES = {
     accentColor: 'text-rose-700 dark:text-rose-400',
     badgeBg: 'bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-200 dark:border-rose-800/40',
   },
+  'nucleo-de-tecnologia-educacional-': {
+    initials: 'NTE',
+    gradient: 'from-emerald-600 via-teal-600 to-cyan-700',
+    accentColor: 'text-emerald-700 dark:text-emerald-400',
+    badgeBg: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/40',
+  },
 };
 
 /**
  * SchoolCard — Card de unidade escolar de padrão editorial e artesanal.
  * Destaca o brasão da unidade, dados da direção, quantitativo e canais oficiais.
+ * Quando configurada como tipo de Educação Profissional e Tecnologia (Cursos Gratuitos),
+ * habilita o botão de acesso exclusivo para a aba de cursos e vagas.
  */
-export default function SchoolCard({ school, viewMode = 'grid' }) {
+export default function SchoolCard({ school, viewMode = 'grid', onOpenCourses }) {
   const {
     name,
     type,
@@ -71,12 +80,18 @@ export default function SchoolCard({ school, viewMode = 'grid' }) {
   const [copied, setCopied] = useState(false);
   const cardId = useId();
 
+  const isProfessional = isProfessionalEducationType(type) || Boolean(school.offersCourses);
+
   // Configuração visual temática da escola
   const theme = SCHOOL_THEMES[slug] || {
-    initials: name.slice(0, 2).toUpperCase(),
-    gradient: 'from-[#163c54] to-[#0c2331]',
+    initials: isProfessional ? 'NTE' : name.slice(0, 2).toUpperCase(),
+    gradient: isProfessional
+      ? 'from-emerald-600 via-teal-600 to-cyan-700'
+      : 'from-[#163c54] to-[#0c2331]',
     accentColor: 'text-emerald-700 dark:text-emerald-400',
-    badgeBg: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/40',
+    badgeBg: isProfessional
+      ? 'bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-700/60'
+      : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/40',
   };
 
   // Tratamento de WhatsApp
@@ -287,85 +302,133 @@ export default function SchoolCard({ school, viewMode = 'grid' }) {
       </div>
 
       {/* Rodapé do Card: Ações de Contato & Interatividade */}
-      <div className="px-5 pb-5 sm:px-6 sm:pb-6 pt-2 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        {/* Telefone com Ação de Cópia e Discagem */}
-        {phone ? (
-          <div className="flex items-center justify-between sm:justify-start gap-2 text-xs">
-            <a
-              href={`tel:${cleanPhone}`}
-              className="font-semibold text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5"
-              title="Ligar para a escola"
-            >
-              <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                />
-              </svg>
-              <span>{phone}</span>
-            </a>
-
+      <div className="px-5 pb-5 sm:px-6 sm:pb-6 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex flex-col gap-3">
+        {isProfessional ? (
+          /* Botão Principal Exclusivo de Cursos e Vagas para Unidade de Educação Profissional */
+          <div className="flex flex-col gap-2.5 w-full">
             <button
               type="button"
-              onClick={handleCopyPhone}
-              className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
-                copied
-                  ? 'bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300'
-                  : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 border-transparent hover:border-slate-200 dark:hover:border-slate-700'
-              }`}
-              title="Copiar telefone"
-              aria-label="Copiar número de telefone"
+              onClick={(e) => {
+                e.preventDefault();
+                onOpenCourses?.(school);
+              }}
+              className="w-full inline-flex items-center justify-center gap-2.5 py-3 px-5 rounded-xl bg-linear-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white font-extrabold text-sm shadow-sm hover:shadow-md hover:scale-[1.01] active:scale-98 transition-all duration-200 cursor-pointer"
             >
-              {copied ? (
-                <span className="text-[11px] font-bold px-1">Copiado!</span>
-              ) : (
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                  />
-                </svg>
-              )}
+              <svg className="w-5 h-5 text-emerald-100 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+              </svg>
+              <span>Ver cursos e vagas</span>
+              <svg className="w-4 h-4 ml-0.5 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+              </svg>
             </button>
+
+            {/* Linha auxiliar com canais de apoio do polo */}
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1 pt-1">
+              {phone ? (
+                <a
+                  href={`tel:${cleanPhone}`}
+                  className="font-semibold hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+                  title="Telefone da coordenação do polo"
+                >
+                  <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                  <span>{phone}</span>
+                </a>
+              ) : (
+                <span className="italic">Polo de Inovação SEE</span>
+              )}
+
+              {whatsappUrl && (
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400 hover:underline"
+                >
+                  <span>Dúvidas no WhatsApp</span>
+                  <svg className="w-3.5 h-3.5 fill-current text-[#25D366]" viewBox="0 0 24 24">
+                    <path d="M12.004 2C6.48 2 2 6.48 2 12.004c0 1.763.46 3.486 1.332 5.006L2 22l5.12-1.306A9.957 9.957 0 0 0 12.004 22c5.523 0 10.004-4.48 10.004-9.996C22.008 6.48 17.527 2 12.004 2zm5.82 14.343c-.244.684-1.215 1.306-1.996 1.472-.534.113-1.233.203-3.578-.772-2.993-1.246-4.925-4.29-5.074-4.488-.148-.198-1.215-1.616-1.215-3.082 0-1.466.768-2.188 1.04-2.486.273-.298.595-.373.794-.373.199 0 .397.002.57.01.184.01.43-.07.672.511.248.595.845 2.062.919 2.211.074.149.124.323.025.522-.099.199-.149.323-.298.497-.148.174-.313.389-.447.522-.149.149-.304.31-.13.61.173.298.774 1.277 1.662 2.067 1.144 1.018 2.106 1.334 2.404 1.482.298.149.472.124.646-.074.174-.199.744-.868.943-1.166.198-.298.397-.248.67-.149.273.099 1.737.82 2.035.969.298.149.496.223.57.347.075.124.075.72-.169 1.404z" />
+                  </svg>
+                </a>
+              )}
+            </div>
           </div>
         ) : (
-          <span className="text-xs text-slate-400 italic">Contato pelo Núcleo SEE</span>
+          /* Cards Convencionais de Ensino Fundamental / Médio */
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 w-full">
+            {/* Telefone com Ação de Cópia e Discagem */}
+            {phone ? (
+              <div className="flex items-center justify-between sm:justify-start gap-2 text-xs">
+                <a
+                  href={`tel:${cleanPhone}`}
+                  className="font-semibold text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+                  title="Ligar para a escola"
+                >
+                  <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                  <span>{phone}</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={handleCopyPhone}
+                  className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
+                    copied
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300'
+                      : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 border-transparent hover:border-slate-200 dark:hover:border-slate-700'
+                  }`}
+                  title="Copiar telefone"
+                  aria-label="Copiar número de telefone"
+                >
+                  {copied ? (
+                    <span className="text-[11px] font-bold px-1">Copiado!</span>
+                  ) : (
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            ) : (
+              <span className="text-xs text-slate-400 italic">Contato pelo Núcleo SEE</span>
+            )}
+
+            {/* Botão de WhatsApp Oficial da Escola */}
+            {whatsappUrl && (
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all duration-200"
+              >
+                {/* Ícone oficial do WhatsApp */}
+                <svg className="w-4 h-4 fill-white shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12.004 2C6.48 2 2 6.48 2 12.004c0 1.763.46 3.486 1.332 5.006L2 22l5.12-1.306A9.957 9.957 0 0 0 12.004 22c5.523 0 10.004-4.48 10.004-9.996C22.008 6.48 17.527 2 12.004 2zm5.82 14.343c-.244.684-1.215 1.306-1.996 1.472-.534.113-1.233.203-3.578-.772-2.993-1.246-4.925-4.29-5.074-4.488-.148-.198-1.215-1.616-1.215-3.082 0-1.466.768-2.188 1.04-2.486.273-.298.595-.373.794-.373.199 0 .397.002.57.01.184.01.43-.07.672.511.248.595.845 2.062.919 2.211.074.149.124.323.025.522-.099.199-.149.323-.298.497-.148.174-.313.389-.447.522-.149.149-.304.31-.13.61.173.298.774 1.277 1.662 2.067 1.144 1.018 2.106 1.334 2.404 1.482.298.149.472.124.646-.074.174-.199.744-.868.943-1.166.198-.298.397-.248.67-.149.273.099 1.737.82 2.035.969.298.149.496.223.57.347.075.124.075.72-.169 1.404z" />
+                </svg>
+                <span>Falar no WhatsApp</span>
+              </a>
+            )}
+          </div>
         )}
-
-        <div className="flex flex-wrap items-center gap-2">
-          {offersCourses && (
-            <Link
-              href={`/escolas/${slug}/cursos`}
-              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all duration-200"
-              title="Acessar página exclusiva de cursos disponíveis"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              <span>Ver Cursos & Vagas</span>
-            </Link>
-          )}
-
-          {/* Botão de WhatsApp Oficial da Escola */}
-          {whatsappUrl && (
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-white font-bold text-xs shadow-xs hover:shadow-md transition-all duration-200"
-            >
-              {/* Ícone oficial do WhatsApp */}
-              <svg className="w-4 h-4 fill-white shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12.004 2C6.48 2 2 6.48 2 12.004c0 1.763.46 3.486 1.332 5.006L2 22l5.12-1.306A9.957 9.957 0 0 0 12.004 22c5.523 0 10.004-4.48 10.004-9.996C22.008 6.48 17.527 2 12.004 2zm5.82 14.343c-.244.684-1.215 1.306-1.996 1.472-.534.113-1.233.203-3.578-.772-2.993-1.246-4.925-4.29-5.074-4.488-.148-.198-1.215-1.616-1.215-3.082 0-1.466.768-2.188 1.04-2.486.273-.298.595-.373.794-.373.199 0 .397.002.57.01.184.01.43-.07.672.511.248.595.845 2.062.919 2.211.074.149.124.323.025.522-.099.199-.149.323-.298.497-.148.174-.313.389-.447.522-.149.149-.304.31-.13.61.173.298.774 1.277 1.662 2.067 1.144 1.018 2.106 1.334 2.404 1.482.298.149.472.124.646-.074.174-.199.744-.868.943-1.166.198-.298.397-.248.67-.149.273.099 1.737.82 2.035.969.298.149.496.223.57.347.075.124.075.72-.169 1.404z" />
-              </svg>
-              <span>Falar no WhatsApp</span>
-            </a>
-          )}
-        </div>
       </div>
     </article>
   );
