@@ -387,7 +387,12 @@ export default function CoursesTab({ courses = [], onBack, selectedSchool = null
                 className="school-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
                 {/* ── TOPO FLYER COM GRADIENTE TEMÁTICO DINÂMICO ── */}
-                <div className={`bg-linear-to-r ${flyerGradient} p-5 text-white relative`}>
+                <div
+                  className={`bg-linear-to-r ${flyerGradient} p-5 text-white relative`}
+                  style={{
+                    backgroundImage: `linear-gradient(135deg, ${iconMeta.accentColor}, #0f172a)`,
+                  }}
+                >
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <span className="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/30">
                       {course.badgeTop || 'Vagas Abertas 2026'}
@@ -407,8 +412,11 @@ export default function CoursesTab({ courses = [], onBack, selectedSchool = null
                       </h2>
                     </div>
 
-                    <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center shrink-0 border border-white/20 shadow-xs">
-                      <CourseIcon type={iconType} />
+                    <div
+                      className="w-11 h-11 rounded-xl bg-white/15 backdrop-blur-md flex items-center justify-center shrink-0 border border-white/30 shadow-xs"
+                      title={iconMeta.name}
+                    >
+                      <CourseIcon type={iconType} className="w-6 h-6 text-white" />
                     </div>
                   </div>
 

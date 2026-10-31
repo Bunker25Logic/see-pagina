@@ -4,12 +4,14 @@ import { useState, useMemo, useEffect } from 'react';
 import SchoolCard from '@/components/schools/SchoolCard';
 import CoursesTab from '@/components/schools/CoursesTab';
 import { isProfessionalEducationType } from '@/lib/schools';
+import { getAllCourses } from '@/lib/courses';
 
 export default function SchoolsExplorer({
   schools = [],
   initialCourses = [],
   defaultSection = 'escolas',
 }) {
+  const [courses, setCourses] = useState(initialCourses);
   const [activeTab, setActiveTab] = useState(() => {
     if (defaultSection === 'cursos') return 'courses';
     if (typeof window !== 'undefined') {
@@ -139,11 +141,24 @@ export default function SchoolsExplorer({
       });
   }, [schools, search, selectedLevel, sortBy]);
 
+  // Atualiza os cursos em tempo real direto do Supabase ao abrir a aba de cursos
+  useEffect(() => {
+    let active = true;
+    getAllCourses().then((liveCourses) => {
+      if (active && Array.isArray(liveCourses) && liveCourses.length > 0) {
+        setCourses(liveCourses);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [activeTab]);
+
   // Se a aba de cursos estiver aberta exclusivamente pelo botão da instituição correspondente
   if (activeTab === 'courses') {
     return (
       <CoursesTab
-        courses={initialCourses}
+        courses={courses}
         onBack={handleBackToSchools}
         selectedSchool={selectedPolo}
       />
