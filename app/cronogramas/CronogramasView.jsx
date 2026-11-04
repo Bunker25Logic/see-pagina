@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import CronogramasCalendar from '@/components/cronogramas/CronogramasCalendar';
 import CronogramasDateModal from '@/components/cronogramas/CronogramasDateModal';
+import { slugify } from '@/lib/cronogramas';
 
 const STATUS_CONFIG = {
   'Em andamento': {
@@ -41,9 +42,17 @@ export default function CronogramasView({ cronogramas = [], sectors = [] }) {
     events: [],
   });
 
+  // Identifica setor/instituição ativa selecionada
+  const activeSectorMeta = sectors.find(
+    (s) => s.id === selectedSector || slugify(s.id) === slugify(selectedSector)
+  );
+
   // Filtra cronogramas conforme setor e termo de busca
   const filtered = cronogramas.filter((item) => {
-    const matchesSector = selectedSector === 'all' || item.setor === selectedSector;
+    const matchesSector =
+      selectedSector === 'all' ||
+      item.setor === selectedSector ||
+      slugify(item.setor) === slugify(selectedSector);
     const matchesSearch =
       !search.trim() ||
       item.titulo?.toLowerCase().includes(search.toLowerCase()) ||
@@ -132,8 +141,11 @@ export default function CronogramasView({ cronogramas = [], sectors = [] }) {
             Todos ({cronogramas.length})
           </button>
           {sectors.map((sec) => {
-            const count = cronogramas.filter((c) => c.setor === sec.id).length;
-            const isSelected = selectedSector === sec.id;
+            const count = cronogramas.filter(
+              (c) => c.setor === sec.id || slugify(c.setor) === slugify(sec.id)
+            ).length;
+            const isSelected =
+              selectedSector === sec.id || slugify(selectedSector) === slugify(sec.id);
             return (
               <button
                 key={sec.id}
@@ -143,6 +155,7 @@ export default function CronogramasView({ cronogramas = [], sectors = [] }) {
                     ? 'bg-[#163c54] dark:bg-emerald-600 text-white shadow-xs'
                     : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
                 }`}
+                title={sec.fullName}
               >
                 <span>{sec.label}</span>
                 <span
@@ -182,6 +195,41 @@ export default function CronogramasView({ cronogramas = [], sectors = [] }) {
           )}
         </div>
       </div>
+
+      {/* ── Banner Dinâmico da Instituição / Coordenação Selecionada ── */}
+      {selectedSector !== 'all' && activeSectorMeta && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
+              <span className="material-symbols-outlined text-[22px]">
+                {activeSectorMeta.type === 'escola' ? 'school' : 'event_note'}
+              </span>
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="font-editorial text-[16px] sm:text-[18px] font-bold text-slate-900 dark:text-slate-100">
+                  {activeSectorMeta.fullName || activeSectorMeta.label}
+                </h2>
+                <span className="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+                  {activeSectorMeta.type === 'escola' ? 'Instituição Escolar' : 'Coordenação Oficial'}
+                </span>
+              </div>
+              <p className="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5">
+                {filtered.length === 0
+                  ? 'Aba ativada. Novos eventos e cronogramas oficiais serão publicados em breve pelo servidor responsável.'
+                  : `Exibindo ${filtered.length} atividade${filtered.length !== 1 ? 's' : ''} no calendário e cronograma desta instituição.`}
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setSelectedSector('all')}
+            className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:underline shrink-0 self-start sm:self-auto cursor-pointer"
+          >
+            ← Ver todas as abas
+          </button>
+        </div>
+      )}
 
       {/* ── Conteúdo Principal Conforme Modo de Visualização ── */}
       {viewMode === 'calendar' ? (
@@ -290,13 +338,27 @@ export default function CronogramasView({ cronogramas = [], sectors = [] }) {
         /* ── Listagem em Grid de Cards Tradicional ── */
         <div>
           {filtered.length === 0 ? (
-            <div className="text-center py-16 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800">
+            <div className="text-center py-14 px-4 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800">
               <span className="material-symbols-outlined text-[36px] text-slate-400 dark:text-slate-600 mb-2">
                 event_busy
               </span>
-              <p className="text-[15px] text-slate-600 dark:text-slate-400 font-medium">
-                Nenhum cronograma encontrado para o filtro selecionado.
+              <h4 className="text-[15px] font-bold text-slate-700 dark:text-slate-200">
+                {activeSectorMeta ? `Nenhum cronograma cadastrado para ${activeSectorMeta.label}` : 'Nenhum cronograma encontrado'}
+              </h4>
+              <p className="text-[12.5px] text-slate-500 dark:text-slate-400 max-w-md mx-auto mt-1">
+                {activeSectorMeta
+                  ? 'A aba está ativa e configurada no portal. As atividades pedagógicas, calendários e eventos desta instituição aparecerão aqui assim que forem publicados pelo servidor responsável.'
+                  : 'Tente ajustar os filtros ou redefinir a busca para localizar as atividades.'}
               </p>
+              {selectedSector !== 'all' && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedSector('all')}
+                  className="mt-4 px-3.5 py-1.5 rounded-xl bg-slate-900 dark:bg-emerald-600 text-white text-xs font-bold transition hover:opacity-90 cursor-pointer"
+                >
+                  Ver todos os cronogramas
+                </button>
+              )}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

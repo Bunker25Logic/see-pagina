@@ -1,17 +1,20 @@
-import { getActiveCronogramas, SECTORS } from '@/lib/cronogramas';
+import { getActiveCronogramas, getActiveSectors } from '@/lib/cronogramas';
 import CronogramasView from './CronogramasView';
 
 export const metadata = {
-  title: 'Cronogramas Setoriais',
+  title: 'Cronogramas e Calendários Oficiais | SEE Brasiléia',
   description:
-    'Consulte os cronogramas oficiais do Núcleo de Educação de Brasiléia (SEE-AC): Coordenações de Ensino e de Cultura & Esporte.',
+    'Consulte os cronogramas oficiais do Núcleo de Educação de Brasiléia (SEE-AC): Ensino, Cultura & Esporte e instituições da rede estadual.',
 };
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function CronogramasPage() {
-  const cronogramas = await getActiveCronogramas();
+  const [cronogramas, sectors] = await Promise.all([
+    getActiveCronogramas(),
+    getActiveSectors(),
+  ]);
 
   return (
     <div className="w-full max-w-300 mx-auto px-margin-mobile md:px-margin-desktop py-8">
@@ -26,13 +29,13 @@ export default async function CronogramasPage() {
             Cronogramas e Calendários Oficiais
           </h1>
           <p className="text-slate-500 dark:text-slate-400 text-[12.5px] sm:text-[13px] leading-snug">
-            Prazos pedagógicos, formações continuadas e eventos da rede estadual.
+            Prazos pedagógicos, calendários escolares e eventos da rede pública estadual.
           </p>
         </div>
       </div>
 
-      {/* ── Componente Interativo com Filtros e Abas ── */}
-      <CronogramasView cronogramas={cronogramas} sectors={SECTORS} />
+      {/* ── Componente Interativo com Filtros e Abas Dinâmicas ── */}
+      <CronogramasView cronogramas={cronogramas} sectors={sectors} />
     </div>
   );
 }
